@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('repair-jobs', RepairJobController::class);
     Route::patch('/repair-jobs/{job}/status', [RepairJobController::class, 'updateStatus'])->name('repair-jobs.update-status');
+    Route::patch('/repair-jobs/{job}/assign', [RepairJobController::class, 'assignTechnician'])->name('repair-jobs.assign-technician');
     Route::resource('inventory', InventoryController::class);
 
     // Invoices

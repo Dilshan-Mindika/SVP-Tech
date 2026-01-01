@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class RepairJob extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'customer_id',
@@ -24,11 +26,15 @@ class RepairJob extends Model
         'final_price',
         'job_invoice_generated_at',
         'service_invoice_generated_at',
+        'completed_at',
+        'delivered_at',
     ];
 
     protected $casts = [
         'job_invoice_generated_at' => 'datetime',
         'service_invoice_generated_at' => 'datetime',
+        'completed_at' => 'datetime',
+        'delivered_at' => 'datetime',
     ];
 
     public function customer()

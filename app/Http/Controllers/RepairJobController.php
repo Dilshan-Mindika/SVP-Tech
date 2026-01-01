@@ -32,7 +32,33 @@ class RepairJobController extends Controller
         }
 
         $jobs = $query->get();
-        return view('repair_jobs.index', compact('jobs'));
+        $technicians = Technician::with('user')->get(); 
+
+        // Calculate Status Counts (respecting search if exists, otherwise global)
+        $statusCountsQuery = RepairJob::query();
+        
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $statusCountsQuery->where(function($q) use ($search) {
+                $q->where('job_number', 'like', "%{$search}%")
+                  ->orWhere('laptop_brand', 'like', "%{$search}%")
+                  ->orWhere('laptop_model', 'like', "%{$search}%")
+                  ->orWhere('serial_number', 'like', "%{$search}%")
+                  ->orWhereHas('customer', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $statusCounts = $statusCountsQuery->selectRaw('repair_status, count(*) as count')
+            ->groupBy('repair_status')
+            ->pluck('count', 'repair_status')
+            ->toArray();
+
+        $totalJobsCount = array_sum($statusCounts);
+
+        return view('repair_jobs.index', compact('jobs', 'technicians', 'statusCounts', 'totalJobsCount'));
     }
 
     public function create()
@@ -50,7 +76,7 @@ class RepairJobController extends Controller
     public function store(Request $request)
     {
         // Check if creating new customer inline
-        if ($request->customer_id === 'new') {
+        if ($request->customer_type === 'new') {
             $request->validate([
                 'new_customer_name' => 'required|string|max:255',
                 'new_customer_phone' => 'required|string|max:20',
@@ -82,7 +108,6 @@ class RepairJobController extends Controller
         return redirect()->route('repair-jobs.index')->with('success', 'Repair Job created successfully.');
     }
 
-
     public function show(RepairJob $repairJob)
     {
         return view('repair_jobs.show', compact('repairJob'));
@@ -91,7 +116,12 @@ class RepairJobController extends Controller
     public function edit(RepairJob $repairJob)
     {
         $repairJob->load(['expenses', 'invoiceItems']);
-        return view('repair_jobs.edit', compact('repairJob'));
+        $inventoryParts = \App\Models\Part::where('stock_quantity', '>', 0)
+            ->select('name', 'selling_price', 'stock_quantity')
+            ->orderBy('name')
+            ->get();
+            
+        return view('repair_jobs.edit', compact('repairJob', 'inventoryParts'));
     }
 
     public function update(Request $request, RepairJob $repairJob)
@@ -133,7 +163,7 @@ class RepairJobController extends Controller
             }
             
             // 3. Update Job Details & Totals
-            $repairJob->update([
+            $updateData = [
                 'repair_status' => $validated['repair_status'],
                 'job_number' => $validated['job_number'],
                 'technician_id' => $validated['technician_id'],
@@ -144,19 +174,52 @@ class RepairJobController extends Controller
                 'parts_used_cost' => $totalExpenses, // Internal Expenses Total
                 'labor_cost' => 0, // Deprecated/Merged
                 'final_price' => $totalBillable, // Total Invoice Amount
-            ]);
+            ];
+
+            if ($validated['repair_status'] === 'completed' && !$repairJob->completed_at) {
+                $updateData['completed_at'] = now();
+            }
+    
+            if ($validated['repair_status'] === 'delivered') {
+                if (!$repairJob->delivered_at) $updateData['delivered_at'] = now();
+                if (!$repairJob->completed_at) $updateData['completed_at'] = now();
+            }
+
+            $repairJob->update($updateData);
         });
 
         return redirect()->route('repair-jobs.index')->with('success', 'Repair Job updated successfully.');
     }
 
+    public function assignTechnician(Request $request, RepairJob $job)
+    {
+        $validated = $request->validate([
+            'technician_id' => 'nullable|exists:technicians,id',
+        ]);
+
+        $job->update(['technician_id' => $validated['technician_id']]);
+
+        return back()->with('success', 'Technician assigned successfully.');
+    }
+
     public function updateStatus(Request $request, RepairJob $job)
     {
         $validated = $request->validate([
-            'repair_status' => 'required|in:pending,in_progress,waiting_for_parts,completed,cancelled',
+            'repair_status' => 'required|in:pending,in_progress,waiting_for_parts,completed,delivered,cancelled',
         ]);
 
-        $job->update(['repair_status' => $validated['repair_status']]);
+        $updateData = ['repair_status' => $validated['repair_status']];
+
+        if ($validated['repair_status'] === 'completed' && !$job->completed_at) {
+            $updateData['completed_at'] = now();
+        }
+
+        if ($validated['repair_status'] === 'delivered') {
+            if (!$job->delivered_at) $updateData['delivered_at'] = now();
+            if (!$job->completed_at) $updateData['completed_at'] = now(); // Ensure completed_at is set if delivered
+        }
+
+        $job->update($updateData);
 
         return back()->with('success', 'Job Status updated to ' . str_replace('_', ' ', $validated['repair_status']));
     }

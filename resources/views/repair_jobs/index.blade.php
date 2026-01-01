@@ -25,14 +25,29 @@
         </form>
 
         <!-- Status Filters -->
+        <!-- Status Filters -->
         <div class="filters">
-            <a href="{{ route('repair-jobs.index', ['status' => 'all', 'search' => request('search')]) }}" class="filter-btn {{ !request('status') || request('status') == 'all' ? 'active' : '' }}">All</a>
-            <a href="{{ route('repair-jobs.index', ['status' => 'pending', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'pending' ? 'active' : '' }}">Pending</a>
-            <a href="{{ route('repair-jobs.index', ['status' => 'in_progress', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'in_progress' ? 'active' : '' }}">In Progress</a>
-            <a href="{{ route('repair-jobs.index', ['status' => 'waiting_for_parts', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'waiting_for_parts' ? 'active' : '' }}">Waiting</a>
-            <a href="{{ route('repair-jobs.index', ['status' => 'completed', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'completed' ? 'active' : '' }}">Completed</a>
-            <a href="{{ route('repair-jobs.index', ['status' => 'delivered', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'delivered' ? 'active' : '' }}">Delivered</a>
-            <a href="{{ route('repair-jobs.index', ['status' => 'cancelled', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'cancelled' ? 'active' : '' }}">Cancelled</a>
+            <a href="{{ route('repair-jobs.index', ['status' => 'all', 'search' => request('search')]) }}" class="filter-btn {{ !request('status') || request('status') == 'all' ? 'active' : '' }}">
+                All <span class="count-badge">{{ $totalJobsCount }}</span>
+            </a>
+            <a href="{{ route('repair-jobs.index', ['status' => 'pending', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'pending' ? 'active' : '' }}">
+                Pending <span class="count-badge">{{ $statusCounts['pending'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('repair-jobs.index', ['status' => 'in_progress', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'in_progress' ? 'active' : '' }}">
+                In Progress <span class="count-badge">{{ $statusCounts['in_progress'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('repair-jobs.index', ['status' => 'waiting_for_parts', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'waiting_for_parts' ? 'active' : '' }}">
+                Waiting <span class="count-badge">{{ $statusCounts['waiting_for_parts'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('repair-jobs.index', ['status' => 'completed', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'completed' ? 'active' : '' }}">
+                Completed <span class="count-badge">{{ $statusCounts['completed'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('repair-jobs.index', ['status' => 'delivered', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'delivered' ? 'active' : '' }}">
+                Delivered <span class="count-badge">{{ $statusCounts['delivered'] ?? 0 }}</span>
+            </a>
+            <a href="{{ route('repair-jobs.index', ['status' => 'cancelled', 'search' => request('search')]) }}" class="filter-btn {{ request('status') == 'cancelled' ? 'active' : '' }}">
+                Cancelled <span class="count-badge">{{ $statusCounts['cancelled'] ?? 0 }}</span>
+            </a>
         </div>
     </div>
 
@@ -43,8 +58,10 @@
                 <th style="width: 15%;">Customer</th>
                 <th style="width: 20%;">Device</th>
                 <th style="width: 15%;">Technician</th>
-                <th style="width: 180px;">Status</th>
-                <th style="width: 110px;">Date</th>
+                <th style="width: 130px;">Status</th>
+                <th style="width: 90px;">Created</th>
+                <th style="width: 90px;">Completed</th>
+                <th style="width: 90px;">Delivered</th>
                 <th style="width: 100px;">Actions</th>
             </tr>
         </thead>
@@ -58,7 +75,20 @@
                     </div>
                 </td>
                 <td>{{ $job->laptop_brand }} {{ $job->laptop_model }}</td>
-                <td>{{ $job->technician ? $job->technician->user->name : 'Unassigned' }}</td>
+                <td>
+                    <form action="{{ route('repair-jobs.assign-technician', $job->id) }}" method="POST" onclick="event.stopPropagation()">
+                        @csrf
+                        @method('PATCH')
+                        <select name="technician_id" onchange="this.form.submit()" class="tech-select">
+                            <option value="">-- Unassigned --</option>
+                            @foreach($technicians as $tech)
+                                <option value="{{ $tech->id }}" {{ $job->technician_id == $tech->id ? 'selected' : '' }}>
+                                    {{ explode(' ', $tech->user->name)[0] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
+                </td>
                 <td>
                     <form action="{{ route('repair-jobs.update-status', $job->id) }}" method="POST" onclick="event.stopPropagation()">
                         @csrf
@@ -68,11 +98,14 @@
                             <option value="in_progress" {{ $job->repair_status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
                             <option value="waiting_for_parts" {{ $job->repair_status == 'waiting_for_parts' ? 'selected' : '' }}>Waiting</option>
                             <option value="completed" {{ $job->repair_status == 'completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="delivered" {{ $job->repair_status == 'delivered' ? 'selected' : '' }}>Delivered</option>
                             <option value="cancelled" {{ $job->repair_status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                         </select>
                     </form>
                 </td>
-                <td>{{ $job->created_at->format('M d') }}</td>
+                <td style="font-size: 0.85rem; color: #cbd5e1;">{{ $job->created_at->format('M d') }}</td>
+                <td style="font-size: 0.85rem; color: #86efac;">{{ $job->completed_at ? $job->completed_at->format('M d') : '-' }}</td>
+                <td style="font-size: 0.85rem; color: #60a5fa;">{{ $job->delivered_at ? $job->delivered_at->format('M d') : '-' }}</td>
                 <td onclick="event.stopPropagation()">
                     <a href="{{ route('repair-jobs.edit', $job->id) }}" class="action-icon edit-icon" title="Edit">
                         <i class="fas fa-edit"></i>
@@ -243,6 +276,37 @@
     .delete-icon:hover { color: var(--danger); background: rgba(239, 68, 68, 0.15); }
 
     /* Specific overrides */
+    .tech-select {
+        background: transparent;
+        color: #fff; /* White text for better visibility */
+        border: 1px solid var(--border-glass);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        outline: none;
+        width: 100%;
+    }
+
+    .tech-select option {
+        background-color: #1e293b;
+        color: #fff;
+    }
+    
+    .count-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.1rem 0.4rem;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        margin-left: 0.4rem;
+    }
+    
+    .filter-btn.active .count-badge {
+        background: rgba(59, 130, 246, 0.3);
+        color: #fff;
+    }
+
     .data-table td:nth-child(5) { /* Status Column - allow overflow for dropdown */
         overflow: visible; 
     }

@@ -79,10 +79,21 @@
         <div x-data="{
             expenses: {{ $repairJob->expenses->toJson() ?? '[]' }},
             invoiceItems: {{ $repairJob->invoiceItems->toJson() ?? '[]' }},
+            availableParts: {{ $inventoryParts->toJson() ?? '[]' }},
+            
             addExpense() { this.expenses.push({ description: '', amount: 0 }); },
             removeExpense(index) { this.expenses.splice(index, 1); },
+            
             addInvoiceItem() { this.invoiceItems.push({ description: '', quantity: 1, amount: 0 }); },
             removeInvoiceItem(index) { this.invoiceItems.splice(index, 1); },
+            
+            checkPart(item) {
+                let part = this.availableParts.find(p => p.name === item.description);
+                if (part) {
+                    item.amount = part.selling_price;
+                }
+            },
+            
             get totalExpenses() { return this.expenses.reduce((sum, item) => sum + Number(item.amount), 0); },
             get totalRevenue() { return this.invoiceItems.reduce((sum, item) => sum + (Number(item.amount) * Number(item.quantity)), 0); },
             get netProfit() { return this.totalRevenue - this.totalExpenses; }
@@ -136,11 +147,17 @@
                     <i class="fas fa-receipt" style="margin-right: 0.5rem;"></i> Billable Invoice Items (Visible to Customer)
                 </h4>
 
+                <datalist id="inventoryList">
+                    <template x-for="part in availableParts">
+                        <option :value="part.name" x-text="part.name + ' (Stock: ' + part.stock_quantity + ')'"></option>
+                    </template>
+                </datalist>
+
                 <table class="w-full mb-4" style="width: 100%; border-collapse: separate; border-spacing: 0 0.5rem;">
                     <thead>
                         <tr style="text-align: left; color: #9ca3af; font-size: 0.85rem;">
                             <th style="padding-bottom: 0.5rem;">Service / Item Description</th>
-                            <th style="width: 80px; padding-bottom: 0.5rem; text-align: center;">Qty</th>
+                            <th style="width: 100px; padding-bottom: 0.5rem; text-align: center;">Qty</th>
                             <th style="width: 150px; padding-bottom: 0.5rem;">Unit Price (LKR)</th>
                             <th style="width: 120px; padding-bottom: 0.5rem; text-align: right;">Total</th>
                             <th style="width: 40px;"></th>
@@ -150,10 +167,10 @@
                         <template x-for="(item, index) in invoiceItems" :key="index">
                             <tr>
                                 <td style="padding-right: 1rem;">
-                                    <input type="text" :name="'invoice_items['+index+'][description]'" x-model="item.description" class="form-control" placeholder="Service Charge / Part" required>
+                                    <input type="text" :name="'invoice_items['+index+'][description]'" x-model="item.description" @change="checkPart(item)" list="inventoryList" class="form-control" placeholder="Service Charge / Part Name" required>
                                 </td>
-                                <td style="padding-right: 1rem;">
-                                    <input type="number" :name="'invoice_items['+index+'][quantity]'" x-model="item.quantity" class="form-control" style="text-align: center;" min="1" required>
+                                <td>
+                                    <input type="number" :name="'invoice_items['+index+'][quantity]'" x-model="item.quantity" class="form-control" style="text-align: center; color: #fff; background: rgba(0,0,0,0.3);" min="1" required>
                                 </td>
                                 <td>
                                     <input type="number" step="0.01" :name="'invoice_items['+index+'][amount]'" x-model="item.amount" class="form-control" required>
@@ -172,7 +189,7 @@
                 </table>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <button type="button" @click="addInvoiceItem()" style="color: #86efac; background: rgba(34, 197, 94, 0.1); border: 1px dashed rgba(34, 197, 94, 0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
-                        <i class="fas fa-plus"></i> Add Billable Item
+                        <i class="fas fa-plus"></i> Add Billable Item / Part
                     </button>
                     <div style="text-align: right; color: #86efac;">
                         <small>Total Billable:</small> <strong style="font-size: 1.1rem;">LKR <span x-text="totalRevenue.toFixed(2)"></span></strong>
@@ -265,6 +282,11 @@
         color: var(--text-muted);
         cursor: not-allowed;
     }
+
+    .form-control option {
+        background-color: #1e293b;
+        color: #fff;
+    }
     
     .form-actions {
         display: flex;
@@ -280,6 +302,11 @@
         border-radius: 0.5rem;
         text-decoration: none;
         display: inline-block;
+    }
+
+    .status-select option {
+        background-color: #1e293b;
+        color: #fff;
     }
 
     @media (max-width: 640px) {
