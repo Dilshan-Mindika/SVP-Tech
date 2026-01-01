@@ -45,12 +45,12 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $customer->update($request->all());
-        return redirect()->route('customers.index');
+        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
 
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return redirect()->route('customers.index');
+        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }
 }

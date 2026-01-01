@@ -17,6 +17,20 @@ class RepairJobController extends Controller
             $query->where('repair_status', $request->status);
         }
 
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('job_number', 'like', "%{$search}%")
+                  ->orWhere('laptop_brand', 'like', "%{$search}%")
+                  ->orWhere('laptop_model', 'like', "%{$search}%")
+                  ->orWhere('serial_number', 'like', "%{$search}%")
+                  ->orWhereHas('customer', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%");
+                  });
+            });
+        }
+
         $jobs = $query->get();
         return view('repair_jobs.index', compact('jobs'));
     }

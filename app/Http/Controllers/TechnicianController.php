@@ -13,7 +13,11 @@ class TechnicianController extends Controller
      */
     public function index()
     {
-        $technicians = Technician::with('user')->get();
+        $technicians = Technician::with('user')
+            ->withCount(['repairJobs as completed_jobs_count' => function ($query) {
+                $query->where('repair_status', 'completed');
+            }])
+            ->get();
         return view('technicians.index', compact('technicians'));
     }
 
@@ -80,8 +84,33 @@ class TechnicianController extends Controller
      */
     public function update(Request $request, Technician $technician)
     {
-        // Update logic
-        return redirect()->route('technicians.index');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $technician->user_id,
+            'password' => 'nullable|min:6',
+            'role' => 'required|in:admin,technician',
+            'specialty' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $userData = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'role' => $validated['role'],
+        ];
+
+        if ($request->filled('password')) {
+            $userData['password'] = bcrypt($validated['password']);
+        }
+
+        $technician->user->update($userData);
+
+        $technician->update([
+            'specialty' => $validated['specialty'],
+        ]);
+
+        return redirect()->route('technicians.index')->with('success', 'Technician updated successfully.');
     }
 
     /**
@@ -91,6 +120,6 @@ class TechnicianController extends Controller
     {
         $technician->user->delete(); // Delete user account
         $technician->delete();
-        return redirect()->route('technicians.index');
+        return redirect()->route('technicians.index')->with('success', 'Technician deleted successfully.');
     }
 }

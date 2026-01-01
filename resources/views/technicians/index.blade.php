@@ -29,7 +29,7 @@
                 <td>{{ $tech->user->name }}</td>
                 <td><span class="badge badge-tech">{{ $tech->user->role }}</span></td>
                 <td>{{ $tech->specialty ?? 'General' }}</td>
-                <td>{{ $tech->total_jobs }}</td>
+                <td>{{ $tech->completed_jobs_count }}</td>
                 <td>{{ number_format($tech->performance_score, 1) }} / 5.0</td>
                 <td>
                     <a href="{{ route('technicians.edit', $tech->id) }}" class="btn-sm">Edit</a>
