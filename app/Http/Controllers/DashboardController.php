@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $dailyJobsGot = \App\Models\RepairJob::whereDate('created_at', today())->count();
         
         $dailyCompletedJobs = \App\Models\RepairJob::whereDate('updated_at', today())
-            ->where('repair_status', 'completed')
+            ->whereIn('repair_status', ['completed', 'delivered'])
             ->get();
             
         $dailyJobsCompleted = $dailyCompletedJobs->count();
@@ -35,7 +35,7 @@ class DashboardController extends Controller
             
         $monthlyCompletedJobs = \App\Models\RepairJob::whereMonth('updated_at', now()->month)
             ->whereYear('updated_at', now()->year)
-            ->where('repair_status', 'completed')
+            ->whereIn('repair_status', ['completed', 'delivered'])
             ->get();
             
         $monthlyJobsCompleted = $monthlyCompletedJobs->count();
@@ -56,7 +56,7 @@ class DashboardController extends Controller
             $chartLabels[] = $date->format('D'); // Mon, Tue...
             
             $dayJobs = \App\Models\RepairJob::whereDate('updated_at', $date)
-                ->where('repair_status', 'completed')
+                ->whereIn('repair_status', ['completed', 'delivered'])
                 ->get();
                 
             $rev = $dayJobs->sum('final_price');

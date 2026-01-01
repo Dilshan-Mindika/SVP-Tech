@@ -15,7 +15,7 @@ class TechnicianController extends Controller
     {
         $query = Technician::with('user')
             ->withCount(['repairJobs as completed_jobs_count' => function ($query) {
-                $query->where('repair_status', 'completed');
+                $query->whereIn('repair_status', ['completed', 'delivered']);
             }]);
 
         if ($request->has('search') && $request->search != '') {
