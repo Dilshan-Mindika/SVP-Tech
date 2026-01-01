@@ -912,27 +912,110 @@ table td {
     margin-bottom: 1rem;
 }
 
-/* Mobile Responsive */
+/* Mobile Responsive Sidebar & Layout */
+.mobile-header {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.mobile-brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-main);
+}
+
+.mobile-toggle-btn,
+.mobile-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.mobile-close-btn {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 45;
+    backdrop-filter: blur(2px);
+}
+
 @media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    .mobile-header {
+        display: flex;
+    }
+
     .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        /* Wider for easier touch */
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 50;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay {
+        display: block;
+        /* Managed by x-show logic technically, but CSS structure needed */
+    }
+
+    .mobile-close-btn {
+        display: block;
     }
 
     .main-content {
         margin-left: 0;
         padding: 1rem;
+        width: 100%;
     }
 
     .nav-links {
-        display: none;
-        /* Need a toggler for production */
+        display: flex;
+        /* Ensure it's never hidden by old styles */
     }
+}
 
-    .brand {
-        justify-content: space-between;
-    }
+/* Light Mode Mobile Header */
+[data-theme="light"] .mobile-header {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .sidebar {
+    border-right: none;
+    /* Shadow handles it */
 }
 
 /* Modern Logout Button */
@@ -1047,6 +1130,23 @@ table td {
 [data-theme="light"] .status-select {
     color: inherit;
     border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Tables */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scroll on iOS */
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    /* Optional rounded scroll area */
+}
+
+/* Ensure table doesn't shrink weirdly */
+.data-table {
+    min-width: 800px;
+    /* Force scroll on small screens */
 }
 
 /* Theme Toggle Button */

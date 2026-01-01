@@ -18,10 +18,24 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
 <body>
-    <div class="app-container">
+    <div class="app-container" x-data="{ sidebarOpen: false }">
+        <!-- Mobile Header & Toggle -->
+        <div class="mobile-header">
+            <button @click="sidebarOpen = !sidebarOpen" class="mobile-toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="mobile-brand">SVP Tech</div>
+        </div>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" x-show="sidebarOpen" @click="sidebarOpen = false" x-transition.opacity></div>
+
         <!-- Sidebar -->
         @auth
-        <aside class="sidebar">
+        <aside class="sidebar" :class="{ 'open': sidebarOpen }">
+            <button class="mobile-close-btn" @click="sidebarOpen = false">
+                <i class="fas fa-times"></i>
+            </button>
             <div class="brand" style="flex-direction: column; height: auto; padding: 2rem 1rem; gap: 1rem;">
                 <img src="{{ asset('images/logo.png') }}" alt="SVP Tech" style="height: 100px; width: auto; border-radius: 50%;">
                 <h1 style="font-size: 1.2rem; font-weight: 700; text-align: center;">SVP Technologies</h1>

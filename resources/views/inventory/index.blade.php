@@ -24,6 +24,7 @@
         </form>
     </div>
 
+    <div class="table-responsive">
     <table class="data-table">
         <thead>
             <tr>
@@ -85,6 +86,7 @@
             @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 
 <style>
