@@ -16,10 +16,10 @@
 <div class="card glass">
     <div class="toolbar-container">
         <!-- Search Form -->
-        <form action="{{ route('inventory.index') }}" method="GET" class="search-form" style="width: 100%;">
+        <form action="{{ route('inventory.index') }}" method="GET" class="search-form">
             <div class="search-box">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by par, brand, model..." class="search-input">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by part, brand, model..." class="search-input">
             </div>
         </form>
     </div>

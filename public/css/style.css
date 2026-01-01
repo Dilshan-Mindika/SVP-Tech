@@ -642,6 +642,13 @@ table td {
     white-space: nowrap;
     scrollbar-width: thin;
     padding-bottom: 0.2rem;
+    flex: 1;
+    /* Take remaining space */
+    min-width: 0;
+    /* Allow shrinking for scroll */
+    justify-content: flex-end;
+    /* Align buttons to right if space permits */
+    align-items: center;
 }
 
 .filter-btn {
@@ -1186,8 +1193,42 @@ table td {
     font-weight: 600;
 }
 
-[data-theme="light"] .nav-links a.active {
-    background-color: #0ea5e9;
-    color: #fff;
-    box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);
+/* Global Toolbar & Search Styles */
+.toolbar-container {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+    /* Force single line */
+    overflow: hidden;
+    /* Prevent container scroll, let children handle it */
+}
+
+.search-box {
+    position: relative;
+    width: 280px;
+    /* Fixed reduced width */
+    flex-shrink: 0;
+    /* Prevent search bar from squishing */
+}
+
+.search-icon {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+    font-size: 1rem;
+}
+
+[data-theme="light"] .toolbar-container {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+[data-theme="light"] .search-icon {
+    color: #94a3b8;
 }

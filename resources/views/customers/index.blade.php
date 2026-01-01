@@ -16,7 +16,7 @@
 <div class="card glass">
     <div class="toolbar-container">
         <!-- Search Form -->
-        <form action="{{ route('customers.index') }}" method="GET" class="search-form" style="width: 100%;">
+        <form action="{{ route('customers.index') }}" method="GET" class="search-form">
             <div class="search-box">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name, email, or phone..." class="search-input">

@@ -14,11 +14,11 @@
 </div>
 
 <div class="card glass">
-    <div class="toolbar-container" style="padding: 1.5rem; border-bottom: 1px solid var(--border-glass);">
+    <div class="toolbar-container">
         <!-- Search Form -->
-        <form action="{{ route('technicians.index') }}" method="GET" class="search-form" style="width: 100%;">
-            <div class="search-box" style="position: relative; max-width: 500px;">
-                <i class="fas fa-search search-icon" style="position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"></i>
+        <form action="{{ route('technicians.index') }}" method="GET" class="search-form">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name, email, or specialty..." class="search-input">
             </div>
         </form>
