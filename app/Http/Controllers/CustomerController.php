@@ -20,8 +20,16 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-        Customer::create($request->all());
-        return redirect()->route('customers.index');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
+        ]);
+
+        Customer::create($validated);
+        
+        return redirect()->route('customers.index')->with('success', 'Customer added successfully.');
     }
 
     public function show(Customer $customer)

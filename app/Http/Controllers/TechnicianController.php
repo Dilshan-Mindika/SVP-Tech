@@ -30,9 +30,33 @@ class TechnicianController extends Controller
      */
     public function store(Request $request)
     {
-        // Validation and creation logic here
-        // Need to create User first, then Technician
-        return redirect()->route('technicians.index');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'role' => 'required|in:admin,technician',
+            'specialty' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
+            'role' => $validated['role'], // Ensure this is mapped correctly
+            'phone' => $request->phone,
+        ]);
+
+        if ($validated['role'] === 'technician') {
+            Technician::create([
+                'user_id' => $user->id,
+                'specialty' => $validated['specialty'],
+                'total_jobs' => 0,
+                'performance_score' => 0,
+            ]);
+        }
+
+        return redirect()->route('technicians.index')->with('success', 'Technician/User created successfully.');
     }
 
     /**

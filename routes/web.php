@@ -32,10 +32,12 @@ Route::middleware('auth')->group(function () {
     // Core Modules
     Route::resource('customers', CustomerController::class);
     Route::resource('repair-jobs', RepairJobController::class);
+    Route::patch('/repair-jobs/{job}/status', [RepairJobController::class, 'updateStatus'])->name('repair-jobs.update-status');
     Route::resource('inventory', InventoryController::class);
 
     // Invoices
     Route::post('/repair-jobs/{job}/invoice', [InvoiceController::class, 'generate'])->name('invoices.generate');
+    Route::get('/repair-jobs/{job}/invoice-preview', [InvoiceController::class, 'preview'])->name('invoice-preview');
     Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
 
     // Reports

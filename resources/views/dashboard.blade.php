@@ -3,65 +3,47 @@
 @section('title', 'Dashboard - SVP Tech')
 
 @section('content')
-<div class="dashboard-header">
-    <h2>Dashboard</h2>
-    <p class="text-muted">Welcome back, {{ auth()->user()->name }}</p>
+<div class="page-header">
+    <div class="header-content">
+        <h2>Dashboard</h2>
+        <p class="text-muted">Welcome back, {{ auth()->user()->name }}</p>
+    </div>
 </div>
 
 <!-- Stats Grid -->
 <div class="stats-grid">
-    <div class="stat-card glass">
+    <div class="stat-card">
         <h3>Active Jobs</h3>
         <p class="stat-number">12</p>
-        <p class="stat-desc">3 overdue</p>
+        <p class="stat-desc">3 jobs overdue</p>
     </div>
-    <div class="stat-card glass">
+    
+    <div class="stat-card">
         <h3>Pending Invoices</h3>
         <p class="stat-number">5</p>
-        <p class="stat-desc">$1,250.00 value</p>
+        <p class="stat-desc">$1,250.00 estimated value</p>
     </div>
-    <div class="stat-card glass">
+    
+    <div class="stat-card">
         <h3>Technicians</h3>
         <p class="stat-number">4</p>
-        <p class="stat-desc">All active</p>
+        <p class="stat-desc">All active and assigned</p>
     </div>
-    <div class="stat-card glass">
-        <h3>Monthly Revenue</h3>
+    
+    <div class="stat-card">
+        <h3>Est. Monthly Revenue</h3>
         <p class="stat-number">$15,400</p>
         <p class="stat-desc">+12% from last month</p>
     </div>
 </div>
 
-<style>
-    .dashboard-header {
-        margin-bottom: 2rem;
-    }
-    .text-muted {
-        color: var(--text-muted);
-    }
-    
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.5rem;
-    }
-    
-    .stat-card {
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .stat-number {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--primary-glow);
-    }
-    
-    .stat-desc {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-</style>
+<!-- Quick Actions / Recent Activity Placeholder -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h3>Recent Repair Jobs</h3>
+    </div>
+    <div class="card-body">
+        <p class="text-muted text-center" style="padding: 2rem;">No recent activity to display.</p>
+    </div>
+</div>
 @endsection

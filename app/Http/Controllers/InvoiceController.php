@@ -52,4 +52,39 @@ class InvoiceController extends Controller
         $invoice->load(['repairJob.customer', 'repairJob.technician', 'repairJob.parts']);
         return view('invoices.show', compact('invoice'));
     }
+
+    public function preview(RepairJob $job)
+    {
+        // Check for existing invoice
+        $invoice = $job->invoices()->latest()->first();
+        
+        if ($invoice) {
+            return redirect()->route('invoices.show', $invoice->id);
+        }
+
+        // If no invoice exists, generate a provisional one (Estimate)
+        // We simulate the request to reuse logic, or better yet, call a private helper.
+        // For simplicity here, we'll manually call the generation logic.
+        
+        $partsCost = $job->parts->sum(function($part) {
+            return $part->part_cost * $part->quantity_used;
+        });
+
+        $laborCost = $job->labor_cost ?? 0;
+        $totalAmount = $partsCost + $laborCost;
+        $profit = $totalAmount - ($partsCost + $laborCost); // Simplified
+
+        $invoice = Invoice::create([
+            'repair_job_id' => $job->id,
+            'invoice_type' => 'job', // Default to estimate/job invoice
+            'total_amount' => $totalAmount,
+            'parts_cost' => $partsCost,
+            'labor_cost' => $laborCost,
+            'profit_margin' => $profit,
+        ]);
+        
+        $job->update(['job_invoice_generated_at' => now()]);
+
+        return redirect()->route('invoices.show', $invoice->id);
+    }
 }

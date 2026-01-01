@@ -22,13 +22,13 @@
     <table class="data-table">
         <thead>
             <tr>
-                <th>Job ID</th>
-                <th>Customer</th>
-                <th>Device</th>
-                <th>Technician</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
+                <th style="width: 80px;">Job ID</th>
+                <th style="width: 20%;">Customer</th>
+                <th style="width: 25%;">Device</th>
+                <th style="width: 15%;">Technician</th>
+                <th style="width: 150px;">Status</th>
+                <th style="width: 120px;">Date</th>
+                <th style="width: 160px;" class="text-right">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -39,13 +39,22 @@
                 <td>{{ $job->laptop_brand }} {{ $job->laptop_model }}</td>
                 <td>{{ $job->technician ? $job->technician->user->name : 'Unassigned' }}</td>
                 <td>
-                    <span class="status-badge status-{{ $job->repair_status }}">
-                        {{ ucfirst(str_replace('_', ' ', $job->repair_status)) }}
-                    </span>
+                    <form action="{{ route('repair-jobs.update-status', $job->id) }}" method="POST">
+                        @csrf
+                        @method('PATCH')
+                        <select name="repair_status" onchange="this.form.submit()" class="status-select status-{{ $job->repair_status }}">
+                            <option value="pending" {{ $job->repair_status == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="in_progress" {{ $job->repair_status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
+                            <option value="waiting_for_parts" {{ $job->repair_status == 'waiting_for_parts' ? 'selected' : '' }}>Waiting</option>
+                            <option value="completed" {{ $job->repair_status == 'completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="cancelled" {{ $job->repair_status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        </select>
+                    </form>
                 </td>
                 <td>{{ $job->created_at->format('M d, Y') }}</td>
                 <td>
-                    <a href="{{ route('repair-jobs.show', $job->id) }}" class="btn-sm">View</a>
+                    <a href="{{ route('repair-jobs.edit', $job->id) }}" class="btn-sm" style="margin-right:0.5rem;">Edit</a>
+                    <a href="{{ route('invoice-preview', $job->id) }}" class="btn-sm">Invoice</a>
                 </td>
             </tr>
             @empty
@@ -88,23 +97,39 @@
         border-color: var(--primary);
     }
 
-    .data-table { width: 100%; border-collapse: collapse; }
-    .data-table th, .data-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-glass); }
-    .data-table th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }
-    
-    .status-badge {
-        padding: 0.25rem 0.75rem;
-        border-radius: 1rem;
-        font-size: 0.8rem;
-        font-weight: 500;
-        text-transform: capitalize;
+    /* Utility Helper Classes */
+    .text-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 1px; /* Triggers truncation in grid/flex contexts, usually works in table-layout:fixed too */
+    }
+
+    /* Enforce fixed layout for width controls to work well */
+    .data-table { 
+        width: 100%; 
+        border-collapse: collapse; 
+        table-layout: fixed; 
     }
     
-    .status-pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
-    .status-in_progress { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
-    .status-completed { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+    .data-table th, .data-table td { 
+        padding: 1rem; 
+        text-align: left; 
+        border-bottom: 1px solid var(--border-glass); 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .data-table th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }
     
-    .btn-sm { color: var(--primary-glow); text-decoration: none; font-size: 0.9rem; }
-    .text-center { text-align: center; }
+    /* Specific overrides */
+    .data-table td:nth-child(5) { /* Status Column - allow overflow for dropdown */
+        overflow: visible; 
+    }
+    .data-table td:last-child { /* Actions Column - text align right */
+        text-align: right; 
+        overflow: visible;
+    }
 </style>
 @endsection
