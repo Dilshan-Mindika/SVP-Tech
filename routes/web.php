@@ -7,6 +7,8 @@ use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RepairJobController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ReportingController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -30,5 +32,12 @@ Route::middleware('auth')->group(function () {
     // Core Modules
     Route::resource('customers', CustomerController::class);
     Route::resource('repair-jobs', RepairJobController::class);
-    Route::resource('inventory', InventoryController::class); // Managing Parts
+    Route::resource('inventory', InventoryController::class);
+
+    // Invoices
+    Route::post('/repair-jobs/{job}/invoice', [InvoiceController::class, 'generate'])->name('invoices.generate');
+    Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
+
+    // Reports
+    Route::get('/reports', [ReportingController::class, 'index'])->name('reports.index');
 });
