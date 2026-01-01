@@ -12,6 +12,7 @@ class RepairJob extends Model
     protected $fillable = [
         'customer_id',
         'technician_id',
+        'job_number',
         'laptop_brand',
         'laptop_model',
         'serial_number',

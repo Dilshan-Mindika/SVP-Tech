@@ -21,7 +21,7 @@
     <div class="stat-card">
         <h3>Pending Invoices</h3>
         <p class="stat-number">5</p>
-        <p class="stat-desc">$1,250.00 estimated value</p>
+        <p class="stat-desc">LKR 1,250.00 estimated value</p>
     </div>
     
     <div class="stat-card">
@@ -32,7 +32,7 @@
     
     <div class="stat-card">
         <h3>Est. Monthly Revenue</h3>
-        <p class="stat-number">$15,400</p>
+        <p class="stat-number">LKR 15,400</p>
         <p class="stat-desc">+12% from last month</p>
     </div>
 </div>

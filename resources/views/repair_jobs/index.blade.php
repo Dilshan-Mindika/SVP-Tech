@@ -13,29 +13,36 @@
 
 <div class="card glass">
     <div class="filters">
-        <button class="filter-btn active">All</button>
-        <button class="filter-btn">Pending</button>
-        <button class="filter-btn">In Progress</button>
-        <button class="filter-btn">Completed</button>
+        <a href="{{ route('repair-jobs.index', ['status' => 'all']) }}" class="filter-btn {{ !request('status') || request('status') == 'all' ? 'active' : '' }}">All</a>
+        <a href="{{ route('repair-jobs.index', ['status' => 'pending']) }}" class="filter-btn {{ request('status') == 'pending' ? 'active' : '' }}">Pending</a>
+        <a href="{{ route('repair-jobs.index', ['status' => 'in_progress']) }}" class="filter-btn {{ request('status') == 'in_progress' ? 'active' : '' }}">In Progress</a>
+        <a href="{{ route('repair-jobs.index', ['status' => 'waiting_for_parts']) }}" class="filter-btn {{ request('status') == 'waiting_for_parts' ? 'active' : '' }}">Waiting</a>
+        <a href="{{ route('repair-jobs.index', ['status' => 'completed']) }}" class="filter-btn {{ request('status') == 'completed' ? 'active' : '' }}">Completed</a>
+        <a href="{{ route('repair-jobs.index', ['status' => 'delivered']) }}" class="filter-btn {{ request('status') == 'delivered' ? 'active' : '' }}">Delivered</a>
+        <a href="{{ route('repair-jobs.index', ['status' => 'cancelled']) }}" class="filter-btn {{ request('status') == 'cancelled' ? 'active' : '' }}">Cancelled</a>
     </div>
 
     <table class="data-table">
         <thead>
             <tr>
-                <th style="width: 80px;">Job ID</th>
-                <th style="width: 20%;">Customer</th>
-                <th style="width: 25%;">Device</th>
+                <th style="width: 140px;">Job Number</th>
+                <th style="width: 18%;">Customer</th>
+                <th style="width: 22%;">Device</th>
                 <th style="width: 15%;">Technician</th>
-                <th style="width: 150px;">Status</th>
+                <th style="width: 200px;">Status</th>
                 <th style="width: 120px;">Date</th>
                 <th style="width: 160px;" class="text-right">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse($jobs as $job)
-            <tr>
-                <td>#{{ $job->id }}</td>
-                <td>{{ $job->customer->name }}</td>
+            <tr class="clickable-row" onclick="window.location='{{ route('repair-jobs.edit', $job->id) }}'">
+                <td style="font-family: monospace; font-weight: 600; color: var(--primary);">{{ $job->job_number }}</td>
+                <td>
+                    <div class="text-truncate" style="max-width: 150px;" title="{{ $job->customer->name }}">
+                        {{ $job->customer->name }}
+                    </div>
+                </td>
                 <td>{{ $job->laptop_brand }} {{ $job->laptop_model }}</td>
                 <td>{{ $job->technician ? $job->technician->user->name : 'Unassigned' }}</td>
                 <td>
@@ -67,11 +74,9 @@
 </div>
 
 <style>
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
+    .data-table { 
+        width: 100%; 
+        border-collapse: collapse; 
     }
     
     .filters {
@@ -79,46 +84,52 @@
         gap: 0.5rem;
         padding: 1rem;
         border-bottom: 1px solid var(--border-glass);
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: thin;
     }
     
     .filter-btn {
         background: transparent;
         border: 1px solid var(--border-glass);
         color: var(--text-muted);
-        padding: 0.5rem 1rem;
+        padding: 0.4rem 1rem;
         border-radius: 2rem;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
     }
     
-    .filter-btn.active, .filter-btn:hover {
-        background: rgba(139, 92, 246, 0.2);
-        color: #fff;
-        border-color: var(--primary);
+    .filter-btn:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+        border-color: rgba(255,255,255,0.2);
+    }
+    
+    .filter-btn.active {
+        background: rgba(59, 130, 246, 0.15);
+        color: #60a5fa;
+        border-color: rgba(59, 130, 246, 0.4);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
     }
 
-    /* Utility Helper Classes */
-    .text-truncate {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 1px; /* Triggers truncation in grid/flex contexts, usually works in table-layout:fixed too */
+    .clickable-row {
+        cursor: pointer;
+        transition: background-color 0.15s ease;
     }
 
-    /* Enforce fixed layout for width controls to work well */
-    .data-table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        table-layout: fixed; 
+    .clickable-row:hover {
+        background-color: rgba(255, 255, 255, 0.02) !important;
     }
     
     .data-table th, .data-table td { 
         padding: 1rem; 
         text-align: left; 
         border-bottom: 1px solid var(--border-glass); 
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 
     .data-table th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }

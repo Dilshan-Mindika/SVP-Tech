@@ -3,74 +3,71 @@
 namespace App\Http\Controllers;
 
 use App\Models\RepairJob;
+use App\Models\Customer;
+use App\Models\Technician;
 use Illuminate\Http\Request;
 
 class RepairJobController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = RepairJob::with(['customer', 'technician'])->latest()->get();
+        $query = RepairJob::with(['customer', 'technician'])->latest();
+
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('repair_status', $request->status);
+        }
+
+        $jobs = $query->get();
         return view('repair_jobs.index', compact('jobs'));
     }
 
     public function create()
     {
-        return view('repair_jobs.create');
+        $customers = Customer::orderBy('name')->get();
+        $technicians = Technician::with('user')->get();
+        
+        // Auto-generate next Job ID
+        $nextId = RepairJob::max('id') + 1;
+        $nextJobNumber = 'PWCRJ' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
+
+        return view('repair_jobs.create', compact('customers', 'technicians', 'nextJobNumber'));
     }
 
     public function store(Request $request)
     {
-        // 1. Determine Validation Rules
-        $rules = [
-            'customer_type' => 'required|in:existing,new',
-            'laptop_brand' => 'required|string|max:255',
-            'laptop_model' => 'required|string|max:255',
-            'serial_number' => 'nullable|string|max:255',
-            'fault_description' => 'required|string',
-            'repair_notes' => 'nullable|string',
-        ];
-
-        // Conditional Validation
-        if ($request->customer_type === 'existing') {
-            $rules['customer_id'] = 'required|exists:customers,id';
-        } else {
-            $rules['new_customer_name'] = 'required|string|max:255';
-            $rules['new_customer_phone'] = 'required|string|max:20';
-            $rules['new_customer_email'] = 'nullable|email';
-            $rules['new_customer_address'] = 'nullable|string|max:500';
-        }
-
-        $validated = $request->validate($rules);
-
-        // 2. Handle Customer (Get existing ID or Create New)
-        if ($request->customer_type === 'new') {
-            // Create New Customer
-            $customer = \App\Models\Customer::create([
-                'name' => $validated['new_customer_name'],
-                'phone' => $validated['new_customer_phone'],
-                'email' => $validated['new_customer_email'],
-                'address' => $validated['new_customer_address'],
+        // Check if creating new customer inline
+        if ($request->customer_id === 'new') {
+            $request->validate([
+                'new_customer_name' => 'required|string|max:255',
+                'new_customer_phone' => 'required|string|max:20',
             ]);
-            $customerId = $customer->id;
-        } else {
-            $customerId = $validated['customer_id'];
+            
+            $customer = Customer::create([
+                'name' => $request->new_customer_name,
+                'phone' => $request->new_customer_phone,
+                'email' => $request->new_customer_email,
+                'address' => $request->new_customer_address,
+            ]);
+            
+            $request->merge(['customer_id' => $customer->id]);
         }
 
-        // 3. Create Job
-        $job = RepairJob::create([
-            'customer_id' => $customerId,
-            'technician_id' => null,
-            'laptop_brand' => $validated['laptop_brand'],
-            'laptop_model' => $validated['laptop_model'],
-            'serial_number' => $validated['serial_number'],
-            'fault_description' => $validated['fault_description'],
-            'repair_notes' => $validated['repair_notes'],
-            'repair_status' => 'pending',
-            'status' => 'pending',
+        $validated = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'job_number' => 'required|string|unique:repair_jobs,job_number',
+            'laptop_brand' => 'required|string',
+            'laptop_model' => 'required|string',
+            'serial_number' => 'nullable|string',
+            'fault_description' => 'required|string',
+            'technician_id' => 'nullable|exists:technicians,id', 
+            'repair_notes' => 'nullable|string',
         ]);
 
-        return redirect()->route('repair-jobs.index')->with('success', 'Repair Job created successfully for customer.');
+        RepairJob::create($validated);
+
+        return redirect()->route('repair-jobs.index')->with('success', 'Repair Job created successfully.');
     }
+
 
     public function show(RepairJob $repairJob)
     {
@@ -86,6 +83,7 @@ class RepairJobController extends Controller
     {
         $validated = $request->validate([
             'repair_status' => 'required|in:pending,in_progress,waiting_for_parts,completed,delivered,cancelled',
+            'job_number' => 'required|string|unique:repair_jobs,job_number,' . $repairJob->id,
             'technician_id' => 'nullable|exists:technicians,id',
             'fault_description' => 'required|string',
             'repair_notes' => 'nullable|string',
@@ -96,6 +94,7 @@ class RepairJobController extends Controller
 
         $repairJob->update([
             'repair_status' => $validated['repair_status'],
+            'job_number' => $validated['job_number'],
             'technician_id' => $validated['technician_id'],
             'fault_description' => $validated['fault_description'],
             'repair_notes' => $validated['repair_notes'],

@@ -23,16 +23,22 @@
             <!-- Status & Tech Assignment -->
             <div class="form-group">
                 <label>Job Status</label>
-                <select name="repair_status" class="form-control" x-model="status">
+                <select name="repair_status" class="status-select" x-model="status" :class="'status-' + status">
                     <option value="pending" {{ $repairJob->repair_status == 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="in_progress" {{ $repairJob->repair_status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
                     <option value="waiting_for_parts" {{ $repairJob->repair_status == 'waiting_for_parts' ? 'selected' : '' }}>Waiting for Parts</option>
                     <option value="completed" {{ $repairJob->repair_status == 'completed' ? 'selected' : '' }}>Completed</option>
+                    <option value="delivered" {{ $repairJob->repair_status == 'delivered' ? 'selected' : '' }}>Delivered</option>
                     <option value="cancelled" {{ $repairJob->repair_status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                 </select>
             </div>
 
             <div class="form-group">
+                <label>Job Number (Customizable)</label>
+                <input type="text" name="job_number" value="{{ $repairJob->job_number }}" class="form-control" style="font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; font-weight: 600;">
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
                 <label>Assign Technician</label>
                 <select name="technician_id" class="form-control">
                     <option value="">-- Unassigned --</option>
@@ -74,7 +80,7 @@
             <div class="form-group">
                 <label>Parts Cost (Internal)</label>
                 <div class="input-group">
-                    <span class="prefix">$</span>
+                    <span class="prefix">LKR</span>
                     <input type="number" step="0.01" name="parts_used_cost" x-model="parts" class="form-control">
                 </div>
             </div>
@@ -82,7 +88,7 @@
             <div class="form-group">
                 <label>Labor Cost (Internal)</label>
                 <div class="input-group">
-                    <span class="prefix">$</span>
+                    <span class="prefix">LKR</span>
                     <input type="number" step="0.01" name="labor_cost" x-model="labor" class="form-control">
                 </div>
             </div>
@@ -90,7 +96,7 @@
             <div class="form-group">
                 <label>Final Customer Price</label>
                 <div class="input-group">
-                    <span class="prefix">$</span>
+                    <span class="prefix">LKR</span>
                     <input type="number" step="0.01" name="final_price" x-model="price" class="form-control" style="border-color: var(--success);">
                 </div>
             </div>
@@ -98,7 +104,7 @@
             <div class="form-group" style="grid-column: 1 / -1; margin-top: 1rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 6px;">
                 <label style="margin-bottom: 0;">Estimated Net Profit</label>
                 <div style="font-size: 1.5rem; font-weight: 700;" :style="{ color: profit >= 0 ? 'var(--success)' : 'var(--danger)' }">
-                    $<span x-text="profit.toFixed(2)"></span>
+                    LKR <span x-text="profit.toFixed(2)"></span>
                 </div>
             </div>
         </div>
@@ -143,10 +149,11 @@
         transform: translateY(-50%);
         color: var(--text-muted);
         font-weight: 500;
+        font-size: 0.9rem;
     }
 
     .input-group input {
-        padding-left: 2rem;
+        padding-left: 3.5rem; /* Increased from 2rem to fit LKR */
     }
     
     .form-control {

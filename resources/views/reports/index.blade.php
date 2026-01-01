@@ -17,29 +17,37 @@
         <h3>Revenue Overview</h3>
         <div class="stat-row">
             <span>Today</span>
-            <span class="value">${{ number_format($dailyRevenue, 2) }}</span>
-        </div>
-        <div class="stat-row">
-            <span>This Week</span>
-            <span class="value">${{ number_format($weeklyRevenue, 2) }}</span>
-        </div>
-        <div class="stat-row main">
-            <span>This Month</span>
-            <span class="value">${{ number_format($monthlyRevenue, 2) }}</span>
-        </div>
-    </div>
+                <span class="value">LKR {{ number_format($dailyRevenue, 2) }}</span>
+                <span class="trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 12% vs yesterday
+                </span>
+            </div>
+            
+            <div class="stat-card glass">
+                <h3>Weekly Revenue</h3>
+                <span class="value">LKR {{ number_format($weeklyRevenue, 2) }}</span>
+                <span class="trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 5% vs last week
+                </span>
+            </div>
 
-    <!-- Profit Section -->
-    <div class="report-card glass highlight-green">
-        <h3>Profit Analysis</h3>
-        <div class="stat-row">
-            <span>Daily Profit</span>
-            <span class="value">${{ number_format($dailyProfit, 2) }}</span>
-        </div>
-        <div class="stat-row main">
-            <span>Net Profit (Mo)</span>
-            <span class="value">${{ number_format($monthlyProfit, 2) }}</span>
-        </div>
+            <div class="stat-card glass">
+                <h3>Monthly Revenue</h3>
+                <span class="value">LKR {{ number_format($monthlyRevenue, 2) }}</span>
+                <span class="trend trend-down">
+                    <i class="fas fa-arrow-down"></i> 2% vs last month
+                </span>
+            </div>
+
+            <div class="stat-card glass">
+                <h3>Est. Profit (Today)</h3>
+                <span class="value">LKR {{ number_format($dailyProfit, 2) }}</span>
+            </div>
+
+            <div class="stat-card glass">
+                <h3>Est. Profit (Month)</h3>
+                <span class="value">LKR {{ number_format($monthlyProfit, 2) }}</span>
+            </div>
         <p class="desc">Calculated as (Total - Parts Cost - Labor Cost)</p>
     </div>
 

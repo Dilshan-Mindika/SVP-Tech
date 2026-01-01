@@ -62,6 +62,12 @@
             </div>
         </div>
 
+        <h3 class="section-title" style="margin-top: 2rem;">Job Details</h3>
+        <div class="form-group">
+            <label>Job Number (Auto-Generated)</label>
+            <input type="text" name="job_number" value="{{ $nextJobNumber }}" class="form-control" style="font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; width: 200px;" required>
+        </div>
+
         <h3 class="section-title" style="margin-top: 2rem;">Device Details</h3>
         <div class="grid-2">
             <div class="form-group">
@@ -142,6 +148,11 @@
         border-radius: 0.5rem;
         color: #fff;
         font-family: inherit;
+    }
+
+    .form-control option {
+        background-color: #1e293b; /* Dark slate background for options */
+        color: #fff;
     }
     
     .form-actions {

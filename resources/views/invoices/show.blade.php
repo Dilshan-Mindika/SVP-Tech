@@ -39,7 +39,7 @@
 
     <!-- Job Details -->
     <div class="job-details">
-        <h3>Job Reference: #{{ $invoice->repair_job_id }}</h3>
+        <h3>Job Reference: #{{ $invoice->repairJob->job_number }}</h3>
         <p><strong>Device:</strong> {{ $invoice->repairJob->laptop_brand }} {{ $invoice->repairJob->laptop_model }} (S/N: {{ $invoice->repairJob->serial_number }})</p>
         <p><strong>Fault:</strong> {{ $invoice->repairJob->fault_description }}</p>
     </div>
@@ -56,18 +56,18 @@
             @foreach($invoice->repairJob->parts as $part)
             <tr>
                 <td>{{ $part->part_name }} (x{{ $part->quantity_used }})</td>
-                <td class="text-right">${{ number_format($part->part_cost * $part->quantity_used, 2) }}</td>
+                <td class="text-right">LKR {{ number_format($part->part_cost * $part->quantity_used, 2) }}</td>
             </tr>
             @endforeach
             <tr>
                 <td>Service / Labor Charges</td>
-                <td class="text-right">${{ number_format($invoice->labor_cost, 2) }}</td>
+                <td class="text-right">LKR {{ number_format($invoice->labor_cost, 2) }}</td>
             </tr>
         </tbody>
         <tfoot>
             <tr class="total-row">
                 <td>Total Amount</td>
-                <td class="text-right">${{ number_format($invoice->total_amount, 2) }}</td>
+                <td class="text-right">LKR {{ number_format($invoice->total_amount, 2) }}</td>
             </tr>
         </tfoot>
     </table>
