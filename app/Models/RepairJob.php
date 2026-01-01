@@ -66,4 +66,9 @@ class RepairJob extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+
+    public function getProfitAttribute()
+    {
+        return $this->final_price - ($this->parts_used_cost + $this->labor_cost);
+    }
 }
