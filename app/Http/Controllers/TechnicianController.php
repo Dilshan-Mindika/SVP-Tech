@@ -11,13 +11,26 @@ class TechnicianController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $technicians = Technician::with('user')
+        $query = Technician::with('user')
             ->withCount(['repairJobs as completed_jobs_count' => function ($query) {
                 $query->where('repair_status', 'completed');
-            }])
-            ->get();
+            }]);
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('user', function($uq) use ($search) {
+                    $uq->where('name', 'like', "%{$search}%")
+                       ->orWhere('email', 'like', "%{$search}%")
+                       ->orWhere('phone', 'like', "%{$search}%");
+                })
+                ->orWhere('specialty', 'like', "%{$search}%");
+            });
+        }
+
+        $technicians = $query->get();
         return view('technicians.index', compact('technicians'));
     }
 

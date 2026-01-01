@@ -69,6 +69,11 @@
         border-radius: 0.5rem;
         color: #fff;
     }
+
+    .form-control option {
+        background-color: #1e293b;
+        color: #f8fafc;
+    }
     
     .form-actions {
         display: flex;
