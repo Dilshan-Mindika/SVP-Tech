@@ -664,3 +664,41 @@ table td {
     color: inherit;
     border-color: rgba(0, 0, 0, 0.1);
 }
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--warning);
+    /* Sun/Moon color */
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 0 10px var(--warning);
+}
+
+[data-theme="light"] .theme-toggle-btn {
+    background: #e0f2fe;
+    /* Light blueish tint */
+    border-color: #bae6fd;
+    color: #0ea5e9;
+    /* Sky blue for sun */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+    background: #bae6fd;
+    box-shadow: 0 0 10px #0ea5e9;
+}

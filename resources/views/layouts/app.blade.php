@@ -52,7 +52,7 @@
                     <span class="user-name" style="margin: 0; border: none; padding: 0;">
                         <i class="fas fa-user-circle"></i> {{ auth()->user()->name }}
                     </span>
-                    <button id="theme-toggle" title="Toggle Theme" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.2rem; transition: color 0.2s;">
+                    <button id="theme-toggle" title="Toggle Theme" class="theme-toggle-btn">
                         <i class="fas fa-moon"></i>
                     </button>
                 </div>
