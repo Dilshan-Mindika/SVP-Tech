@@ -62,8 +62,8 @@ A comprehensive, role-based management system designed for **SVP Technologies**,
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/Dilshan-Mindika/svp-tech-system.git
-    cd svp-tech-system
+    git clone https://github.com/Dilshan-Mindika/svp-tech.git
+    cd svp-tech
     ```
 
 2.  **Install Dependencies**
