@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TechnicianController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\RepairJobController;
+use App\Http\Controllers\InventoryController;
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+// Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Protected Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Technician Management (Admin Only)
+    Route::resource('technicians', TechnicianController::class);
+
+    // Core Modules
+    Route::resource('customers', CustomerController::class);
+    Route::resource('repair-jobs', RepairJobController::class);
+    Route::resource('inventory', InventoryController::class); // Managing Parts
+});
