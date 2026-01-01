@@ -58,25 +58,32 @@ class InvoiceController extends Controller
         // Check for existing invoice
         $invoice = $job->invoices()->latest()->first();
         
+        // Calculate current costs from Job
+        // Note: We use the manual 'parts_used_cost' from the Job if set, 
+        // otherwise we could sum relation parts. User likely prefers the manual entry fields
+        // from the Edit page since they are editing them "time to time".
+        
+        $partsCost = $job->parts_used_cost ?? 0;
+        $laborCost = $job->labor_cost ?? 0;
+        $totalAmount = $job->final_price ?? ($partsCost + $laborCost);
+        $profit = $totalAmount - ($partsCost + $laborCost);
+
         if ($invoice) {
+            // UPDATE existing invoice with latest figures
+            $invoice->update([
+                'total_amount' => $totalAmount,
+                'parts_cost' => $partsCost,
+                'labor_cost' => $laborCost,
+                'profit_margin' => $profit,
+            ]);
+            
             return redirect()->route('invoices.show', $invoice->id);
         }
 
-        // If no invoice exists, generate a provisional one (Estimate)
-        // We simulate the request to reuse logic, or better yet, call a private helper.
-        // For simplicity here, we'll manually call the generation logic.
-        
-        $partsCost = $job->parts->sum(function($part) {
-            return $part->part_cost * $part->quantity_used;
-        });
-
-        $laborCost = $job->labor_cost ?? 0;
-        $totalAmount = $partsCost + $laborCost;
-        $profit = $totalAmount - ($partsCost + $laborCost); // Simplified
-
+        // Create new if none exists
         $invoice = Invoice::create([
             'repair_job_id' => $job->id,
-            'invoice_type' => 'job', // Default to estimate/job invoice
+            'invoice_type' => 'job',
             'total_amount' => $totalAmount,
             'parts_cost' => $partsCost,
             'labor_cost' => $laborCost,
