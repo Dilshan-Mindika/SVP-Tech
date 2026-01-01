@@ -75,38 +75,133 @@
         </div>
 
         <h3 class="section-title" style="margin-top: 2rem;" x-show="status === 'completed'" x-transition x-cloak>Financials & Completion</h3>
-        
-        <div class="grid-3" x-show="status === 'completed'" x-transition x-cloak>
-            <div class="form-group">
-                <label>Parts Cost (Internal)</label>
-                <div class="input-group">
-                    <span class="prefix">LKR</span>
-                    <input type="number" step="0.01" name="parts_used_cost" x-model="parts" class="form-control">
+
+        <div x-data="{
+            expenses: {{ $repairJob->expenses->toJson() ?? '[]' }},
+            invoiceItems: {{ $repairJob->invoiceItems->toJson() ?? '[]' }},
+            addExpense() { this.expenses.push({ description: '', amount: 0 }); },
+            removeExpense(index) { this.expenses.splice(index, 1); },
+            addInvoiceItem() { this.invoiceItems.push({ description: '', quantity: 1, amount: 0 }); },
+            removeInvoiceItem(index) { this.invoiceItems.splice(index, 1); },
+            get totalExpenses() { return this.expenses.reduce((sum, item) => sum + Number(item.amount), 0); },
+            get totalRevenue() { return this.invoiceItems.reduce((sum, item) => sum + (Number(item.amount) * Number(item.quantity)), 0); },
+            get netProfit() { return this.totalRevenue - this.totalExpenses; }
+        }" x-show="status === 'completed'" x-transition x-cloak>
+
+            <!-- Internal Expenses (Red Section) -->
+            <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                <h4 style="color: #fca5a5; margin-bottom: 1rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <i class="fas fa-file-invoice-dollar" style="margin-right: 0.5rem;"></i> Internal Job Expenses (HIdden from Invoice)
+                </h4>
+                
+                <table class="w-full mb-4" style="width: 100%; border-collapse: separate; border-spacing: 0 0.5rem;">
+                    <thead>
+                        <tr style="text-align: left; color: #9ca3af; font-size: 0.85rem;">
+                            <th style="padding-bottom: 0.5rem;">Description (e.g. Bought IC, RAM)</th>
+                            <th style="width: 150px; padding-bottom: 0.5rem;">Cost (LKR)</th>
+                            <th style="width: 40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="(expense, index) in expenses" :key="index">
+                            <tr>
+                                <td style="padding-right: 1rem;">
+                                    <input type="text" :name="'expenses['+index+'][description]'" x-model="expense.description" class="form-control" placeholder="Expense Description" required>
+                                </td>
+                                <td>
+                                    <input type="number" step="0.01" :name="'expenses['+index+'][amount]'" x-model="expense.amount" class="form-control" required>
+                                </td>
+                                <td style="text-align: center;">
+                                    <button type="button" @click="removeExpense(index)" style="color: #ef4444; background: none; border: none; cursor: pointer;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <button type="button" @click="addExpense()" style="color: #fca5a5; background: rgba(239, 68, 68, 0.1); border: 1px dashed rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                        <i class="fas fa-plus"></i> Add Expense
+                    </button>
+                    <div style="text-align: right; color: #fca5a5;">
+                        <small>Total Expenses:</small> <strong style="font-size: 1.1rem;">LKR <span x-text="totalExpenses.toFixed(2)"></span></strong>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Labor Cost (Internal)</label>
-                <div class="input-group">
-                    <span class="prefix">LKR</span>
-                    <input type="number" step="0.01" name="labor_cost" x-model="labor" class="form-control">
+            <!-- Billable Invoice Items (Green Section) -->
+            <div style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.2); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                <h4 style="color: #86efac; margin-bottom: 1rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <i class="fas fa-receipt" style="margin-right: 0.5rem;"></i> Billable Invoice Items (Visible to Customer)
+                </h4>
+
+                <table class="w-full mb-4" style="width: 100%; border-collapse: separate; border-spacing: 0 0.5rem;">
+                    <thead>
+                        <tr style="text-align: left; color: #9ca3af; font-size: 0.85rem;">
+                            <th style="padding-bottom: 0.5rem;">Service / Item Description</th>
+                            <th style="width: 80px; padding-bottom: 0.5rem; text-align: center;">Qty</th>
+                            <th style="width: 150px; padding-bottom: 0.5rem;">Unit Price (LKR)</th>
+                            <th style="width: 120px; padding-bottom: 0.5rem; text-align: right;">Total</th>
+                            <th style="width: 40px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="(item, index) in invoiceItems" :key="index">
+                            <tr>
+                                <td style="padding-right: 1rem;">
+                                    <input type="text" :name="'invoice_items['+index+'][description]'" x-model="item.description" class="form-control" placeholder="Service Charge / Part" required>
+                                </td>
+                                <td style="padding-right: 1rem;">
+                                    <input type="number" :name="'invoice_items['+index+'][quantity]'" x-model="item.quantity" class="form-control" style="text-align: center;" min="1" required>
+                                </td>
+                                <td>
+                                    <input type="number" step="0.01" :name="'invoice_items['+index+'][amount]'" x-model="item.amount" class="form-control" required>
+                                </td>
+                                <td style="text-align: right; color: #fff; padding-right: 0.5rem;">
+                                    <span x-text="(item.quantity * item.amount).toFixed(2)"></span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <button type="button" @click="removeInvoiceItem(index)" style="color: #ef4444; background: none; border: none; cursor: pointer;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <button type="button" @click="addInvoiceItem()" style="color: #86efac; background: rgba(34, 197, 94, 0.1); border: 1px dashed rgba(34, 197, 94, 0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                        <i class="fas fa-plus"></i> Add Billable Item
+                    </button>
+                    <div style="text-align: right; color: #86efac;">
+                        <small>Total Billable:</small> <strong style="font-size: 1.1rem;">LKR <span x-text="totalRevenue.toFixed(2)"></span></strong>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>Final Customer Price</label>
-                <div class="input-group">
-                    <span class="prefix">LKR</span>
-                    <input type="number" step="0.01" name="final_price" x-model="price" class="form-control" style="border-color: var(--success);">
+            <!-- Profit Summary -->
+            <div class="grid-3">
+                <div class="form-group" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 6px; text-align: center;">
+                    <label style="color: #9ca3af; font-size: 0.8rem;">Total Expenses</label>
+                    <div style="font-size: 1.25rem; font-weight: 600; color: #fca5a5;">
+                        LKR <span x-text="totalExpenses.toFixed(2)"></span>
+                    </div>
+                </div>
+                <div class="form-group" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 6px; text-align: center;">
+                    <label style="color: #9ca3af; font-size: 0.8rem;">Total Billable</label>
+                    <div style="font-size: 1.25rem; font-weight: 600; color: #86efac;">
+                        LKR <span x-text="totalRevenue.toFixed(2)"></span>
+                    </div>
+                </div>
+                <div class="form-group" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 6px; text-align: center; border: 1px solid var(--border-glass);">
+                    <label style="color: #fff; font-size: 0.9rem; font-weight: 600;">Net Profit</label>
+                    <div style="font-size: 1.5rem; font-weight: 700;" :style="{ color: netProfit >= 0 ? '#4ade80' : '#ef4444' }">
+                        LKR <span x-text="netProfit.toFixed(2)"></span>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group" style="grid-column: 1 / -1; margin-top: 1rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 6px;">
-                <label style="margin-bottom: 0;">Estimated Net Profit</label>
-                <div style="font-size: 1.5rem; font-weight: 700;" :style="{ color: profit >= 0 ? 'var(--success)' : 'var(--danger)' }">
-                    LKR <span x-text="profit.toFixed(2)"></span>
-                </div>
-            </div>
         </div>
 
         <div class="form-actions" style="margin-top: 2rem;">

@@ -6,6 +6,7 @@
 <div class="login-container">
     <div class="login-card glass">
         <div class="login-header">
+            <img src="{{ asset('images/logo.png') }}" alt="SVP Tech" style="height: 60px; margin-bottom: 1rem;">
             <h2>Welcome Back</h2>
             <p>SVP Tech Management System</p>
         </div>

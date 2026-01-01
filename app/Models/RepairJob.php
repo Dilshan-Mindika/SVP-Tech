@@ -43,7 +43,17 @@ class RepairJob extends Model
 
     public function parts()
     {
-        return $this->hasMany(PartsUsed::class);
+        return $this->hasMany(PartsUsed::class); // Keep for backward compatibility if needed, or deprecate
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(JobExpense::class);
+    }
+
+    public function invoiceItems()
+    {
+        return $this->hasMany(JobInvoiceItem::class);
     }
 
     public function invoices()

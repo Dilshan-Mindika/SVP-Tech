@@ -23,7 +23,8 @@
         @auth
         <aside class="sidebar">
             <div class="brand">
-                <h1>SVP Tech</h1>
+                <img src="{{ asset('images/logo.png') }}" alt="SVP Tech" style="height: 48px; width: auto;">
+                <!-- <h1 style="margin-left: 0.8rem;">SVP Tech</h1> -->
             </div>
             <nav class="nav-links">
                 <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>

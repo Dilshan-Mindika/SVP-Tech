@@ -5,100 +5,186 @@
 @section('content')
 <div class="page-header print:hidden">
     <div class="header-content">
-        <h2>Invoice #{{ $invoice->id }}</h2>
+        <h2>Invoice #{{ 'INV-' . preg_replace('/[^0-9]/', '', $invoice->repairJob->job_number) }}</h2>
         <p class="text-muted">{{ ucfirst($invoice->invoice_type) }} Invoice</p>
     </div>
-    <button onclick="window.print()" class="btn-primary">Print Invoice</button>
+    <button onclick="window.print()" class="btn-primary">
+        <i class="fas fa-print" style="margin-right: 0.5rem;"></i> Print Invoice
+    </button>
 </div>
 
 <div class="invoice-container glass print:no-glass">
     <!-- Invoice Header -->
-    <div class="invoice-header">
+    <header class="invoice-header">
+        <div class="brand-section">
+            <img src="{{ asset('images/logo.png') }}" alt="SVP Technologies" class="invoice-logo">
+            <!-- <h1 class="company-name">SVP Technologies</h1> -->
+        </div>
         <div class="company-details">
-            <h1>SVP Tech</h1>
-            <p>123 Laptop Lane, Tech City</p>
-            <p>support@svp.tech</p>
-            <p>+94 77 123 4567</p>
+            <h2 class="company-name">SVP Technologies</h2>
+            <div class="detail-block">
+                <p class="address-line">311/C, Thalgaswatta Road, Horahena, Hokandara</p>
+                <p class="contact-line"><strong>Phone:</strong> 071-1551800 / 011-2562462</p>
+                <p class="web-line"><strong>Web:</strong> svptech.lk / motherboard.lk</p>
+            </div>
+            <div class="detail-block mt-2">
+                <p class="label"><strong>Office:</strong></p>
+                <p class="address-line">194A Wanaguru Mawatha, Hokandara</p>
+                <p class="contact-line"><strong>Phone:</strong> 011-2562484</p>
+            </div>
         </div>
-        <div class="invoice-meta">
-            <p><strong>Date:</strong> {{ $invoice->created_at->format('M d, Y') }}</p>
-            <p><strong>Due Date:</strong> {{ $invoice->created_at->addDays(7)->format('M d, Y') }}</p>
+    </header>
+
+    <div class="invoice-meta-bar">
+        <div class="meta-item">
+            <span class="meta-label">Invoice No:</span>
+            <span class="meta-value">INV-{{ preg_replace('/[^0-9]/', '', $invoice->repairJob->job_number) }}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Date:</span>
+            <span class="meta-value">{{ $invoice->created_at->format('d/m/Y') }}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Job No:</span>
+            <span class="meta-value" style="font-family: monospace;">{{ $invoice->repairJob->job_number }}</span>
         </div>
     </div>
 
-    <hr class="divider">
+    <!-- Client & Job Grid -->
+    <div class="info-grid">
+        <div class="info-box client-info">
+            <h3 class="box-title">Invoice To</h3>
+            <p class="client-name">{{ $invoice->repairJob->customer->name }}</p>
+            @if($invoice->repairJob->customer->address)
+            <p class="client-address">{{ $invoice->repairJob->customer->address }}</p>
+            @endif
+            <p class="client-contact">{{ $invoice->repairJob->customer->phone }}</p>
+        </div>
 
-    <!-- Client Details -->
-    <div class="client-details">
-        <h3>Bill To:</h3>
-        <p><strong>{{ $invoice->repairJob->customer->name }}</strong></p>
-        <p>{{ $invoice->repairJob->customer->address ?? 'No Address Provided' }}</p>
-        <p>{{ $invoice->repairJob->customer->phone }}</p>
-        <p>{{ $invoice->repairJob->customer->email }}</p>
-    </div>
-
-    <!-- Job Details -->
-    <div class="job-details">
-        <h3>Job Reference: #{{ $invoice->repairJob->job_number }}</h3>
-        <p><strong>Device:</strong> {{ $invoice->repairJob->laptop_brand }} {{ $invoice->repairJob->laptop_model }} (S/N: {{ $invoice->repairJob->serial_number }})</p>
-        <p><strong>Fault:</strong> {{ $invoice->repairJob->fault_description }}</p>
+        <div class="info-box device-info">
+            <h3 class="box-title">Device Details</h3>
+            <table class="details-table">
+                <tr>
+                    <td class="label">Device:</td>
+                    <td>{{ $invoice->repairJob->laptop_brand }} {{ $invoice->repairJob->laptop_model }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Serial No:</td>
+                    <td>{{ $invoice->repairJob->serial_number }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Fault:</td>
+                    <td>{{ $invoice->repairJob->fault_description }}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <!-- Line Items -->
     <table class="invoice-table">
         <thead>
             <tr>
-                <th>Description</th>
-                <th class="text-right">Cost</th>
+                <th style="width: 5%;">#</th>
+                <th style="width: 65%;">Description</th>
+                <th style="width: 10%; text-align: center;">Qty</th>
+                <th style="width: 20%;" class="text-right">Amount (LKR)</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($invoice->repairJob->parts as $part)
-            <tr>
-                <td>{{ $part->part_name }} (x{{ $part->quantity_used }})</td>
-                <td class="text-right">LKR {{ number_format($part->part_cost * $part->quantity_used, 2) }}</td>
+            @php $rowCount = 0; @endphp
+
+            @if($invoice->repairJob->invoiceItems->count() > 0)
+                {{-- New Logic: Use Billable Invoice Items --}}
+                @foreach($invoice->repairJob->invoiceItems as $item)
+                <tr>
+                    <td>{{ ++$rowCount }}</td>
+                    <td>{{ $item->description }}</td>
+                    <td style="text-align: center;">{{ $item->quantity }}</td>
+                    <td class="text-right">{{ number_format($item->amount * $item->quantity, 2) }}</td>
+                </tr>
+                @endforeach
+            @else
+                {{-- Legacy Logic: Use Parts + Labor --}}
+                @foreach($invoice->repairJob->parts as $part)
+                <tr>
+                    <td>{{ ++$rowCount }}</td>
+                    <td>{{ $part->part_name }}</td>
+                    <td style="text-align: center;">{{ $part->quantity_used }}</td>
+                    <td class="text-right">{{ number_format($part->part_cost * $part->quantity_used, 2) }}</td>
+                </tr>
+                @endforeach
+                
+                @if($invoice->labor_cost > 0)
+                <tr>
+                    <td>{{ ++$rowCount }}</td>
+                    <td>Service / Labor Charges</td>
+                    <td style="text-align: center;">1</td>
+                    <td class="text-right">{{ number_format($invoice->labor_cost, 2) }}</td>
+                </tr>
+                @endif
+            @endif
+
+            {{-- Pad with empty rows to ensure at least 4 items for description space --}}
+            @for($i = $rowCount; $i < 4; $i++)
+            <tr class="empty-row">
+                <td>{{ ++$rowCount }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-            @endforeach
-            <tr>
-                <td>Service / Labor Charges</td>
-                <td class="text-right">LKR {{ number_format($invoice->labor_cost, 2) }}</td>
-            </tr>
+            @endfor
         </tbody>
         <tfoot>
             <tr class="total-row">
-                <td>Total Amount</td>
+                <td colspan="3" class="total-label">Sub Total</td>
+                <td class="text-right">{{ number_format($invoice->total_amount, 2) }}</td>
+            </tr>
+            <!-- Add Tax/Discount rows here if needed in future -->
+            <tr class="grand-total-row">
+                <td colspan="3" class="total-label">Grand Total</td>
                 <td class="text-right">LKR {{ number_format($invoice->total_amount, 2) }}</td>
             </tr>
         </tfoot>
     </table>
 
-    <div class="invoice-terms" style="margin-top: 3rem; font-size: 0.85rem; color: #4b5563;">
-        <h4 style="border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 1rem;">TERMS AND CONDITIONS</h4>
-        <ul style="padding-left: 1.2rem; line-height: 1.5;">
-            <li>The prices quoted in our estimates are not binding. The final cost of repair will be based on the actual cost of services and the materials.</li>
-            <li>SVP Technologies will not be responsible for any losses or damages due to contingencies beyond our control and will not be responsible for any DATA losses.</li>
-            <li>If the customer wishes not to carry out the repair as per the estimate, a fee of Rs.1,000.00 (For Laptop) and Rs. 500.00 (For Desktop) to be paid by the customer as inspection charges when collecting the equipment.</li>
-            <li>SVP Technologies shall not be responsible for the item/s not collected within 30 days after informing the customer.</li>
-            <li>Equipment will be returned on presentation of this original invoice and purchasing bill, Otherwise claim is not allowed.</li>
-        </ul>
-    </div>
-
-    <div class="acknowledgement" style="margin-top: 4rem; page-break-inside: avoid;">
-        <h4 style="border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 2rem;">CUSTOMER ACKNOWLEDGEMENT</h4>
-        <p style="font-size: 0.9rem; margin-bottom: 3rem;">I hereby certify by my signature below that I have read the terms and conditions of SVP Technologies and I agree to the terms and condition stated herein above.</p>
+    <div class="footer-section">
+        <div class="terms">
+            <h4>Terms & Conditions</h4>
+            <ul>
+                <li>The prices quoted in our estimates are not binding. Final cost based on actual services/materials.</li>
+                <li>SVP Technologies is not responsible for data loss or damages due to unforeseen contingencies.</li>
+                <li>Inspection fee: Rs. 1,000 (Laptop) / Rs. 500 (Desktop) if repair is declined after estimate.</li>
+                <li>Items not collected within 30 days of notice may be disposed of.</li>
+                <li>Warranty claims require presentation of this original invoice.</li>
+            </ul>
+        </div>
         
-        <div style="display: flex; justify-content: space-between; margin-top: 4rem;">
-            <div style="text-align: center; width: 40%;">
-                <div style="border-top: 1px solid #1f2937; padding-top: 0.5rem;">Customer's Signature</div>
+        <div class="signatures">
+            <div class="signature-box">
+                <div class="line"></div>
+                <p>Customer Signature</p>
+                <p class="date-placeholder">Date: .......................</p>
             </div>
-            <div style="text-align: center; width: 40%;">
-                <div style="border-top: 1px solid #1f2937; padding-top: 0.5rem;">Authorized Signature</div>
+            <div class="signature-box">
+                <div class="line"></div>
+                <p>Authorized Signature</p>
             </div>
         </div>
+    </div>
+    
+    <div class="print-footer">
+        <p>Thank you for choosing SVP Technologies!</p>
     </div>
 </div>
 
 <style>
+    /* CSS Variables for Print Consistency */
+    :root {
+        --print-accent: #1e293b; /* Dark Slate */
+        --print-text: #334155;
+        --print-border: #e2e8f0;
+    }
+
     .page-header {
         display: flex;
         justify-content: space-between;
@@ -106,60 +192,270 @@
         margin-bottom: 2rem;
     }
     
+    /* Layout Container */
     .invoice-container {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 20mm;
+        width: 210mm; /* A4 Width */
+        min-height: 297mm; /* A4 Height */
+        padding: 10mm 15mm;
         margin: 0 auto;
         background: #fff;
-        color: #1f2937;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        color: var(--print-text);
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        position: relative;
+        font-family: 'Inter', sans-serif;
     }
     
-    .glass.print\:no-glass {
-        backdrop-filter: none;
-        border: none;
-        box-shadow: none;
-    }
-
+    /* Header */
     .invoice-header {
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 2px solid var(--print-accent);
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .invoice-logo {
+        height: 100px; /* Adjusted Logo */
+        width: auto;
+        display: block;
+    }
+
+    .company-details {
+        text-align: right;
+        font-size: 0.9rem;
+    }
+
+    .company-name {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--print-accent);
+        margin: 0 0 0.5rem 0;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+    }
+
+    .company-details p {
+        margin: 0.15rem 0;
+    }
+
+    .detail-block { margin-bottom: 0.25rem; }
+    .mt-2 { margin-top: 0.4rem; }
+
+    /* Meta Bar */
+    .invoice-meta-bar {
+        display: flex;
+        justify-content: space-between;
+        background: #f8fafc;
+        border: 1px solid var(--print-border);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        margin-bottom: 1.5rem;
+    }
+
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .meta-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+
+    .meta-value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--print-accent);
+    }
+
+    /* Grid Layout */
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
         margin-bottom: 2rem;
     }
-    
-    .company-details h1 { color: #6d28d9; margin-bottom: 0.5rem; }
-    .company-details p { margin: 0.2rem 0; color: #4b5563; }
-    
-    .divider { border: 0; border-top: 1px solid #e5e7eb; margin: 2rem 0; }
-    
-    .client-details, .job-details { margin-bottom: 2rem; }
-    .client-details h3, .job-details h3 { font-size: 1.1rem; color: #374151; margin-bottom: 0.5rem; }
-    
-    .invoice-table { width: 100%; border-collapse: collapse; margin: 2rem 0; }
-    .invoice-table th { text-align: left; padding: 1rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
-    .invoice-table td { padding: 1rem; border-bottom: 1px solid #e5e7eb; }
-    .invoice-table .text-right { text-align: right; }
-    
-    .total-row { font-weight: 700; font-size: 1.2rem; background: #f3f4f6; }
 
+    .box-title {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        color: #94a3b8;
+        border-bottom: 1px solid var(--print-border);
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+    }
+
+    .client-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--print-accent);
+        margin-bottom: 0.3rem;
+    }
+
+    .client-info p, .device-info p { margin: 0.2rem 0; }
+
+    .details-table { width: 100%; border-collapse: collapse; }
+    .details-table td { padding: 0.2rem 0; vertical-align: top; }
+    .details-table .label { width: 80px; font-weight: 600; color: #64748b; }
+
+    /* Main Table */
+    .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+
+    .invoice-table th {
+        background: var(--print-accent);
+        color: #fff;
+        padding: 0.5rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .invoice-table td {
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--print-border);
+        border-left: 1px solid var(--print-border);
+        border-right: 1px solid var(--print-border);
+        vertical-align: middle;
+    }
+
+    .empty-row td {
+        height: 2.5rem; /* Specific height for empty spacing */
+    }
+
+    .text-right { text-align: right; }
+
+    .total-row td {
+        border: none;
+        padding-top: 1rem;
+    }
+    
+    .grand-total-row td {
+        border-top: 2px solid var(--print-accent);
+        padding: 0.8rem;
+        color: var(--print-accent);
+        font-size: 1.1rem;
+        font-weight: 800;
+        background: #f8fafc;
+    }
+
+    .total-label { text-align: right; padding-right: 1.5rem; }
+
+    /* Footer */
+    .footer-section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto; /* Push to bottom */
+        gap: 2rem;
+    }
+
+    .terms {
+        flex: 3;
+        font-size: 0.75rem;
+        color: #64748b;
+    }
+    
+    .terms h4 {
+        margin-bottom: 0.5rem;
+        color: var(--print-accent);
+        font-size: 0.8rem;
+    }
+
+    .terms ul { padding-left: 1rem; line-height: 1.4; }
+
+    .signatures {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 2rem;
+    }
+
+    .signature-box {
+        text-align: center;
+    }
+
+    .signature-box .line {
+        border-top: 1px dashed #94a3b8;
+        margin-bottom: 0.5rem;
+    }
+
+    .signature-box p { font-size: 0.8rem; font-weight: 600; }
+    .date-placeholder { font-weight: 400; font-size: 0.7rem; margin-top: 0.2rem; }
+    
+    .print-footer {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-top: 2rem;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 0.5rem;
+    }
+
+    /* Print Specifics */
     @media print {
         @page { size: A4; margin: 0; }
-        body { margin: 0; padding: 0; background: #fff; }
-        body * { visibility: hidden; }
-        .invoice-container, .invoice-container * { visibility: visible; }
-        .invoice-container { 
+        
+        /* Hide everything by default */
+        body { margin: 0; background: #fff; -webkit-print-color-adjust: exact; }
+        
+        /* Explicitly hide UI elements */
+        .sidebar, 
+        .page-header, 
+        .toast-container,
+        .btn-primary,
+        nav,
+        aside { 
+            display: none !important; 
+        }
+
+        /* Reset main layout */
+        .app-container {
+            display: block !important;
+            grid-template-columns: 1fr !important; /* If grid is used */
+        }
+
+        .main-content {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            max-width: none !important;
+        }
+
+        /* Show only invoice */
+        .invoice-container {
+            visibility: visible !important;
             position: absolute; 
             left: 0; 
             top: 0; 
             width: 210mm; 
-            height: 297mm; 
+            min-height: 297mm; 
             margin: 0; 
-            padding: 20mm; 
+            padding: 10mm 15mm; 
             box-shadow: none;
+            z-index: 9999;
+            background: white;
         }
-        .print\:hidden { display: none !important; }
-        .glass { background: #fff !important; color: #000 !important; }
+
+        /* Ensure content inside invoice is visible */
+        .invoice-container * {
+            visibility: visible !important;
+        }
+
+        .glass { background: #fff !important; color: #000 !important; border: none; }
+        
+        /* Ensure background colors print */
+        .invoice-table th { background-color: var(--print-accent) !important; color: #fff !important; }
+        .grand-total-row td { background-color: #f8fafc !important; }
+        .invoice-meta-bar { background-color: #f8fafc !important; }
     }
 </style>
 @endsection

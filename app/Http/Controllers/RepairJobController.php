@@ -90,6 +90,7 @@ class RepairJobController extends Controller
 
     public function edit(RepairJob $repairJob)
     {
+        $repairJob->load(['expenses', 'invoiceItems']);
         return view('repair_jobs.edit', compact('repairJob'));
     }
 
@@ -101,21 +102,50 @@ class RepairJobController extends Controller
             'technician_id' => 'nullable|exists:technicians,id',
             'fault_description' => 'required|string',
             'repair_notes' => 'nullable|string',
-            'parts_used_cost' => 'nullable|numeric|min:0',
-            'labor_cost' => 'nullable|numeric|min:0',
-            'final_price' => 'nullable|numeric|min:0',
+            'expenses' => 'nullable|array',
+            'expenses.*.description' => 'required|string',
+            'expenses.*.amount' => 'required|numeric|min:0',
+            'invoice_items' => 'nullable|array',
+            'invoice_items.*.description' => 'required|string',
+            'invoice_items.*.quantity' => 'required|integer|min:1',
+            'invoice_items.*.amount' => 'required|numeric|min:0',
         ]);
 
-        $repairJob->update([
-            'repair_status' => $validated['repair_status'],
-            'job_number' => $validated['job_number'],
-            'technician_id' => $validated['technician_id'],
-            'fault_description' => $validated['fault_description'],
-            'repair_notes' => $validated['repair_notes'],
-            'parts_used_cost' => $validated['parts_used_cost'] ?? 0,
-            'labor_cost' => $validated['labor_cost'] ?? 0,
-            'final_price' => $validated['final_price'] ?? 0,
-        ]);
+        \Illuminate\Support\Facades\DB::transaction(function () use ($repairJob, $validated, $request) {
+            // 1. Sync Expenses (Internal Cost)
+            $repairJob->expenses()->delete();
+            $totalExpenses = 0;
+            if ($request->has('expenses')) {
+                foreach ($request->expenses as $expense) {
+                    $repairJob->expenses()->create($expense);
+                    $totalExpenses += $expense['amount'];
+                }
+            }
+
+            // 2. Sync Invoice Items (Billable)
+            $repairJob->invoiceItems()->delete();
+            $totalBillable = 0;
+            if ($request->has('invoice_items')) {
+                foreach ($request->invoice_items as $item) {
+                    $repairJob->invoiceItems()->create($item);
+                    $totalBillable += ($item['amount'] * $item['quantity']);
+                }
+            }
+            
+            // 3. Update Job Details & Totals
+            $repairJob->update([
+                'repair_status' => $validated['repair_status'],
+                'job_number' => $validated['job_number'],
+                'technician_id' => $validated['technician_id'],
+                'fault_description' => $validated['fault_description'],
+                'repair_notes' => $validated['repair_notes'],
+                
+                // Calculated Financials
+                'parts_used_cost' => $totalExpenses, // Internal Expenses Total
+                'labor_cost' => 0, // Deprecated/Merged
+                'final_price' => $totalBillable, // Total Invoice Amount
+            ]);
+        });
 
         return redirect()->route('repair-jobs.index')->with('success', 'Repair Job updated successfully.');
     }
