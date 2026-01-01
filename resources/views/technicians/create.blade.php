@@ -16,17 +16,17 @@
         
         <div class="form-group">
             <label>Full Name</label>
-            <input type="text" name="name" required placeholder="John Doe">
+            <input type="text" name="name" class="form-control" required placeholder="John Doe">
         </div>
         
         <div class="form-group">
             <label>Email Address</label>
-            <input type="email" name="email" required placeholder="tech@svp.tech">
+            <input type="email" name="email" class="form-control" required placeholder="tech@svp.tech">
         </div>
         
         <div class="form-group">
             <label>Password</label>
-            <input type="password" name="password" required placeholder="Default Password">
+            <input type="password" name="password" class="form-control" required placeholder="Default Password">
         </div>
 
         <div class="form-group">
@@ -42,52 +42,14 @@
         
         <div class="form-group">
             <label>Specialty</label>
-            <input type="text" name="specialty" placeholder="e.g. Motherboard Repair, Apple Devices">
+            <input type="text" name="specialty" class="form-control" placeholder="e.g. Motherboard Repair, Apple Devices">
         </div>
 
-        <div class="form-actions" style="margin-top: 2rem;">
+        <div class="form-actions" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
             <button type="button" onclick="history.back()" class="btn-secondary">Cancel</button>
             <button type="submit" class="btn-primary">Create Technician</button>
         </div>
     </form>
 </div>
 
-<style>
-    .section-title {
-        color: var(--primary-glow);
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        border-bottom: 1px solid var(--border-glass);
-        padding-bottom: 0.5rem;
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--border-glass);
-        border-radius: 0.5rem;
-        color: #fff;
-    }
-
-    .form-control option {
-        background-color: #1e293b;
-        color: #f8fafc;
-    }
-    
-    .form-actions {
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-    }
-    
-    .btn-secondary {
-        background: transparent;
-        border: 1px solid var(--border-glass);
-        color: var(--text-muted);
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-    }
-</style>
 @endsection

@@ -103,9 +103,9 @@
                         </select>
                     </form>
                 </td>
-                <td style="font-size: 0.85rem; color: #cbd5e1;">{{ $job->created_at->format('M d') }}</td>
-                <td style="font-size: 0.85rem; color: #86efac;">{{ $job->completed_at ? $job->completed_at->format('M d') : '-' }}</td>
-                <td style="font-size: 0.85rem; color: #60a5fa;">{{ $job->delivered_at ? $job->delivered_at->format('M d') : '-' }}</td>
+                <td style="font-size: 0.85rem;" class="table-date-muted">{{ $job->created_at->format('M d') }}</td>
+                <td style="font-size: 0.85rem;" class="table-date-success">{{ $job->completed_at ? $job->completed_at->format('M d') : '-' }}</td>
+                <td style="font-size: 0.85rem;" class="table-date-blue">{{ $job->delivered_at ? $job->delivered_at->format('M d') : '-' }}</td>
                 <td onclick="event.stopPropagation()">
                     <a href="{{ route('repair-jobs.edit', $job->id) }}" class="action-icon edit-icon" title="Edit">
                         <i class="fas fa-edit"></i>
@@ -132,181 +132,16 @@
 </div>
 
 <style>
-    .data-table { 
-        width: 100%; 
-        border-collapse: collapse; 
-    }
-    
-    .toolbar-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
-        border-bottom: 1px solid var(--border-glass);
-    }
-
-    @media (min-width: 768px) {
-        .toolbar-container {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-        }
-    }
-
-    .search-box {
-        position: relative;
-        flex: 1;
-        max-width: 500px; /* Increased width */
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 0.8rem 1rem 0.8rem 3.5rem !important; /* Force padding */
-        background: rgba(0, 0, 0, 0.4); 
-        border: 1px solid var(--border-glass);
-        border-radius: 2rem;
-        color: #fff;
-        font-family: inherit;
-        font-size: 1rem;
-        transition: all 0.2s;
-        line-height: normal; /* Fix vertical alignment */
-    }
-    
-    .search-input::placeholder {
-        color: #9ca3af;
-        opacity: 1;
-    }
-
-    .search-input:focus {
-        background: rgba(0, 0, 0, 0.6);
-        border-color: var(--primary);
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-    }
-
-    .search-icon {
-        position: absolute;
-        left: 1.5rem; /* Adjusted for larger padding */
-        top: 50%;
-        transform: translateY(-50%);
-        color: #d1d5db;
-        pointer-events: none;
-        font-size: 1.1rem;
-        width: auto;
-        height: auto;
-        display: block;
-    }
-    
-    .filters {
-        display: flex;
-        gap: 0.5rem;
-        overflow-x: auto;
-        white-space: nowrap;
-        scrollbar-width: thin;
-        /* create padding without breaking layout */
-        padding-bottom: 0.2rem;
-    }
-    
-    .filter-btn {
-        background: transparent;
-        border: 1px solid var(--border-glass);
-        color: var(--text-muted);
-        padding: 0.4rem 1rem;
-        border-radius: 2rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        font-size: 0.85rem;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-    }
-    
-    .filter-btn:hover {
-        background: rgba(255, 255, 255, 0.05);
-        color: var(--text-main);
-        border-color: rgba(255,255,255,0.2);
-    }
-    
-    .filter-btn.active {
-        background: rgba(59, 130, 246, 0.15);
-        color: #60a5fa;
-        border-color: rgba(59, 130, 246, 0.4);
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
-    }
-
     .clickable-row {
         cursor: pointer;
         transition: background-color 0.15s ease;
     }
-
     .clickable-row:hover {
-        background-color: rgba(255, 255, 255, 0.02) !important;
+        background-color: rgba(255, 255, 255, 0.02);
     }
-    
-    .data-table th, .data-table td { 
-        padding: 1rem; 
-        text-align: center; 
-        border-bottom: 1px solid var(--border-glass); 
+    [data-theme="light"] .clickable-row:hover {
+        background-color: #f8fafc;
     }
-
-    .data-table th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; }
-    
-    .action-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 6px;
-        color: var(--text-muted);
-        transition: all 0.2s;
-        margin-left: 0.25rem;
-        vertical-align: middle; /* Ensure alignment between a and button tags */
-        text-decoration: none; /* For a tags */
-    }
-    
-    .action-icon:hover {
-        background: rgba(255, 255, 255, 0.1);
-        color: var(--text-main);
-    }
-    
-    .edit-icon:hover { color: var(--primary); background: rgba(59, 130, 246, 0.15); }
-    .invoice-icon:hover { color: var(--success); background: rgba(34, 197, 94, 0.15); }
-    .delete-icon:hover { color: var(--danger); background: rgba(239, 68, 68, 0.15); }
-
-    /* Specific overrides */
-    .tech-select {
-        background: transparent;
-        color: #fff; /* White text for better visibility */
-        border: 1px solid var(--border-glass);
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        cursor: pointer;
-        outline: none;
-        width: 100%;
-    }
-
-    .tech-select option {
-        background-color: #1e293b;
-        color: #fff;
-    }
-    
-    .count-badge {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 0.1rem 0.4rem;
-        border-radius: 10px;
-        font-size: 0.75rem;
-        margin-left: 0.4rem;
-    }
-    
-    .filter-btn.active .count-badge {
-        background: rgba(59, 130, 246, 0.3);
-        color: #fff;
-    }
-
     .data-table td:nth-child(5) { /* Status Column - allow overflow for dropdown */
         overflow: visible; 
     }

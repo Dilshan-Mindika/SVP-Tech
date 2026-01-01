@@ -13,17 +13,17 @@
         
         <div class="form-group">
             <label>Full Name</label>
-            <input type="text" name="name" required placeholder="Jane Doe">
+            <input type="text" name="name" required placeholder="Jane Doe" class="form-control">
         </div>
         
         <div class="form-group">
             <label>Email Address</label>
-            <input type="email" name="email" placeholder="client@example.com">
+            <input type="email" name="email" placeholder="client@example.com" class="form-control">
         </div>
         
         <div class="form-group">
             <label>Phone Number</label>
-            <input type="text" name="phone" placeholder="+1 234 567 890">
+            <input type="text" name="phone" placeholder="+1 234 567 890" class="form-control">
         </div>
 
         <div class="form-group">
@@ -37,31 +37,4 @@
         </div>
     </form>
 </div>
-
-<style>
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--border-glass);
-        border-radius: 0.5rem;
-        color: #fff;
-        font-family: inherit;
-    }
-    
-    .form-actions {
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-    }
-    
-    .btn-secondary {
-        background: transparent;
-        border: 1px solid var(--border-glass);
-        color: var(--text-muted);
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-    }
-</style>
 @endsection

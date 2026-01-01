@@ -477,6 +477,383 @@ table td {
     color: #f87171;
 }
 
+/* Financial Section Styles */
+.section-box-danger {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+/* ... (existing financial styles) ... */
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+/* Technician Page Styles */
+.tech-name {
+    font-weight: 500;
+    color: #fff;
+}
+
+.tech-id {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.badge-tech {
+    background: rgba(139, 92, 246, 0.15);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.badge-admin {
+    background: rgba(236, 72, 153, 0.15);
+    color: #f472b6;
+    border: 1px solid rgba(236, 72, 153, 0.2);
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 3.5rem !important;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 2rem;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.search-input:focus {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: #9ca3af;
+    /* text-muted */
+    transition: all 0.2s;
+    margin: 0 0.2rem;
+}
+
+.edit-icon:hover {
+    color: var(--primary);
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.delete-icon:hover {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.15);
+}
+
+/* Light Mode Overrides for Technicians */
+[data-theme="light"] .tech-name {
+    color: #0f172a;
+}
+
+[data-theme="light"] .badge-tech {
+    background: #f3e8ff;
+    color: #7e22ce;
+    border-color: #d8b4fe;
+}
+
+[data-theme="light"] .badge-admin {
+    background: #fce7f3;
+    color: #db2777;
+    border-color: #f9a8d4;
+}
+
+[data-theme="light"] .search-input {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+[data-theme="light"] .search-input:focus {
+    background: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+[data-theme="light"] .action-icon {
+    color: #64748b;
+}
+
+[data-theme="light"] .edit-icon:hover {
+    background: #eff6ff;
+}
+
+[data-theme="light"] .delete-icon:hover {
+    background: #fef2f2;
+}
+
+/* Table Date Styles */
+.table-date {
+    font-size: 0.85rem;
+}
+
+.table-date-muted {
+    color: var(--text-muted);
+}
+
+.table-date-success {
+    color: var(--success);
+}
+
+.table-date-blue {
+    color: #60a5fa;
+}
+
+[data-theme="light"] .table-date-blue {
+    color: #2563eb;
+}
+
+[data-theme="light"] .text-truncate {
+    color: #334155;
+}
+
+/* Repair Job Page Styles */
+.filters {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    padding-bottom: 0.2rem;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.filter-btn.active {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
+}
+
+.count-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    margin-left: 0.4rem;
+}
+
+.filter-btn.active .count-badge {
+    background: rgba(59, 130, 246, 0.3);
+    color: #fff;
+}
+
+.tech-select {
+    background: transparent;
+    color: #fff;
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+}
+
+.tech-select option {
+    background-color: #1e293b;
+    color: #fff;
+}
+
+/* Light Mode Overrides for Repair Jobs */
+[data-theme="light"] .filter-btn {
+    border-color: #cbd5e1;
+    color: #64748b;
+}
+
+[data-theme="light"] .filter-btn:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+[data-theme="light"] .filter-btn.active {
+    background: #eff6ff;
+    color: #2563eb;
+    border-color: #93c5fd;
+    box-shadow: 0 0 5px rgba(37, 99, 235, 0.2);
+}
+
+[data-theme="light"] .count-badge {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+[data-theme="light"] .filter-btn.active .count-badge {
+    background: #bfdbfe;
+    color: #1e3a8a;
+}
+
+[data-theme="light"] .tech-select {
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+/* Global Badge Styles */
+.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.badge-jobs {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Light Mode Badge Overrides */
+[data-theme="light"] .badge-success,
+[data-theme="light"] .badge-jobs {
+    background: #dcfce7;
+    color: #15803d;
+    border-color: #86efac;
+}
+
+[data-theme="light"] .badge-warning {
+    background: #fef3c7;
+    color: #b45309;
+    border-color: #fcd34d;
+}
+
+[data-theme="light"] .badge-danger {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-color: #fca5a5;
+}
+
+/* Table Specific Text Styles */
+.table-text-main {
+    font-weight: 600;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.table-text-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+[data-theme="light"] .table-text-main {
+    color: #0f172a;
+}
+
+
+.section-box-success {
+    background: rgba(34, 197, 94, 0.05);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.section-box-success h4 {
+    color: #86efac;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.summary-box {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+/* Light Mode Overrides for Financials */
+[data-theme="light"] .section-box-danger {
+    background: #fef2f2;
+    border-color: #fca5a5;
+}
+
+[data-theme="light"] .section-box-danger h4 {
+    color: #ef4444;
+}
+
+[data-theme="light"] .section-box-success {
+    background: #f0fdf4;
+    border-color: #86efac;
+}
+
+[data-theme="light"] .section-box-success h4 {
+    color: #16a34a;
+}
+
+[data-theme="light"] .summary-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .summary-box label {
+    color: #64748b !important;
+}
+
+
+
 /* Toast Notification Styles */
 .toast {
     min-width: 320px;
@@ -689,6 +1066,40 @@ table td {
     box-shadow: 0 0 10px var(--warning);
 }
 
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border-color: var(--text-muted);
+}
+
+[data-theme="light"] .btn-secondary:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
 [data-theme="light"] .theme-toggle-btn {
     background: #e0f2fe;
     /* Light blueish tint */
@@ -701,4 +1112,66 @@ table td {
 [data-theme="light"] .theme-toggle-btn:hover {
     background: #bae6fd;
     box-shadow: 0 0 10px #0ea5e9;
+}
+
+/* Global Form & Grid Utilities */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    color: #fff;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.form-control option {
+    background-color: #1e293b;
+    color: #fff;
+}
+
+/* Light Mode Overrides for Forms */
+[data-theme="light"] .form-control {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+[data-theme="light"] .form-control:focus {
+    background: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+[data-theme="light"] .form-control option {
+    background-color: #ffffff;
+    color: #0f172a;
+}
+
+@media (max-width: 640px) {
+
+    .grid-2,
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
 }

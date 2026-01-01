@@ -39,26 +39,26 @@
         </div>
 
         <!-- New Customer Fields -->
-        <div x-show="customerType === 'new'" style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem;">
+        <div x-show="customerType === 'new'" style="padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem; border: 1px solid var(--border-color); background: rgba(0,0,0,0.1);">
             <div class="form-group">
                 <label>Full Name <span class="text-danger">*</span></label>
-                <input type="text" name="new_customer_name" placeholder="Enter name">
+                <input type="text" name="new_customer_name" placeholder="Enter name" class="form-control">
             </div>
             
             <div class="grid-2">
                 <div class="form-group">
                     <label>Phone Number <span class="text-danger">*</span></label>
-                    <input type="text" name="new_customer_phone" placeholder="Contact number">
+                    <input type="text" name="new_customer_phone" placeholder="Contact number" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="email" name="new_customer_email" placeholder="Optional email">
+                    <input type="email" name="new_customer_email" placeholder="Optional email" class="form-control">
                 </div>
             </div>
             
             <div class="form-group">
                 <label>Address</label>
-                <input type="text" name="new_customer_address" placeholder="Shipping/Billing Address">
+                <input type="text" name="new_customer_address" placeholder="Shipping/Billing Address" class="form-control">
             </div>
         </div>
 
@@ -72,7 +72,7 @@
         <div class="grid-2">
             <div class="form-group">
                 <label>Brand</label>
-                <input type="text" name="laptop_brand" list="brand_list" required placeholder="Select or type brand..." autocomplete="off">
+                <input type="text" name="laptop_brand" list="brand_list" required placeholder="Select or type brand..." autocomplete="off" class="form-control">
                 <datalist id="brand_list">
                     <option value="Apple">
                     <option value="Dell">
@@ -98,13 +98,13 @@
             </div>
             <div class="form-group">
                 <label>Model</label>
-                <input type="text" name="laptop_model" required placeholder="e.g. XPS 15, MacBook Pro M1...">
+                <input type="text" name="laptop_model" required placeholder="e.g. XPS 15, MacBook Pro M1..." class="form-control">
             </div>
         </div>
         
         <div class="form-group">
             <label>Serial Number</label>
-            <input type="text" name="serial_number" placeholder="S/N: 123456789">
+            <input type="text" name="serial_number" placeholder="S/N: 123456789" class="form-control">
         </div>
 
         <h3 class="section-title" style="margin-top: 2rem;">Fault Diagnosis</h3>
@@ -125,55 +125,4 @@
     </form>
 </div>
 
-<style>
-    .section-title {
-        color: var(--primary-glow);
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        border-bottom: 1px solid var(--border-glass);
-        padding-bottom: 0.5rem;
-    }
-    
-    .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--border-glass);
-        border-radius: 0.5rem;
-        color: #fff;
-        font-family: inherit;
-    }
-
-    .form-control option {
-        background-color: #1e293b; /* Dark slate background for options */
-        color: #fff;
-    }
-    
-    .form-actions {
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-    }
-    
-    .btn-secondary {
-        background: transparent;
-        border: 1px solid var(--border-glass);
-        color: var(--text-muted);
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-    }
-    
-    .text-danger { color: #ef4444; }
-    
-    @media (max-width: 640px) {
-        .grid-2 { grid-template-columns: 1fr; }
-    }
-</style>
 @endsection

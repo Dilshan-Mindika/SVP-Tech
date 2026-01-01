@@ -38,14 +38,14 @@
             @forelse($customers as $customer)
             <tr class="clickable-row" onclick="window.location='{{ route('customers.edit', $customer->id) }}'">
                 <td style="text-align: left;">
-                    <div style="font-weight: 600; color: #fff; font-size: 1rem;">{{ $customer->name }}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted);">ID: #{{ $customer->id }}</div>
+                    <div class="table-text-main">{{ $customer->name }}</div>
+                    <div class="table-text-sub">ID: #{{ $customer->id }}</div>
                 </td>
                 <td>
-                    <div style="font-size: 0.95rem; font-weight: 500; color: #e2e8f0;">{{ $customer->phone ?? 'N/A' }}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted);">{{ $customer->email ?? '-' }}</div>
+                    <div style="font-size: 0.95rem; font-weight: 500;" class="table-text-main">{{ $customer->phone ?? 'N/A' }}</div>
+                    <div class="table-text-sub">{{ $customer->email ?? '-' }}</div>
                 </td>
-                <td style="max-width: 250px; color: #cbd5e1; font-size: 0.9rem;">
+                <td style="max-width: 250px; font-size: 0.9rem;" class="text-truncate table-date-muted">
                     {{ Str::limit($customer->address, 40) ?? '-' }}
                 </td>
                 <td>
@@ -79,111 +79,15 @@
 </div>
 
 <style>
-    /* Toolbar & Search (Shared Style) */
-    .toolbar-container {
-        padding: 1.5rem;
-        border-bottom: 1px solid var(--border-glass);
-    }
-
-    .search-box {
-        position: relative;
-        max-width: 500px;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 0.8rem 1rem 0.8rem 3.5rem !important;
-        background: rgba(0, 0, 0, 0.4); 
-        border: 1px solid var(--border-glass);
-        border-radius: 2rem;
-        color: #fff;
-        font-family: inherit;
-        font-size: 1rem;
-        transition: all 0.2s;
-    }
-    
-    .search-input:focus {
-        background: rgba(0, 0, 0, 0.6);
-        border-color: var(--primary);
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-    }
-
-    .search-icon {
-        position: absolute;
-        left: 1.5rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #9ca3af;
-        pointer-events: none;
-    }
-
-    /* Table Styles */
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .data-table th {
-        padding: 1rem 1.5rem;
-        color: #9ca3af;
-        font-weight: 500;
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        text-align: center;
-        border-bottom: 1px solid var(--border-glass);
-    }
-
-    .data-table td {
-        padding: 1rem 1.5rem;
-        vertical-align: middle;
-        text-align: center;
-        border-bottom: 1px solid var(--border-glass);
-    }
-    
-    .data-table td:last-child {
-        white-space: nowrap;
-    }
-
     .clickable-row {
         cursor: pointer;
         transition: background-color 0.15s ease;
     }
-
     .clickable-row:hover {
         background-color: rgba(255, 255, 255, 0.02);
     }
-
-    /* Badges */
-    .badge {
-        padding: 0.35rem 0.75rem;
-        border-radius: 2rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.02em;
+    [data-theme="light"] .clickable-row:hover {
+        background-color: #f8fafc;
     }
-    
-    .badge-jobs {
-        background: rgba(16, 185, 129, 0.15);
-        color: #34d399;
-        border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-
-    /* Actions */
-    .action-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        color: #9ca3af;
-        transition: all 0.2s;
-        margin: 0 0.2rem;
-    }
-
-    .edit-icon:hover { color: var(--primary); background: rgba(59, 130, 246, 0.15); }
-    .delete-icon:hover { color: var(--danger); background: rgba(239, 68, 68, 0.15); }
 </style>
 @endsection

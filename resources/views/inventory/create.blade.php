@@ -64,34 +64,4 @@
     </form>
 </div>
 
-<style>
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem; }
-    
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--border-glass);
-        border-radius: 0.5rem;
-        color: #fff;
-        font-family: inherit;
-    }
-    
-    .form-actions { display: flex; gap: 1rem; justify-content: flex-end; }
-    
-    .btn-secondary {
-        background: transparent;
-        border: 1px solid var(--border-glass);
-        color: var(--text-muted);
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    @media (max-width: 640px) {
-        .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    }
-</style>
 @endsection

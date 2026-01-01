@@ -100,14 +100,14 @@
         }" x-show="status === 'completed'" x-transition x-cloak>
 
             <!-- Internal Expenses (Red Section) -->
-            <div style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-                <h4 style="color: #fca5a5; margin-bottom: 1rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em;">
-                    <i class="fas fa-file-invoice-dollar" style="margin-right: 0.5rem;"></i> Internal Job Expenses (HIdden from Invoice)
+            <div class="section-box-danger">
+                <h4>
+                    <i class="fas fa-file-invoice-dollar" style="margin-right: 0.5rem;"></i> Internal Job Expenses (Hidden from Invoice)
                 </h4>
                 
                 <table class="w-full mb-4" style="width: 100%; border-collapse: separate; border-spacing: 0 0.5rem;">
                     <thead>
-                        <tr style="text-align: left; color: #9ca3af; font-size: 0.85rem;">
+                        <tr style="text-align: left; color: var(--text-muted); font-size: 0.85rem;">
                             <th style="padding-bottom: 0.5rem;">Description (e.g. Bought IC, RAM)</th>
                             <th style="width: 150px; padding-bottom: 0.5rem;">Cost (LKR)</th>
                             <th style="width: 40px;"></th>
@@ -132,18 +132,18 @@
                     </tbody>
                 </table>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <button type="button" @click="addExpense()" style="color: #fca5a5; background: rgba(239, 68, 68, 0.1); border: 1px dashed rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                    <button type="button" @click="addExpense()" style="color: var(--danger); background: rgba(239, 68, 68, 0.1); border: 1px dashed rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
                         <i class="fas fa-plus"></i> Add Expense
                     </button>
-                    <div style="text-align: right; color: #fca5a5;">
+                    <div style="text-align: right; color: var(--danger);">
                         <small>Total Expenses:</small> <strong style="font-size: 1.1rem;">LKR <span x-text="totalExpenses.toFixed(2)"></span></strong>
                     </div>
                 </div>
             </div>
 
             <!-- Billable Invoice Items (Green Section) -->
-            <div style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.2); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-                <h4 style="color: #86efac; margin-bottom: 1rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            <div class="section-box-success">
+                <h4>
                     <i class="fas fa-receipt" style="margin-right: 0.5rem;"></i> Billable Invoice Items (Visible to Customer)
                 </h4>
 
@@ -155,7 +155,7 @@
 
                 <table class="w-full mb-4" style="width: 100%; border-collapse: separate; border-spacing: 0 0.5rem;">
                     <thead>
-                        <tr style="text-align: left; color: #9ca3af; font-size: 0.85rem;">
+                        <tr style="text-align: left; color: var(--text-muted); font-size: 0.85rem;">
                             <th style="padding-bottom: 0.5rem;">Service / Item Description</th>
                             <th style="width: 100px; padding-bottom: 0.5rem; text-align: center;">Qty</th>
                             <th style="width: 150px; padding-bottom: 0.5rem;">Unit Price (LKR)</th>
@@ -170,12 +170,12 @@
                                     <input type="text" :name="'invoice_items['+index+'][description]'" x-model="item.description" @change="checkPart(item)" list="inventoryList" class="form-control" placeholder="Service Charge / Part Name" required>
                                 </td>
                                 <td>
-                                    <input type="number" :name="'invoice_items['+index+'][quantity]'" x-model="item.quantity" class="form-control" style="text-align: center; color: #fff; background: rgba(0,0,0,0.3);" min="1" required>
+                                    <input type="number" :name="'invoice_items['+index+'][quantity]'" x-model="item.quantity" class="form-control" style="text-align: center;" min="1" required>
                                 </td>
                                 <td>
                                     <input type="number" step="0.01" :name="'invoice_items['+index+'][amount]'" x-model="item.amount" class="form-control" required>
                                 </td>
-                                <td style="text-align: right; color: #fff; padding-right: 0.5rem;">
+                                <td style="text-align: right; color: var(--text-main); padding-right: 0.5rem;">
                                     <span x-text="(item.quantity * item.amount).toFixed(2)"></span>
                                 </td>
                                 <td style="text-align: center;">
@@ -188,10 +188,10 @@
                     </tbody>
                 </table>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <button type="button" @click="addInvoiceItem()" style="color: #86efac; background: rgba(34, 197, 94, 0.1); border: 1px dashed rgba(34, 197, 94, 0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                    <button type="button" @click="addInvoiceItem()" style="color: var(--success); background: rgba(34, 197, 94, 0.1); border: 1px dashed rgba(34, 197, 94, 0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
                         <i class="fas fa-plus"></i> Add Billable Item / Part
                     </button>
-                    <div style="text-align: right; color: #86efac;">
+                    <div style="text-align: right; color: var(--success);">
                         <small>Total Billable:</small> <strong style="font-size: 1.1rem;">LKR <span x-text="totalRevenue.toFixed(2)"></span></strong>
                     </div>
                 </div>
@@ -199,20 +199,20 @@
 
             <!-- Profit Summary -->
             <div class="grid-3">
-                <div class="form-group" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 6px; text-align: center;">
-                    <label style="color: #9ca3af; font-size: 0.8rem;">Total Expenses</label>
+                <div class="summary-box">
+                    <label style="color: var(--text-muted); font-size: 0.8rem;">Total Expenses</label>
                     <div style="font-size: 1.25rem; font-weight: 600; color: #fca5a5;">
                         LKR <span x-text="totalExpenses.toFixed(2)"></span>
                     </div>
                 </div>
-                <div class="form-group" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 6px; text-align: center;">
-                    <label style="color: #9ca3af; font-size: 0.8rem;">Total Billable</label>
+                <div class="summary-box">
+                    <label style="color: var(--text-muted); font-size: 0.8rem;">Total Billable</label>
                     <div style="font-size: 1.25rem; font-weight: 600; color: #86efac;">
                         LKR <span x-text="totalRevenue.toFixed(2)"></span>
                     </div>
                 </div>
-                <div class="form-group" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 6px; text-align: center; border: 1px solid var(--border-glass);">
-                    <label style="color: #fff; font-size: 0.9rem; font-weight: 600;">Net Profit</label>
+                <div class="summary-box" style="border: 1px solid var(--border-glass);">
+                    <label style="color: var(--text-main); font-size: 0.9rem; font-weight: 600;">Net Profit</label>
                     <div style="font-size: 1.5rem; font-weight: 700;" :style="{ color: netProfit >= 0 ? '#4ade80' : '#ef4444' }">
                         LKR <span x-text="netProfit.toFixed(2)"></span>
                     </div>
@@ -228,89 +228,4 @@
     </form>
 </div>
 
-<style>
-    [x-cloak] { display: none !important; }
-    .section-title {
-        color: var(--primary-glow);
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        border-bottom: 1px solid var(--border-glass);
-        padding-bottom: 0.5rem;
-    }
-    
-    .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .grid-3 {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .input-group {
-        position: relative;
-    }
-
-    .input-group .prefix {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        font-weight: 500;
-        font-size: 0.9rem;
-    }
-
-    .input-group input {
-        padding-left: 3.5rem; /* Increased from 2rem to fit LKR */
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--border-glass);
-        border-radius: 0.5rem;
-        color: #fff;
-    }
-
-    .form-control[readonly] {
-        background: rgba(0, 0, 0, 0.1);
-        color: var(--text-muted);
-        cursor: not-allowed;
-    }
-
-    .form-control option {
-        background-color: #1e293b;
-        color: #fff;
-    }
-    
-    .form-actions {
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-    }
-    
-    .btn-secondary {
-        background: transparent;
-        border: 1px solid var(--border-glass);
-        color: var(--text-muted);
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .status-select option {
-        background-color: #1e293b;
-        color: #fff;
-    }
-
-    @media (max-width: 640px) {
-        .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    }
-</style>
 @endsection
