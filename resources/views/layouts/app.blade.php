@@ -22,26 +22,38 @@
         <!-- Sidebar -->
         @auth
         <aside class="sidebar">
-            <div class="brand">
-                <img src="{{ asset('images/logo.png') }}" alt="SVP Tech" style="height: 48px; width: auto;">
-                <!-- <h1 style="margin-left: 0.8rem;">SVP Tech</h1> -->
+            <div class="brand" style="flex-direction: column; height: auto; padding: 2rem 1rem; gap: 1rem;">
+                <img src="{{ asset('images/logo.png') }}" alt="SVP Tech" style="height: 100px; width: auto; border-radius: 50%;">
+                <h1 style="font-size: 1.2rem; font-weight: 700; color: #fff; text-align: center;">SVP Technologies</h1>
             </div>
             <nav class="nav-links">
-                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-chart-line" style="margin-right: 10px; width: 20px;"></i> Dashboard
+                </a>
                 
                 @if(auth()->user()->isAdmin())
-                    <a href="{{ route('technicians.index') }}" class="{{ request()->routeIs('technicians.*') ? 'active' : '' }}">Technicians</a>
+                    <a href="{{ route('technicians.index') }}" class="{{ request()->routeIs('technicians.*') ? 'active' : '' }}">
+                        <i class="fas fa-users-cog" style="margin-right: 10px; width: 20px;"></i> Technicians
+                    </a>
                 @endif
                 
-                <a href="{{ route('repair-jobs.index') }}" class="{{ request()->routeIs('repair-jobs.*') ? 'active' : '' }}">Repairs</a>
-                <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">Customers</a>
-                <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'active' : '' }}">Inventory</a>
+                <a href="{{ route('repair-jobs.index') }}" class="{{ request()->routeIs('repair-jobs.*') ? 'active' : '' }}">
+                    <i class="fas fa-tools" style="margin-right: 10px; width: 20px;"></i> Repairs
+                </a>
+                <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">
+                    <i class="fas fa-user-friends" style="margin-right: 10px; width: 20px;"></i> Customers
+                </a>
+                <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'active' : '' }}">
+                    <i class="fas fa-boxes" style="margin-right: 10px; width: 20px;"></i> Inventory
+                </a>
             </nav>
             <div class="user-panel">
-                <span>{{ auth()->user()->name }}</span>
+                <span class="user-name"><i class="fas fa-user-circle"></i> {{ auth()->user()->name }}</span>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit">Logout</button>
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
                 </form>
             </div>
         </aside>
