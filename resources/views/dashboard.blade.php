@@ -157,33 +157,6 @@
 </script>
 
 <style>
-    .section-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .text-date {
-        font-weight: 400;
-        font-size: 0.9rem;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 0.2rem 0.6rem;
-        border-radius: 1rem;
-        color: var(--text-main);
-    }
-
-    .text-success { color: var(--success); }
-    .text-danger { color: var(--danger); }
-    
-    .highlight-card {
-        background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(59, 130, 246, 0.1));
-        border: 1px solid rgba(59, 130, 246, 0.2);
-    }
-
     /* Force 5 columns on desktop */
     @media (min-width: 1200px) {
         .stats-grid {

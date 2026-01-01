@@ -24,7 +24,7 @@
         <aside class="sidebar">
             <div class="brand" style="flex-direction: column; height: auto; padding: 2rem 1rem; gap: 1rem;">
                 <img src="{{ asset('images/logo.png') }}" alt="SVP Tech" style="height: 100px; width: auto; border-radius: 50%;">
-                <h1 style="font-size: 1.2rem; font-weight: 700; color: #fff; text-align: center;">SVP Technologies</h1>
+                <h1 style="font-size: 1.2rem; font-weight: 700; text-align: center;">SVP Technologies</h1>
             </div>
             <nav class="nav-links">
                 <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -48,7 +48,15 @@
                 </a>
             </nav>
             <div class="user-panel">
-                <span class="user-name"><i class="fas fa-user-circle"></i> {{ auth()->user()->name }}</span>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 0.8rem;" class="user-info-row">
+                    <span class="user-name" style="margin: 0; border: none; padding: 0;">
+                        <i class="fas fa-user-circle"></i> {{ auth()->user()->name }}
+                    </span>
+                    <button id="theme-toggle" title="Toggle Theme" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.2rem; transition: color 0.2s;">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+                
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="logout-btn">
@@ -58,6 +66,36 @@
             </div>
         </aside>
         @endauth
+
+        <script>
+            // Theme Toggle Logic
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const icon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+
+            function applyTheme(theme) {
+                if (theme === 'light') {
+                    htmlElement.setAttribute('data-theme', 'light');
+                    if(icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
+                } else {
+                    htmlElement.removeAttribute('data-theme');
+                    if(icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            // Init
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            applyTheme(savedTheme);
+
+            if(themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const currentTheme = htmlElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                    applyTheme(newTheme);
+                });
+            }
+        </script>
 
         <!-- Main Content -->
         <main class="main-content">
