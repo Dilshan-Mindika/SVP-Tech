@@ -60,6 +60,9 @@
                 <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'active' : '' }}">
                     <i class="fas fa-boxes" style="margin-right: 10px; width: 20px;"></i> Inventory
                 </a>
+                <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') || request()->routeIs('sales.*') ? 'active' : '' }}">
+                    <i class="fas fa-file-invoice-dollar" style="margin-right: 10px; width: 20px;"></i> Invoices
+                </a>
             </nav>
             <div class="user-panel">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 0.8rem;" class="user-info-row">

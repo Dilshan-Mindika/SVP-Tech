@@ -9,6 +9,8 @@ use App\Http\Controllers\RepairJobController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ReportingController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InvoicesModuleController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -36,7 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/repair-jobs/{job}/assign', [RepairJobController::class, 'assignTechnician'])->name('repair-jobs.assign-technician');
     Route::resource('inventory', InventoryController::class);
 
-    // Invoices
+    // Invoices & Sales
+    Route::get('/invoices', [InvoicesModuleController::class, 'index'])->name('invoices.index');
+    Route::get('/sales/create', [InvoicesModuleController::class, 'createSale'])->name('sales.create');
+    Route::post('/sales', [InvoicesModuleController::class, 'storeSale'])->name('sales.store');
+    
+    // Legacy/Specific Invoice Actions
     Route::post('/repair-jobs/{job}/invoice', [InvoiceController::class, 'generate'])->name('invoices.generate');
     Route::get('/repair-jobs/{job}/invoice-preview', [InvoiceController::class, 'preview'])->name('invoice-preview');
     Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
