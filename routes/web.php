@@ -43,4 +43,8 @@ Route::middleware('auth')->group(function () {
 
     // Reports
     Route::get('/reports', [ReportingController::class, 'index'])->name('reports.index');
+    Route::get('/reports/outstanding', [ReportingController::class, 'outstandingInvoices'])->name('reports.outstanding');
+
+    // Payments
+    Route::post('/invoices/{invoice}/payments', [PaymentController::class, 'store'])->name('payments.store');
 });

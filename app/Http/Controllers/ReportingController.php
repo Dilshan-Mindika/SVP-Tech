@@ -38,4 +38,33 @@ class ReportingController extends Controller
             'jobsCompletedToday', 'activeJobs'
         ));
     }
+    public function outstandingInvoices(Request $request)
+    {
+        $customerType = $request->input('customer_type', 'all');
+        $toDate = $request->input('to_date', now()->format('Y-m-d'));
+
+        $customersQuery = \App\Models\Customer::query()
+            ->with(['repairJobs.invoices' => function($q) {
+                // We only care about invoices that are NOT fully paid
+                $q->where('status', '!=', 'paid')
+                  ->with('payments');
+            }])
+            ->whereHas('repairJobs.invoices', function($q) {
+                $q->where('status', '!=', 'paid');
+            });
+
+        if ($customerType !== 'all') {
+            $customersQuery->where('type', $customerType);
+        }
+
+        $customers = $customersQuery->orderBy('name')->get();
+
+        // Process data for the view
+        // We need to calculate balances dynamically or rely on the loaded data
+        // Filter invoices by date if needed, but usually "Outstanding" implies "Current status"
+        // regardless of date, though the user might want a snapshot. 
+        // For simplicity, we show CURRENT outstanding invoices.
+
+        return view('reports.outstanding_invoices', compact('customers', 'customerType', 'toDate'));
+    }
 }

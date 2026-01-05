@@ -18,10 +18,38 @@ class Invoice extends Model
         'parts_cost',
         'labor_cost',
         'profit_margin',
+        'paid_amount',
+        'status',
     ];
 
     public function repairJob()
     {
         return $this->belongsTo(RepairJob::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function getBalanceDueAttribute()
+    {
+        return $this->total_amount - $this->paid_amount;
+    }
+
+    public function recalculateStatus()
+    {
+        $totalPaid = $this->payments()->sum('amount');
+        $this->paid_amount = $totalPaid;
+
+        if ($totalPaid >= $this->total_amount) {
+            $this->status = 'paid';
+        } elseif ($totalPaid > 0) {
+            $this->status = 'partial';
+        } else {
+            $this->status = 'unpaid';
+        }
+
+        $this->save();
     }
 }
