@@ -40,7 +40,7 @@ class InvoicesModuleController extends Controller
         $nextSaleNumber = 'SALE-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
         
         $inventoryParts = \App\Models\Part::where('stock_quantity', '>', 0)
-            ->select('id', 'name', 'selling_price', 'stock_quantity')
+            ->select('id', 'name', 'selling_price', 'cost_price', 'stock_quantity')
             ->orderBy('name')
             ->get();
 
@@ -58,6 +58,7 @@ class InvoicesModuleController extends Controller
             'items.*.description' => 'required|string',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.unit_price' => 'required|numeric|min:0',
+            'items.*.unit_cost' => 'nullable|numeric|min:0',
         ]);
 
         DB::transaction(function () use ($request) {
@@ -88,23 +89,37 @@ class InvoicesModuleController extends Controller
             ]);
             
             // 2. Add Items as JobInvoiceItems
-            $totalAmount = 0;
+            $totalRevenue = 0;
+            $totalCost = 0;
+
             foreach ($request->items as $item) {
+                $qty = $item['quantity'];
+                $unitPrice = $item['unit_price'];
+                $unitCost = $item['unit_cost'] ?? 0;
+
                 $repairJob->invoiceItems()->create([
                     'description' => $item['description'],
-                    'quantity' => $item['quantity'],
-                    'amount' => $item['unit_price'],
+                    'quantity' => $qty,
+                    'amount' => $unitPrice,
+                    'unit_cost' => $unitCost,
                 ]);
-                $totalAmount += ($item['quantity'] * $item['unit_price']);
+
+                $totalRevenue += ($qty * $unitPrice);
+                $totalCost += ($qty * $unitCost);
             }
             
             // 3. Update Job Financials
-            $repairJob->update(['final_price' => $totalAmount]);
+            $repairJob->update(['final_price' => $totalRevenue]); // Could allow saving cost here too if needed
 
             // 4. Generate Invoice
+            $profitMargin = $totalRevenue - $totalCost;
+
             Invoice::create([
                 'repair_job_id' => $repairJob->id,
-                'total_amount' => $totalAmount,
+                'total_amount' => $totalRevenue,
+                'parts_cost' => $totalCost, // For Sales, we treat Item Cost as Parts Cost
+                'labor_cost' => 0,
+                'profit_margin' => $profitMargin,
                 'status' => 'unpaid', // Default
                 'due_date' => now()->addDays(30),
             ]);

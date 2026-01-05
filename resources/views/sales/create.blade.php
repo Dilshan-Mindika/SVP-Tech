@@ -71,15 +71,16 @@
                 <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Sale Items</h3>
                 
                 <!-- Items Grid Header -->
-                <div style="display: grid; grid-template-columns: 3fr 1fr 1.5fr auto; gap: 1rem; margin-bottom: 0.5rem; padding: 0 1rem;">
+                <div style="display: grid; grid-template-columns: 3fr 1fr 1.5fr 1.5fr auto; gap: 1rem; margin-bottom: 0.5rem; padding: 0 1rem;">
                     <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Item Description</label>
                     <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: center;">Qty</label>
-                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: right;">Unit Price</label>
-                    <div style="width: 32px;"></div> <!-- Spacer for delete button -->
+                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: right;">Cost (LKR)</label>
+                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: right;">Selling (LKR)</label>
+                    <div style="width: 32px;"></div>
                 </div>
                 
                 <template x-for="(item, index) in items" :key="index">
-                    <div style="display: grid; grid-template-columns: 3fr 1fr 1.5fr auto; gap: 1rem; align-items: start; margin-bottom: 0.5rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
+                    <div style="display: grid; grid-template-columns: 3fr 1fr 1.5fr 1.5fr auto; gap: 1rem; align-items: start; margin-bottom: 0.5rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
                         <div>
                             <input type="text" :name="'items['+index+'][description]'" x-model="item.description" class="form-control" placeholder="Item Name / Description" required
                                 style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
@@ -88,7 +89,7 @@
                             <div class="inventory-suggestions" style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
                                 @foreach($inventoryParts as $part)
                                     <button type="button" 
-                                            @click="item.description = '{{ $part->name }}'; item.unit_price = {{ $part->selling_price }};"
+                                            @click="item.description = '{{ $part->name }}'; item.unit_price = {{ $part->selling_price }}; item.unit_cost = {{ $part->cost_price ?? 0 }};"
                                             style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--primary); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; white-space: nowrap; transition: all 0.2s;">
                                         {{ $part->name }}
                                     </button>
@@ -98,6 +99,13 @@
                         <div>
                             <input type="number" :name="'items['+index+'][quantity]'" x-model="item.quantity" min="1" class="form-control" required
                                 style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius); text-align: center;">
+                        </div>
+                        <div>
+                            <div style="position: relative;">
+                                <span style="position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.8rem;">Rs.</span>
+                                <input type="number" :name="'items['+index+'][unit_cost]'" x-model="item.unit_cost" step="0.01" min="0" class="form-control"
+                                    style="width: 100%; padding: 0.6rem 0.6rem 0.6rem 2rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: var(--text-muted); border-radius: var(--radius); text-align: right;" placeholder="0.00">
+                            </div>
                         </div>
                         <div>
                             <div style="position: relative;">
@@ -150,10 +158,10 @@
         return {
             customerType: 'existing',
             items: [
-                { description: '', quantity: 1, unit_price: 0 }
+                { description: '', quantity: 1, unit_price: 0, unit_cost: 0 }
             ],
             addItem() {
-                this.items.push({ description: '', quantity: 1, unit_price: 0 });
+                this.items.push({ description: '', quantity: 1, unit_price: 0, unit_cost: 0 });
             },
             removeItem(index) {
                 if (this.items.length > 1) {

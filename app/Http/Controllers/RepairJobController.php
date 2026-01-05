@@ -11,7 +11,9 @@ class RepairJobController extends Controller
 {
     public function index(Request $request)
     {
-        $query = RepairJob::with(['customer', 'technician'])->latest();
+        $query = RepairJob::with(['customer', 'technician'])
+            ->where('job_type', '!=', 'sale') // Exclude direct sales
+            ->latest();
 
         if ($request->has('status') && $request->status !== 'all') {
             $query->where('repair_status', $request->status);
@@ -35,7 +37,8 @@ class RepairJobController extends Controller
         $technicians = Technician::with('user')->get(); 
 
         // Calculate Status Counts (respecting search if exists, otherwise global)
-        $statusCountsQuery = RepairJob::query();
+        $statusCountsQuery = RepairJob::query()
+            ->where('job_type', '!=', 'sale');
         
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;

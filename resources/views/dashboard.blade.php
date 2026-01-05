@@ -14,33 +14,33 @@
 <h3 class="section-title">Daily Overview <span class="text-date">{{ now()->format('M d, Y') }}</span></h3>
 <div class="stats-grid">
     <div class="stat-card">
-        <h3>New Jobs</h3>
-        <p class="stat-number">{{ $dailyJobsGot }}</p>
-        <p class="stat-desc">Jobs received today</p>
+        <h3>New Repairs</h3>
+        <p class="stat-number">{{ $dailyRepairsReceived }}</p>
+        <p class="stat-desc">Repairs received today</p>
     </div>
     
     <div class="stat-card">
-        <h3>Completed</h3>
-        <p class="stat-number">{{ $dailyJobsCompleted }}</p>
-        <p class="stat-desc">Jobs finished today</p>
+        <h3>Direct Sales</h3>
+        <p class="stat-number">{{ $dailySalesCount }}</p>
+        <p class="stat-desc">Sales made today</p>
     </div>
     
     <div class="stat-card">
-        <h3>Total Revenue</h3>
-        <p class="stat-number text-primary">LKR {{ number_format($dailyRevenue, 2) }}</p>
+        <h3>Repairs Done</h3>
+        <p class="stat-number">{{ $dailyRepairsCompleted }}</p>
+        <p class="stat-desc">Repairs completed today</p>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Revenue</h3>
+        <p class="stat-number text-primary">LKR {{ number_format($dailyRevenue, 0) }}</p>
         <p class="stat-desc">Total billed today</p>
-    </div>
-
-    <div class="stat-card">
-        <h3>Total Cost</h3>
-        <p class="stat-number">LKR {{ number_format($dailyCost, 2) }}</p>
-        <p class="stat-desc">Parts + Labor today</p>
     </div>
     
     <div class="stat-card highlight-card">
         <h3>Net Profit</h3>
         <p class="stat-number {{ $dailyProfit >= 0 ? 'text-success' : 'text-danger' }}">
-            LKR {{ number_format($dailyProfit, 2) }}
+            LKR {{ number_format($dailyProfit, 0) }}
         </p>
         <p class="stat-desc">Daily earnings</p>
     </div>
@@ -50,33 +50,33 @@
 <h3 class="section-title" style="margin-top: 2.5rem;">Monthly Overview <span class="text-date">{{ now()->format('F Y') }}</span></h3>
 <div class="stats-grid">
     <div class="stat-card">
-        <h3>New Jobs</h3>
-        <p class="stat-number">{{ $monthlyJobsGot }}</p>
-        <p class="stat-desc">Jobs received this month</p>
+        <h3>New Repairs</h3>
+        <p class="stat-number">{{ $monthlyRepairsReceived }}</p>
+        <p class="stat-desc">Repairs received</p>
     </div>
     
     <div class="stat-card">
-        <h3>Completed</h3>
-        <p class="stat-number">{{ $monthlyJobsCompleted }}</p>
-        <p class="stat-desc">Jobs finished this month</p>
+        <h3>Direct Sales</h3>
+        <p class="stat-number">{{ $monthlySalesCount }}</p>
+        <p class="stat-desc">Sales made</p>
     </div>
     
     <div class="stat-card">
-        <h3>Total Revenue</h3>
-        <p class="stat-number text-primary">LKR {{ number_format($monthlyRevenue, 2) }}</p>
-        <p class="stat-desc">Total billed this month</p>
+        <h3>Repairs Done</h3>
+        <p class="stat-number">{{ $monthlyRepairsCompleted }}</p>
+        <p class="stat-desc">Repairs completed</p>
     </div>
-
+    
     <div class="stat-card">
-        <h3>Total Cost</h3>
-        <p class="stat-number">LKR {{ number_format($monthlyCost, 2) }}</p>
-        <p class="stat-desc">Parts + Labor this month</p>
+        <h3>Revenue</h3>
+        <p class="stat-number text-primary">LKR {{ number_format($monthlyRevenue, 0) }}</p>
+        <p class="stat-desc">Total billed</p>
     </div>
     
     <div class="stat-card highlight-card">
         <h3>Net Profit</h3>
         <p class="stat-number {{ $monthlyProfit >= 0 ? 'text-success' : 'text-danger' }}">
-            LKR {{ number_format($monthlyProfit, 2) }}
+            LKR {{ number_format($monthlyProfit, 0) }}
         </p>
         <p class="stat-desc">Monthly earnings</p>
     </div>

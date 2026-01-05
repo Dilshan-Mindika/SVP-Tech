@@ -12,26 +12,41 @@ class DashboardController extends Controller
         $startOfMonth = now()->startOfMonth();
 
         // --- Daily Stats ---
-        $dailyJobsGot = \App\Models\RepairJob::whereDate('created_at', today())->count();
+        $dailyRepairsReceived = \App\Models\RepairJob::whereDate('created_at', today())
+            ->where('job_type', '!=', 'sale')
+            ->count();
+            
+        $dailySalesCount = \App\Models\RepairJob::whereDate('created_at', today())
+            ->where('job_type', 'sale')
+            ->count();
         
+        // Financials (All Jobs + Sales)
         $dailyBaseQuery = \App\Models\RepairJob::whereDate('updated_at', today())
             ->whereIn('repair_status', ['completed', 'delivered']);
+
+        $dailyRepairsCompleted = (clone $dailyBaseQuery)->where('job_type', '!=', 'sale')->count();
             
-        $dailyJobsCompleted = $dailyBaseQuery->count();
         $dailyRevenue = $dailyBaseQuery->sum('final_price');
         $dailyCost = $dailyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('parts_used_cost + labor_cost'));
         $dailyProfit = $dailyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('final_price - (parts_used_cost + labor_cost)'));
 
         // --- Monthly Stats ---
-        $monthlyJobsGot = \App\Models\RepairJob::whereMonth('created_at', now()->month)
+        $monthlyRepairsReceived = \App\Models\RepairJob::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
+            ->where('job_type', '!=', 'sale')
+            ->count();
+            
+        $monthlySalesCount = \App\Models\RepairJob::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('job_type', 'sale')
             ->count();
             
         $monthlyBaseQuery = \App\Models\RepairJob::whereMonth('updated_at', now()->month)
             ->whereYear('updated_at', now()->year)
             ->whereIn('repair_status', ['completed', 'delivered']);
-            
-        $monthlyJobsCompleted = $monthlyBaseQuery->count();
+
+        $monthlyRepairsCompleted = (clone $monthlyBaseQuery)->where('job_type', '!=', 'sale')->count();
+
         $monthlyRevenue = $monthlyBaseQuery->sum('final_price');
         $monthlyCost = $monthlyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('parts_used_cost + labor_cost'));
         $monthlyProfit = $monthlyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('final_price - (parts_used_cost + labor_cost)'));
@@ -55,8 +70,8 @@ class DashboardController extends Controller
         }
 
         return view('dashboard', compact(
-            'dailyJobsGot', 'dailyJobsCompleted', 'dailyCost', 'dailyProfit', 'dailyRevenue',
-            'monthlyJobsGot', 'monthlyJobsCompleted', 'monthlyCost', 'monthlyProfit', 'monthlyRevenue',
+            'dailyRepairsReceived', 'dailySalesCount', 'dailyRepairsCompleted', 'dailyCost', 'dailyProfit', 'dailyRevenue',
+            'monthlyRepairsReceived', 'monthlySalesCount', 'monthlyRepairsCompleted', 'monthlyCost', 'monthlyProfit', 'monthlyRevenue',
             'chartLabels', 'chartRevenue', 'chartProfit'
         ));
     }

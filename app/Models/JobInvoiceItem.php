@@ -13,7 +13,9 @@ class JobInvoiceItem extends Model
         'repair_job_id',
         'description',
         'quantity',
+        'quantity',
         'amount',
+        'unit_cost',
     ];
 
     public function repairJob()
