@@ -66,6 +66,19 @@ class CustomerController extends Controller
         return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
 
+    public function ledger(Customer $customer)
+    {
+        $customer->load(['invoices.payments', 'invoices.repairJob']);
+        
+        $invoices = $customer->invoices()->latest()->get();
+        // Calculate running balance or prepare stats if needed
+        $totalDue = $customer->total_due;
+        $totalPaid = $customer->invoices->sum('paid_amount');
+        $totalBilled = $customer->invoices->sum('total_amount');
+
+        return view('customers.ledger', compact('customer', 'invoices', 'totalDue', 'totalPaid', 'totalBilled'));
+    }
+
     public function destroy(Customer $customer)
     {
         $customer->delete();

@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
     // Core Modules
     Route::resource('customers', CustomerController::class);
+    Route::get('/customers/{customer}/ledger', [CustomerController::class, 'ledger'])->name('customers.ledger');
     Route::resource('repair-jobs', RepairJobController::class);
     Route::patch('/repair-jobs/{job}/status', [RepairJobController::class, 'updateStatus'])->name('repair-jobs.update-status');
     Route::patch('/repair-jobs/{job}/assign', [RepairJobController::class, 'assignTechnician'])->name('repair-jobs.assign-technician');

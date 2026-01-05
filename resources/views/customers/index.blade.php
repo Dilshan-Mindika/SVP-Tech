@@ -32,12 +32,13 @@
                 <th>Contact Info</th>
                 <th>Address</th>
                 <th>History</th>
-                <th style="width: 120px;">Actions</th>
+                <th style="text-align: right;">Total Due</th>
+                <th style="width: 150px;">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse($customers as $customer)
-            <tr class="clickable-row" onclick="window.location='{{ route('customers.edit', $customer->id) }}'">
+            <tr class="clickable-row" onclick="window.location='{{ route('customers.ledger', $customer->id) }}'">
                 <td style="text-align: left;">
                     <div class="table-text-main">{{ $customer->name }}</div>
                     <div class="table-text-sub">ID: #{{ $customer->id }}</div>
@@ -59,7 +60,19 @@
                         </span>
                     </div>
                 </td>
+                <td style="text-align: right;">
+                    @if($customer->total_due > 0)
+                        <span style="font-weight: bold; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 2px 8px; border-radius: 4px;">
+                            LKR {{ number_format($customer->total_due, 2) }}
+                        </span>
+                    @else
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">-</span>
+                    @endif
+                </td>
                 <td onclick="event.stopPropagation()">
+                    <a href="{{ route('customers.ledger', $customer->id) }}" class="action-icon" title="View Ledger" style="color: var(--primary);">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </a>
                     <a href="{{ route('customers.edit', $customer->id) }}" class="action-icon edit-icon" title="Edit">
                         <i class="fas fa-edit"></i>
                     </a>

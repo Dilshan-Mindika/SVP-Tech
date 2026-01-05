@@ -24,6 +24,16 @@ class Customer extends Model
         return $this->hasMany(RepairJob::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasManyThrough(Invoice::class, RepairJob::class);
+    }
+
+    public function getTotalDueAttribute()
+    {
+        return $this->invoices->where('status', '!=', 'paid')->sum('balance_due');
+    }
+
     public function feedback()
     {
         return $this->hasMany(Feedback::class);
