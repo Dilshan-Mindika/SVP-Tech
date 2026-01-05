@@ -50,7 +50,10 @@ class InvoicesModuleController extends Controller
     public function storeSale(Request $request)
     {
         $request->validate([
-            'customer_id' => 'required|exists:customers,id',
+            'customer_action' => 'required|in:existing,new',
+            'customer_id' => 'required_if:customer_action,existing|nullable|exists:customers,id',
+            'new_customer_name' => 'required_if:customer_action,new|nullable|string|max:255',
+            'new_customer_phone' => 'required_if:customer_action,new|nullable|string|max:20',
             'items' => 'required|array|min:1',
             'items.*.description' => 'required|string',
             'items.*.quantity' => 'required|integer|min:1',
@@ -58,10 +61,23 @@ class InvoicesModuleController extends Controller
         ]);
 
         DB::transaction(function () use ($request) {
+            // Determine Customer ID
+            $customerId = $request->customer_id;
+
+            if ($request->customer_action === 'new') {
+                $customer = Customer::create([
+                    'name' => $request->new_customer_name,
+                    'phone' => $request->new_customer_phone,
+                    'address' => $request->new_customer_address,
+                    'type' => 'individual', // Default type
+                ]);
+                $customerId = $customer->id;
+            }
+
             // 1. Create a RepairJob of type 'sale'
             $repairJob = RepairJob::create([
                 'job_number' => 'SALE-' . strtoupper(uniqid()), // Temporary unique ID, or use sequence
-                'customer_id' => $request->customer_id,
+                'customer_id' => $customerId,
                 'technician_id' => auth()->id(), // Assigned to current user (admin/tech)
                 'job_type' => 'sale',
                 'repair_status' => 'completed',

@@ -22,48 +22,92 @@
             <div>
                 <!-- Customer Selection -->
                 <div style="margin-bottom: 2rem;">
-                    <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Customer</label>
-                    <select name="customer_id" class="form-control" style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
-                        <option value="">Select Customer</option>
-                        @foreach($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->name }} ({{ $customer->phone }})</option>
-                        @endforeach
-                    </select>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <button type="button" @click="customerType = 'existing'" 
+                            :class="{'btn-primary': customerType === 'existing', 'btn-secondary': customerType !== 'existing'}"
+                            style="flex: 1; padding: 0.5rem; border-radius: 8px;">
+                            Existing Customer
+                        </button>
+                        <button type="button" @click="customerType = 'new'" 
+                            :class="{'btn-primary': customerType === 'new', 'btn-secondary': customerType !== 'new'}"
+                            style="flex: 1; padding: 0.5rem; border-radius: 8px;">
+                            New Customer
+                        </button>
+                    </div>
+
+                    <input type="hidden" name="customer_action" x-model="customerType">
+
+                    <!-- Existing Customer Select -->
+                    <div x-show="customerType === 'existing'">
+                        <select name="customer_id" class="form-control" style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
+                            <option value="">Select Existing Customer</option>
+                            @foreach($customers as $customer)
+                                <option value="{{ $customer->id }}">{{ $customer->name }} ({{ $customer->phone }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- New Customer Fields -->
+                    <div x-show="customerType === 'new'" style="display: grid; gap: 1rem; animation: fadeIn 0.3s ease;">
+                        <div>
+                            <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Name</label>
+                            <input type="text" name="new_customer_name" class="form-control" placeholder="Customer Name"
+                                style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
+                        </div>
+                        <div>
+                            <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Phone</label>
+                            <input type="text" name="new_customer_phone" class="form-control" placeholder="Phone Number"
+                                style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
+                        </div>
+                        <div>
+                            <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Address (Optional)</label>
+                            <input type="text" name="new_customer_address" class="form-control" placeholder="Address"
+                                style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Items List -->
                 <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Sale Items</h3>
                 
+                <!-- Items Grid Header -->
+                <div style="display: grid; grid-template-columns: 3fr 1fr 1.5fr auto; gap: 1rem; margin-bottom: 0.5rem; padding: 0 1rem;">
+                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Item Description</label>
+                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: center;">Qty</label>
+                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: right;">Unit Price</label>
+                    <div style="width: 32px;"></div> <!-- Spacer for delete button -->
+                </div>
+                
                 <template x-for="(item, index) in items" :key="index">
-                    <div style="display: grid; grid-template-columns: 3fr 1fr 1.5fr auto; gap: 1rem; align-items: end; margin-bottom: 1rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
+                    <div style="display: grid; grid-template-columns: 3fr 1fr 1.5fr auto; gap: 1rem; align-items: start; margin-bottom: 0.5rem; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px;">
                         <div>
-                            <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted);" x-show="index === 0">Item Description</label>
                             <input type="text" :name="'items['+index+'][description]'" x-model="item.description" class="form-control" placeholder="Item Name / Description" required
                                 style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
                             
-                            <!-- Inventory Suggestions (Simple Datalist simulation or just text for now) -->
-                            <div class="inventory-suggestions" style="display: flex; gap: 0.5rem; margin-top: 0.5rem; overflow-x: auto;">
+                            <!-- Inventory Suggestions -->
+                            <div class="inventory-suggestions" style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
                                 @foreach($inventoryParts as $part)
                                     <button type="button" 
                                             @click="item.description = '{{ $part->name }}'; item.unit_price = {{ $part->selling_price }};"
-                                            style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--primary); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; white-space: nowrap;">
+                                            style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: var(--primary); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; white-space: nowrap; transition: all 0.2s;">
                                         {{ $part->name }}
                                     </button>
                                 @endforeach
                             </div>
                         </div>
                         <div>
-                            <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted);" x-show="index === 0">Qty</label>
                             <input type="number" :name="'items['+index+'][quantity]'" x-model="item.quantity" min="1" class="form-control" required
                                 style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius); text-align: center;">
                         </div>
                         <div>
-                            <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted);" x-show="index === 0">Unit Price</label>
-                            <input type="number" :name="'items['+index+'][unit_price]'" x-model="item.unit_price" step="0.01" min="0" class="form-control" required
-                                style="width: 100%; padding: 0.6rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius); text-align: right;">
+                            <div style="position: relative;">
+                                <span style="position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.8rem;">Rs.</span>
+                                <input type="number" :name="'items['+index+'][unit_price]'" x-model="item.unit_price" step="0.01" min="0" class="form-control" required
+                                    style="width: 100%; padding: 0.6rem 0.6rem 0.6rem 2rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius); text-align: right;">
+                            </div>
                         </div>
-                        <div>
-                            <button type="button" @click="removeItem(index)" class="btn-danger" style="background: rgba(239, 68, 68, 0.2); color: #f87171; border: none; width: 32px; height: 32px; border-radius: 4px; cursor: pointer;">
+                        <div style="padding-top: 0.2rem;">
+                            <button type="button" @click="removeItem(index)" class="btn-remove" title="Remove Item">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -104,6 +148,7 @@
 <script>
     function salesForm() {
         return {
+            customerType: 'existing',
             items: [
                 { description: '', quantity: 1, unit_price: 0 }
             ],
@@ -123,4 +168,46 @@
         }
     }
 </script>
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .btn-remove {
+        background: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .btn-remove:hover {
+        background: rgba(239, 68, 68, 0.2);
+        transform: scale(1.05);
+        color: #ef4444;
+        border-color: rgba(239, 68, 68, 0.4);
+        box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1), 0 2px 4px -1px rgba(239, 68, 68, 0.06);
+    }
+    
+    .btn-remove:active {
+        transform: scale(0.95);
+    }
+
+    .btn-remove i {
+        font-size: 0.9rem;
+        transition: transform 0.2s;
+    }
+
+    .btn-remove:hover i {
+        transform: rotate(15deg);
+    }
+</style>
 @endsection

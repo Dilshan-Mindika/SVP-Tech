@@ -300,15 +300,16 @@
     
     /* Layout Container */
     .invoice-container {
-        width: 210mm; /* A4 Width */
-        min-height: 297mm; /* A4 Height */
-        padding: 10mm 15mm;
+        width: 210mm;
+        min-height: 297mm; /* Keep A4 size on screen representation */
+        padding: 10mm 15mm; /* Reduced padding */
         margin: 0 auto;
         background: #fff;
         color: var(--print-text);
         box-shadow: 0 0 15px rgba(0,0,0,0.1);
         position: relative;
         font-family: 'Inter', sans-serif;
+        box-sizing: border-box;
     }
     
     /* Header */
@@ -317,36 +318,36 @@
         justify-content: space-between;
         align-items: flex-start;
         border-bottom: 2px solid var(--print-accent);
-        padding-bottom: 1.5rem;
-        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem; /* Reduced */
+        margin-bottom: 1rem; /* Reduced */
     }
 
     .invoice-logo {
-        height: 100px; /* Adjusted Logo */
+        height: 60px; /* Reduced from 100px */
         width: auto;
         display: block;
     }
 
     .company-details {
         text-align: right;
-        font-size: 0.9rem;
+        font-size: 0.8rem; /* Reduced */
     }
 
     .company-name {
-        font-size: 1.5rem;
+        font-size: 1.2rem; /* Reduced */
         font-weight: 800;
         color: var(--print-accent);
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.2rem 0;
         text-transform: uppercase;
         letter-spacing: -0.5px;
     }
 
     .company-details p {
-        margin: 0.15rem 0;
+        margin: 0.1rem 0;
     }
 
     .detail-block { margin-bottom: 0.25rem; }
-    .mt-2 { margin-top: 0.4rem; }
+    .mt-2 { margin-top: 0.2rem; }
 
     /* Meta Bar */
     .invoice-meta-bar {
@@ -354,9 +355,9 @@
         justify-content: space-between;
         background: #f8fafc;
         border: 1px solid var(--print-border);
-        padding: 0.5rem 1rem;
+        padding: 0.4rem 0.8rem; /* Reduced */
         border-radius: 6px;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem; /* Reduced */
     }
 
     .meta-item {
@@ -365,7 +366,7 @@
     }
 
     .meta-label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
         color: #64748b;
         font-weight: 600;
@@ -373,7 +374,7 @@
     }
 
     .meta-value {
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 700;
         color: var(--print-accent);
     }
@@ -382,186 +383,193 @@
     .info-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 3rem;
-        margin-bottom: 2rem;
+        gap: 2rem; /* Reduced */
+        margin-bottom: 1.5rem; /* Reduced */
     }
 
     .box-title {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
         color: #94a3b8;
         border-bottom: 1px solid var(--print-border);
-        padding-bottom: 0.4rem;
-        margin-bottom: 0.8rem;
+        padding-bottom: 0.2rem;
+        margin-bottom: 0.5rem;
         font-weight: 600;
     }
 
     .client-name {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 700;
         color: var(--print-accent);
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.2rem;
     }
 
-    .client-info p, .device-info p { margin: 0.2rem 0; }
+    .client-info p, .device-info p { margin: 0.1rem 0; font-size: 0.85rem; }
 
     .details-table { width: 100%; border-collapse: collapse; }
-    .details-table td { padding: 0.2rem 0; vertical-align: top; }
+    .details-table td { padding: 0.1rem 0; vertical-align: top; font-size: 0.85rem; }
     .details-table .label { width: 80px; font-weight: 600; color: #64748b; }
 
     /* Main Table */
     .invoice-table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem; /* Reduced */
     }
 
     .invoice-table th {
         background: var(--print-accent);
         color: #fff;
-        padding: 0.5rem;
+        padding: 0.4rem; /* Reduced */
         text-align: left;
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
 
     .invoice-table td {
-        padding: 0.5rem;
+        padding: 0.4rem; /* Reduced */
         border-bottom: 1px solid var(--print-border);
         border-left: 1px solid var(--print-border);
         border-right: 1px solid var(--print-border);
         vertical-align: middle;
+        font-size: 0.85rem;
     }
 
     .empty-row td {
-        height: 2.5rem; /* Specific height for empty spacing */
+        height: 1.5rem; /* Reduced */
     }
 
     .text-right { text-align: right; }
 
     .total-row td {
         border: none;
-        padding-top: 1rem;
+        padding-top: 0.5rem;
     }
     
     .grand-total-row td {
         border-top: 2px solid var(--print-accent);
-        padding: 0.8rem;
+        padding: 0.5rem;
         color: var(--print-accent);
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 800;
         background: #f8fafc;
     }
 
-    .total-label { text-align: right; padding-right: 1.5rem; }
+    .total-label { text-align: right; padding-right: 1rem; font-size: 0.85rem; }
 
     /* Footer */
     .footer-section {
         display: flex;
         justify-content: space-between;
-        margin-top: auto; /* Push to bottom */
-        gap: 2rem;
+        margin-top: auto;
+        gap: 1rem;
+        padding-top: 1rem;
     }
 
     .terms {
         flex: 3;
-        font-size: 0.75rem;
+        font-size: 0.65rem; /* Reduced */
         color: #64748b;
     }
     
     .terms h4 {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
         color: var(--print-accent);
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
 
-    .terms ul { padding-left: 1rem; line-height: 1.4; }
+    .terms ul { padding-left: 1rem; line-height: 1.3; margin: 0; }
 
     .signatures {
         flex: 2;
         display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        gap: 2rem;
+        flex-direction: row; /* Side by side signatures */
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1rem;
     }
 
     .signature-box {
         text-align: center;
+        width: 45%;
     }
 
     .signature-box .line {
         border-top: 1px dashed #94a3b8;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
     }
 
-    .signature-box p { font-size: 0.8rem; font-weight: 600; }
-    .date-placeholder { font-weight: 400; font-size: 0.7rem; margin-top: 0.2rem; }
+    .signature-box p { font-size: 0.7rem; font-weight: 600; }
+    .date-placeholder { font-weight: 400; font-size: 0.6rem; margin-top: 0.1rem; }
     
     .print-footer {
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         color: #94a3b8;
-        margin-top: 2rem;
+        margin-top: 0.5rem;
         border-top: 1px solid #f1f5f9;
-        padding-top: 0.5rem;
+        padding-top: 0.3rem;
     }
 
     /* Print Specifics */
     @media print {
         @page { size: A4; margin: 0; }
         
-        /* Hide everything by default */
         body { margin: 0; background: #fff; -webkit-print-color-adjust: exact; }
         
-        /* Explicitly hide UI elements */
         .sidebar, 
         .page-header, 
         .toast-container,
         .btn-primary,
         nav,
-        aside { 
+        aside,
+        .print\:hidden { 
             display: none !important; 
         }
 
-        /* Reset main layout */
         .app-container {
             display: block !important;
-            grid-template-columns: 1fr !important; /* If grid is used */
         }
 
-        .main-content {
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
-            max-width: none !important;
-        }
-
-        /* Show only invoice */
         .invoice-container {
             visibility: visible !important;
             position: absolute; 
             left: 0; 
             top: 0; 
             width: 210mm; 
-            min-height: 297mm; 
+            height: 297mm; /* Forced Height */
             margin: 0; 
             padding: 10mm 15mm; 
             box-shadow: none;
             z-index: 9999;
             background: white;
+            box-sizing: border-box;
         }
 
-        /* Ensure content inside invoice is visible */
         .invoice-container * {
             visibility: visible !important;
         }
 
         .glass { background: #fff !important; color: #000 !important; border: none; }
         
-        /* Ensure background colors print */
         .invoice-table th { background-color: var(--print-accent) !important; color: #fff !important; }
         .grand-total-row td { background-color: #f8fafc !important; }
         .invoice-meta-bar { background-color: #f8fafc !important; }
+        
+        /* Ensure footer sticks to bottom of page */
+        .footer-section {
+             position: absolute;
+             bottom: 15mm;
+             left: 15mm;
+             right: 15mm;
+        }
+        
+        .print-footer {
+            position: absolute;
+            bottom: 5mm;
+            left: 0;
+            right: 0;
+        }
     }
 </style>
 @endsection
