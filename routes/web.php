@@ -54,5 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/outstanding', [ReportingController::class, 'outstandingInvoices'])->name('reports.outstanding');
 
     // Payments
+    Route::get('/invoices/{invoice}/payment', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('/invoices/{invoice}/payments', [PaymentController::class, 'store'])->name('payments.store');
 });

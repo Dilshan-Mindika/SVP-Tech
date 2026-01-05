@@ -20,6 +20,7 @@ class RepairJob extends Model
         'serial_number',
         'fault_description',
         'repair_status',
+        'payment_status',
         'job_type',
         'invoice_generated',
         'repair_notes',

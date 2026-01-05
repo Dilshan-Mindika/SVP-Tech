@@ -17,9 +17,17 @@
     <div class="toolbar-container">
         <!-- Search Form -->
         <form action="{{ route('invoices.index') }}" method="GET" class="search-form">
-            <div class="search-box">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Invoice #, Customer..." class="search-input">
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <select name="status" onchange="this.form.submit()" style="padding: 0.8rem; border-radius: 2rem; border: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.4); color: #fff; width: 150px;">
+                    <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All Status</option>
+                    <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                    <option value="partial" {{ request('status') == 'partial' ? 'selected' : '' }}>Partial</option>
+                    <option value="unpaid" {{ request('status') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+                </select>
+                <div class="search-box" style="flex: 1;">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Invoice #, Customer..." class="search-input">
+                </div>
             </div>
         </form>
     </div>

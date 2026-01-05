@@ -158,12 +158,6 @@
                     {{ ucfirst($invoice->status) }}
                 </span>
                 <span class="text-gray-300">Balance Due: <span class="font-bold text-white">LKR {{ number_format($invoice->balance_due, 2) }}</span></span>
-                
-                @if($invoice->balance_due > 0)
-                <button @click="paymentModalOpen = true" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
-                    <i class="fas fa-plus mr-1"></i> Record Payment
-                </button>
-                @endif
             </div>
         </div>
 
@@ -196,63 +190,6 @@
         @else
         <p class="text-gray-500 italic">No payments recorded yet.</p>
         @endif
-    </div>
-
-    <!-- Payment Modal -->
-    <div x-data="{ paymentModalOpen: false }" x-show="paymentModalOpen" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div x-show="paymentModalOpen" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div x-show="paymentModalOpen" @click.away="paymentModalOpen = false" x-transition class="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <form action="{{ route('payments.store', $invoice->id) }}" method="POST">
-                    @csrf
-                    <div class="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <h3 class="text-lg leading-6 font-medium text-white mb-4" id="modal-title">Record Payment</h3>
-                        
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-400">Amount (LKR)</label>
-                                <input type="number" step="0.01" name="amount" max="{{ $invoice->balance_due }}" value="{{ $invoice->balance_due }}" required class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                <p class="mt-1 text-xs text-gray-400">Max: {{ number_format($invoice->balance_due, 2) }}</p>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-400">Payment Date</label>
-                                <input type="date" name="payment_date" value="{{ date('Y-m-d') }}" required class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-400">Method</label>
-                                <select name="payment_method" required class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                    <option value="cash">Cash</option>
-                                    <option value="card">Card</option>
-                                    <option value="bank_transfer">Bank Transfer</option>
-                                    <option value="cheque">Cheque</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-400">Reference / Cheque No</label>
-                                <input type="text" name="reference_number" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-400">Notes</label>
-                                <textarea name="notes" rows="2" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-gray-700/50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
-                            Save Payment
-                        </button>
-                        <button type="button" @click="paymentModalOpen = false" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-600 shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
         <div class="terms">
             <h4>Terms & Conditions</h4>

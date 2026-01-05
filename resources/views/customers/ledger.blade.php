@@ -93,7 +93,7 @@
                             View
                         </a>
                         @if($invoice->balance_due > 0)
-                            <a href="{{ route('invoices.show', $invoice->id) }}#payment" class="btn-success" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; margin-left: 5px; background: rgba(34, 197, 94, 0.2); color: #4ade80;">
+                            <a href="{{ route('payments.create', $invoice->id) }}" class="btn-success" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; margin-left: 5px; background: rgba(34, 197, 94, 0.2); color: #4ade80;">
                                 Pay
                             </a>
                         @endif

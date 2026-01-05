@@ -51,5 +51,10 @@ class Invoice extends Model
         }
 
         $this->save();
+
+        // Sync with Repair Job
+        if ($this->repairJob) {
+            $this->repairJob->update(['payment_status' => $this->status]);
+        }
     }
 }

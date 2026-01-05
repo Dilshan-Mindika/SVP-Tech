@@ -33,7 +33,7 @@
                 <th>Address</th>
                 <th>History</th>
                 <th style="text-align: right;">Total Due</th>
-                <th style="width: 150px;">Actions</th>
+                <th style="width: 140px; text-align: center;">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -69,11 +69,11 @@
                         <span style="color: var(--text-muted); font-size: 0.9rem;">-</span>
                     @endif
                 </td>
-                <td onclick="event.stopPropagation()">
-                    <a href="{{ route('customers.ledger', $customer->id) }}" class="action-icon" title="View Ledger" style="color: var(--primary);">
+                <td onclick="event.stopPropagation()" style="white-space: nowrap; text-align: center;">
+                    <a href="{{ route('customers.ledger', $customer->id) }}" class="action-icon" title="View Ledger" style="color: var(--primary); margin-right: 8px;">
                         <i class="fas fa-file-invoice-dollar"></i>
                     </a>
-                    <a href="{{ route('customers.edit', $customer->id) }}" class="action-icon edit-icon" title="Edit">
+                    <a href="{{ route('customers.edit', $customer->id) }}" class="action-icon edit-icon" title="Edit" style="margin-right: 8px;">
                         <i class="fas fa-edit"></i>
                     </a>
                     <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this customer?');">

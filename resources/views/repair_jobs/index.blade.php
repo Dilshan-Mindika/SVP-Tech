@@ -104,6 +104,15 @@
                         </select>
                     </form>
                 </td>
+                <td>
+                    <span class="px-2 py-1 rounded-full text-xs font-medium 
+                        {{ $job->payment_status === 'paid' ? 'bg-green-500/20 text-green-400' : '' }}
+                        {{ $job->payment_status === 'partial' ? 'bg-yellow-500/20 text-yellow-400' : '' }}
+                        {{ ($job->payment_status === 'pending' || $job->payment_status === 'unpaid') ? 'bg-red-500/20 text-red-400' : '' }}
+                    ">
+                        {{ ucfirst($job->payment_status === 'pending' ? 'Unpaid' : $job->payment_status) }}
+                    </span>
+                </td>
                 <td style="font-size: 0.85rem;" class="table-date-muted">{{ $job->created_at->format('M d') }}</td>
                 <td style="font-size: 0.85rem;" class="table-date-success">{{ $job->completed_at ? $job->completed_at->format('M d') : '-' }}</td>
                 <td style="font-size: 0.85rem;" class="table-date-blue">{{ $job->delivered_at ? $job->delivered_at->format('M d') : '-' }}</td>

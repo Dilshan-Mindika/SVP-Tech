@@ -17,6 +17,10 @@ class InvoicesModuleController extends Controller
         $query = Invoice::with(['repairJob.customer'])
             ->latest();
 
+        if ($request->has('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->whereHas('repairJob', function($q) use ($search) {

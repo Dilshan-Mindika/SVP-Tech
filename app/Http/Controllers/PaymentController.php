@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
+    public function create(Invoice $invoice)
+    {
+        return view('payments.create', compact('invoice'));
+    }
+
     public function store(Request $request, Invoice $invoice)
     {
         $request->validate([
@@ -31,6 +36,6 @@ class PaymentController extends Controller
             $invoice->recalculateStatus();
         });
 
-        return back()->with('success', 'Payment recorded successfully.');
+        return redirect()->route('invoices.show', $invoice->id)->with('success', 'Payment recorded successfully.');
     }
 }
