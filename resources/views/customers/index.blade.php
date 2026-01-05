@@ -31,7 +31,7 @@
                 <th style="text-align: left;">Customer Details</th>
                 <th>Contact Info</th>
                 <th>Address</th>
-                <th>Jobs</th>
+                <th>History</th>
                 <th style="width: 120px;">Actions</th>
             </tr>
         </thead>
@@ -50,9 +50,14 @@
                     {{ Str::limit($customer->address, 40) ?? '-' }}
                 </td>
                 <td>
-                    <span class="badge badge-jobs">
-                        {{ $customer->repair_jobs_count }} Jobs
-                    </span>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <span class="badge badge-jobs" title="Repair Jobs">
+                            <i class="fas fa-tools" style="font-size: 0.7rem; margin-right: 4px;"></i> {{ $customer->repairs_count }}
+                        </span>
+                        <span class="badge badge-sales" style="background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2);" title="Direct Sales">
+                            <i class="fas fa-shopping-cart" style="font-size: 0.7rem; margin-right: 4px;"></i> {{ $customer->sales_count }}
+                        </span>
+                    </div>
                 </td>
                 <td onclick="event.stopPropagation()">
                     <a href="{{ route('customers.edit', $customer->id) }}" class="action-icon edit-icon" title="Edit">

@@ -9,7 +9,14 @@ class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Customer::withCount('repairJobs')->latest();
+        $query = Customer::withCount([
+            'repairJobs as repairs_count' => function ($query) {
+                $query->where('job_type', '!=', 'sale');
+            },
+            'repairJobs as sales_count' => function ($query) {
+                $query->where('job_type', 'sale');
+            }
+        ])->latest();
 
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
