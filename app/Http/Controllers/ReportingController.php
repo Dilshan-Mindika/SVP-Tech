@@ -57,6 +57,14 @@ class ReportingController extends Controller
             $customersQuery->where('type', $customerType);
         }
 
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $customersQuery->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
         $customers = $customersQuery->orderBy('name')->get();
 
         // Calculate Stats

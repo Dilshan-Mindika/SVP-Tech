@@ -8,20 +8,45 @@
         <h2>Outstanding Invoices</h2>
         <p class="text-muted">Summary of unpaid balances and overdue payments</p>
     </div>
-    <div class="flex gap-4" style="display: flex; gap: 1rem; align-items: center; white-space: nowrap;">
-        {{-- Filter Dropdown --}}
-        <form action="{{ route('reports.outstanding') }}" method="GET" style="display: flex; align-items: center; margin: 0;">
-            <select name="customer_type" onchange="this.form.submit()" class="bg-gray-800 text-white border border-gray-600 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500 rounded-lg" style="margin-right: 0;">
-                <option value="all" {{ $customerType == 'all' ? 'selected' : '' }}>All Customers</option>
-                <option value="shop" {{ $customerType == 'shop' ? 'selected' : '' }}>Shops</option>
-                <option value="normal" {{ $customerType == 'normal' ? 'selected' : '' }}>Individuals</option>
-            </select>
-        </form>
+    <div class="toolbar-container print:hidden">
+        <!-- Advanced Filter Toolbar -->
+        <form action="{{ route('reports.outstanding') }}" method="GET" class="filter-toolbar">
+            
+            <!-- Search -->
+            <div class="search-group">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Customer..." class="search-input">
+            </div>
 
-        <button onclick="window.print()" class="btn-primary" 
-                style="white-space: nowrap; display: flex; align-items: center; gap: 12px; padding: 0.7rem 1.4rem; background: #3b82f6; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);">
-            <i class="fas fa-print"></i> Print Report
-        </button>
+            <!-- Filters Group -->
+            <div class="filter-group">
+                <!-- Customer Type Filter -->
+                <div class="select-wrapper">
+                    <i class="fas fa-users select-icon"></i>
+                    <select name="customer_type" class="filter-select">
+                        <option value="all">All Customers</option>
+                        <option value="shop" {{ request('customer_type') == 'shop' ? 'selected' : '' }}>Shops</option>
+                        <option value="normal" {{ request('customer_type') == 'normal' ? 'selected' : '' }}>Individuals</option>
+                    </select>
+                </div>
+
+                <!-- Actions -->
+                <button type="submit" class="btn-filter" title="Apply Filters">
+                    <i class="fas fa-filter"></i> <span>Filter</span>
+                </button>
+                
+                @if(request('search') || (request('customer_type') && request('customer_type') != 'all'))
+                    <a href="{{ route('reports.outstanding') }}" class="btn-clear" title="Clear Filters">
+                        <i class="fas fa-times"></i>
+                    </a>
+                @endif
+
+                <!-- Print Button (Moved inside toolbar acting as a tool) -->
+                <button type="button" onclick="window.print()" class="btn-secondary" style="height: 42px; display: flex; align-items: center; gap: 0.5rem; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); color: #60a5fa;">
+                    <i class="fas fa-print"></i> <span>Print</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -45,7 +70,6 @@
 </div>
 
 <div class="report-content bg-white text-black p-8 rounded-lg shadow-lg print:shadow-none print:w-full print:p-0">
-    {{-- Print Header --}}
     {{-- Print Header --}}
     <div class="print-header hidden print:block">
         <div>
@@ -107,6 +131,7 @@
                             <th class="py-2 px-4 font-semibold text-right w-32">Total</th>
                             <th class="py-2 px-4 font-semibold text-right w-32">Paid</th>
                             <th class="py-2 px-4 font-semibold text-right w-32">Balance</th>
+                            <th class="py-2 px-4 font-semibold text-center w-20 print:hidden">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 print:divide-gray-300">
@@ -120,6 +145,11 @@
                             <td class="py-1.5 px-4 text-right font-medium text-gray-800 print:text-black">{{ number_format($invoice->total_amount, 2) }}</td>
                             <td class="py-1.5 px-4 text-right text-green-600 print:text-black">{{ number_format($invoice->paid_amount, 2) }}</td>
                             <td class="py-1.5 px-4 text-right font-bold text-red-600 print:text-black">{{ number_format($invoice->balance_due, 2) }}</td>
+                            <td class="py-1.5 px-4 text-center print:hidden">
+                                <a href="{{ route('payments.create', $invoice->id) }}" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-600 hover:bg-green-200 transition-colors" title="Settle Invoice">
+                                    <i class="fas fa-hand-holding-usd text-xs"></i>
+                                </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
