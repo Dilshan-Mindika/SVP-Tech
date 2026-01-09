@@ -16,18 +16,51 @@
 <div class="card glass">
     <div class="toolbar-container">
         <!-- Search Form -->
-        <form action="{{ route('invoices.index') }}" method="GET" class="search-form">
-            <div style="display: flex; gap: 10px; width: 100%;">
-                <select name="status" onchange="this.form.submit()" style="padding: 0.8rem; border-radius: 2rem; border: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.4); color: #fff; width: 150px;">
-                    <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All Status</option>
-                    <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
-                    <option value="partial" {{ request('status') == 'partial' ? 'selected' : '' }}>Partial</option>
-                    <option value="unpaid" {{ request('status') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
-                </select>
-                <div class="search-box" style="flex: 1;">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Invoice #, Customer..." class="search-input">
+        <!-- Advanced Filter Toolbar -->
+        <form action="{{ route('invoices.index') }}" method="GET" class="filter-toolbar">
+            
+            <!-- Search -->
+            <div class="search-group">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Invoice #, Customer..." class="search-input">
+            </div>
+
+            <!-- Filters Group -->
+            <div class="filter-group">
+                <!-- Status Filter -->
+                <div class="select-wrapper">
+                    <i class="fas fa-file-invoice-dollar select-icon"></i>
+                    <select name="status" class="filter-select">
+                        <option value="all">All Status</option>
+                        <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                        <option value="partial" {{ request('status') == 'partial' ? 'selected' : '' }}>Partial</option>
+                        <option value="unpaid" {{ request('status') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+                    </select>
                 </div>
+
+                <!-- Date Range -->
+                <div class="date-group">
+                    <div class="date-input-wrapper">
+                        <span class="date-label">From</span>
+                        <input type="date" name="date_from" value="{{ request('date_from') }}" class="filter-date">
+                    </div>
+                    <span class="date-separator">to</span>
+                    <div class="date-input-wrapper">
+                        <span class="date-label">To</span>
+                        <input type="date" name="date_to" value="{{ request('date_to') }}" class="filter-date">
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <button type="submit" class="btn-filter" title="Apply Filters">
+                    <i class="fas fa-filter"></i> <span>Filter</span>
+                </button>
+                
+                @if(request('search') || (request('status') && request('status') != 'all') || request('date_from') || request('date_to'))
+                    <a href="{{ route('invoices.index') }}" class="btn-clear" title="Clear Filters">
+                        <i class="fas fa-times"></i>
+                    </a>
+                @endif
             </div>
         </form>
     </div>

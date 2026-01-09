@@ -21,6 +21,14 @@ class InvoicesModuleController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Filter by Date Range
+        if ($request->has('date_from') && $request->date_from != '') {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->has('date_to') && $request->date_to != '') {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->whereHas('repairJob', function($q) use ($search) {

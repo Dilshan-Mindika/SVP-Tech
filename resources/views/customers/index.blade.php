@@ -16,10 +16,39 @@
 <div class="card glass">
     <div class="toolbar-container">
         <!-- Search Form -->
-        <form action="{{ route('customers.index') }}" method="GET" class="search-form">
-            <div class="search-box">
+        <!-- Advanced Filter Toolbar -->
+        <form action="{{ route('customers.index') }}" method="GET" class="filter-toolbar">
+            
+            <!-- Search -->
+            <div class="search-group">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name, email, or phone..." class="search-input">
+            </div>
+
+            <!-- Filters Group -->
+            <div class="filter-group">
+                <!-- Customer Type Filter -->
+                <div class="select-wrapper">
+                    <i class="fas fa-users select-icon"></i>
+                    <select name="type" class="filter-select">
+                        <option value="">All Types</option>
+                        <option value="normal" {{ request('type') == 'normal' ? 'selected' : '' }}>Individual</option>
+                        <option value="shop" {{ request('type') == 'shop' ? 'selected' : '' }}>Shop / Corporate</option>
+                    </select>
+                </div>
+
+
+
+                <!-- Actions -->
+                <button type="submit" class="btn-filter" title="Apply Filters">
+                    <i class="fas fa-filter"></i> <span>Filter</span>
+                </button>
+                
+                @if(request('search') || request('type') || request('date_from') || request('date_to'))
+                    <a href="{{ route('customers.index') }}" class="btn-clear" title="Clear Filters">
+                        <i class="fas fa-times"></i>
+                    </a>
+                @endif
             </div>
         </form>
     </div>

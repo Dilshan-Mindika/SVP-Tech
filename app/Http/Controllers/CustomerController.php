@@ -27,6 +27,19 @@ class CustomerController extends Controller
             });
         }
 
+        // Filter by Customer Type
+        if ($request->has('type') && $request->type != '') {
+            $query->where('type', $request->type);
+        }
+
+        // Filter by Date Range (Created At)
+        if ($request->has('date_from') && $request->date_from != '') {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->has('date_to') && $request->date_to != '') {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
         $customers = $query->get();
         return view('customers.index', compact('customers'));
     }
