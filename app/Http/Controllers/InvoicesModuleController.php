@@ -113,7 +113,10 @@ class InvoicesModuleController extends Controller
             }
             
             // 3. Update Job Financials
-            $repairJob->update(['final_price' => $totalRevenue]); // Could allow saving cost here too if needed
+            $repairJob->update([
+                'final_price' => $totalRevenue,
+                'parts_used_cost' => $totalCost, // Store cost for dashboard profit calc
+            ]);
 
             // 4. Generate Invoice
             $profitMargin = $totalRevenue - $totalCost;

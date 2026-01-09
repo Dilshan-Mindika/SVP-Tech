@@ -21,14 +21,16 @@ class DashboardController extends Controller
             ->count();
         
         // Financials (All Jobs + Sales)
-        $dailyBaseQuery = \App\Models\RepairJob::whereDate('updated_at', today())
+        $dailyBaseQuery = \App\Models\RepairJob::whereDate('completed_at', today())
             ->whereIn('repair_status', ['completed', 'delivered']);
 
         $dailyRepairsCompleted = (clone $dailyBaseQuery)->where('job_type', '!=', 'sale')->count();
             
         $dailyRevenue = $dailyBaseQuery->sum('final_price');
-        $dailyCost = $dailyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('parts_used_cost + labor_cost'));
-        $dailyProfit = $dailyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('final_price - (parts_used_cost + labor_cost)'));
+        $dailyCost = $dailyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('COALESCE(parts_used_cost, 0) + COALESCE(labor_cost, 0)'));
+        // Using explicit SUM returns scalar, so no accessor collision here, but consistent naming is good. 
+        // Actually sum() just returns value.
+        $dailyProfit = $dailyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('final_price - (COALESCE(parts_used_cost, 0) + COALESCE(labor_cost, 0))'));
 
         // --- Monthly Stats ---
         $monthlyRepairsReceived = \App\Models\RepairJob::whereMonth('created_at', now()->month)
@@ -41,15 +43,15 @@ class DashboardController extends Controller
             ->where('job_type', 'sale')
             ->count();
             
-        $monthlyBaseQuery = \App\Models\RepairJob::whereMonth('updated_at', now()->month)
-            ->whereYear('updated_at', now()->year)
+        $monthlyBaseQuery = \App\Models\RepairJob::whereMonth('completed_at', now()->month)
+            ->whereYear('completed_at', now()->year)
             ->whereIn('repair_status', ['completed', 'delivered']);
 
         $monthlyRepairsCompleted = (clone $monthlyBaseQuery)->where('job_type', '!=', 'sale')->count();
 
         $monthlyRevenue = $monthlyBaseQuery->sum('final_price');
-        $monthlyCost = $monthlyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('parts_used_cost + labor_cost'));
-        $monthlyProfit = $monthlyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('final_price - (parts_used_cost + labor_cost)'));
+        $monthlyCost = $monthlyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('COALESCE(parts_used_cost, 0) + COALESCE(labor_cost, 0)'));
+        $monthlyProfit = $monthlyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('final_price - (COALESCE(parts_used_cost, 0) + COALESCE(labor_cost, 0))'));
 
         // --- Chart Data (Last 7 Days) ---
         $chartLabels = [];
@@ -60,13 +62,15 @@ class DashboardController extends Controller
             $date = now()->subDays($i);
             $chartLabels[] = $date->format('D'); // Mon, Tue...
             
-            $dayStats = \App\Models\RepairJob::selectRaw('SUM(final_price) as revenue, SUM(final_price - parts_used_cost - labor_cost) as profit')
-                ->whereDate('updated_at', $date)
+            // Use completed_at for stable revenue recognition
+            // Alias changed to 'net_profit' to avoid collision with getProfitAttribute
+            $dayStats = \App\Models\RepairJob::selectRaw('SUM(final_price) as revenue, SUM(final_price - COALESCE(parts_used_cost, 0) - COALESCE(labor_cost, 0)) as net_profit')
+                ->whereDate('completed_at', $date)
                 ->whereIn('repair_status', ['completed', 'delivered'])
                 ->first();
                 
             $chartRevenue[] = $dayStats->revenue ?? 0;
-            $chartProfit[] = $dayStats->profit ?? 0;
+            $chartProfit[] = $dayStats->net_profit ?? 0;
         }
 
         return view('dashboard', compact(
