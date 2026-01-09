@@ -14,14 +14,59 @@
 <div class="card glass">
     <div class="toolbar-container">
         <!-- Search Form -->
-        <form action="{{ route('repair-jobs.index') }}" method="GET" class="search-form">
-            <div class="search-box">
+        <!-- Advanced Filter Form -->
+        <!-- Advanced Filter Toolbar -->
+        <form action="{{ route('repair-jobs.index') }}" method="GET" class="filter-toolbar">
+            
+            <!-- Search -->
+            <div class="search-group">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search jobs, customers, devices..." class="search-input">
-                @if(request('status') && request('status') != 'all')
-                    <input type="hidden" name="status" value="{{ request('status') }}">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by Job No, Customer, Device..." class="search-input">
+            </div>
+
+            <!-- Filters Group -->
+            <div class="filter-group">
+                <!-- Technician Filter -->
+                <div class="select-wrapper">
+                    <i class="fas fa-user-friends select-icon"></i>
+                    <select name="technician_id" class="filter-select">
+                        <option value="">All Technicians</option>
+                        @foreach($technicians as $tech)
+                            <option value="{{ $tech->id }}" {{ request('technician_id') == $tech->id ? 'selected' : '' }}>
+                                {{ explode(' ', $tech->user->name)[0] }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Date Range -->
+                <div class="date-group">
+                    <div class="date-input-wrapper">
+                        <span class="date-label">From</span>
+                        <input type="date" name="date_from" value="{{ request('date_from') }}" class="filter-date">
+                    </div>
+                    <span class="date-separator">to</span>
+                    <div class="date-input-wrapper">
+                        <span class="date-label">To</span>
+                        <input type="date" name="date_to" value="{{ request('date_to') }}" class="filter-date">
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <button type="submit" class="btn-filter" title="Apply Filters">
+                    <i class="fas fa-filter"></i> <span>Filter</span>
+                </button>
+                
+                @if(request('search') || request('technician_id') || request('date_from') || request('date_to'))
+                    <a href="{{ route('repair-jobs.index', ['status' => request('status') ?? 'all']) }}" class="btn-clear" title="Clear Filters">
+                        <i class="fas fa-times"></i>
+                    </a>
                 @endif
             </div>
+
+            @if(request('status') && request('status') != 'all')
+                <input type="hidden" name="status" value="{{ request('status') }}">
+            @endif
         </form>
 
         <!-- Status Filters -->
@@ -181,5 +226,185 @@
         overflow: visible;
         white-space: nowrap; /* Keep icons on same line */
     }
-</style>
+
+    /* Enhanced Filter Toolbar Styles */
+    .filter-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 0.75rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        margin-bottom: 1rem;
+    }
+
+    .search-group {
+        position: relative;
+        flex: 1;
+        min-width: 250px;
+    }
+
+    .search-group .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        pointer-events: none;
+    }
+
+    .search-group .search-input {
+        width: 100%;
+        padding-left: 2.5rem !important;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        height: 42px;
+    }
+
+    .filter-group {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .select-wrapper {
+        position: relative;
+        min-width: 180px;
+    }
+
+    .select-wrapper .select-icon {
+        position: absolute;
+        left: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        pointer-events: none;
+        font-size: 0.85rem;
+    }
+
+    .filter-select {
+        width: 100%;
+        padding: 0 1rem 0 2.2rem;
+        height: 42px;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: var(--text-main);
+        appearance: none;
+        cursor: pointer;
+    }
+
+    .date-group {
+        display: flex;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 0 0.5rem;
+        height: 42px;
+    }
+
+    .date-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .date-label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+    .filter-date {
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        font-family: inherit;
+        font-size: 0.9rem;
+        outline: none;
+        width: 110px;
+        padding: 0.2rem 0;
+        color-scheme: dark; /* Force dark mode native UI for calendar */
+        cursor: pointer;
+    }
+
+    .filter-date::-webkit-calendar-picker-indicator {
+        opacity: 0.6;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    .filter-date:hover::-webkit-calendar-picker-indicator {
+        opacity: 1;
+    }
+
+    [data-theme="light"] .filter-date {
+        color-scheme: light;
+    }
+
+    .date-separator {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        margin: 0 0.5rem;
+    }
+
+    .btn-filter, .btn-clear {
+        height: 42px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .btn-filter {
+        background: var(--primary);
+        color: white;
+        gap: 0.5rem;
+    }
+
+    .btn-filter:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+
+    .btn-clear {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-muted);
+        width: 42px;
+        padding: 0;
+    }
+
+    .btn-clear:hover {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--danger);
+    }
+
+    [data-theme="light"] .filter-toolbar,
+    [data-theme="light"] .search-group .search-input,
+    [data-theme="light"] .filter-select,
+    [data-theme="light"] .date-group {
+        background: #ffffff;
+        border-color: #e2e8f0;
+    }
+
+    [data-theme="light"] .btn-clear {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    [data-theme="light"] .filter-toolbar {
+        background: #f8fafc;
+    }
+
 @endsection

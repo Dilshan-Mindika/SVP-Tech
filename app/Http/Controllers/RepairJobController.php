@@ -33,6 +33,19 @@ class RepairJobController extends Controller
             });
         }
 
+        // Filter by Technician
+        if ($request->has('technician_id') && $request->technician_id != '') {
+            $query->where('technician_id', $request->technician_id);
+        }
+
+        // Filter by Date Range (Created At)
+        if ($request->has('date_from') && $request->date_from != '') {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->has('date_to') && $request->date_to != '') {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
         $jobs = $query->get();
         $technicians = Technician::with('user')->get(); 
 
