@@ -59,12 +59,20 @@ class ReportingController extends Controller
 
         $customers = $customersQuery->orderBy('name')->get();
 
-        // Process data for the view
-        // We need to calculate balances dynamically or rely on the loaded data
-        // Filter invoices by date if needed, but usually "Outstanding" implies "Current status"
-        // regardless of date, though the user might want a snapshot. 
-        // For simplicity, we show CURRENT outstanding invoices.
+        // Calculate Stats
+        $totalOutstanding = 0;
+        $totalOverdueInvoices = 0;
+        $customersWithDebtCount = 0;
 
-        return view('reports.outstanding_invoices', compact('customers', 'customerType', 'toDate'));
+        foreach ($customers as $customer) {
+            $customerTotal = $customer->repairJobs->flatMap->invoices->where('status', '!=', 'paid')->sum('balance_due');
+            if ($customerTotal > 0) {
+                $totalOutstanding += $customerTotal;
+                $customersWithDebtCount++;
+                $totalOverdueInvoices += $customer->repairJobs->flatMap->invoices->where('status', '!=', 'paid')->count();
+            }
+        }
+
+        return view('reports.outstanding_invoices', compact('customers', 'customerType', 'toDate', 'totalOutstanding', 'customersWithDebtCount', 'totalOverdueInvoices'));
     }
 }
