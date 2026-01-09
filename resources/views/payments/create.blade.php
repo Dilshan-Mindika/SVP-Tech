@@ -48,7 +48,7 @@
             @csrf
             
             <div style="margin-bottom: 1.5rem;">
-                <label class="form-label font-medium">Payment Amount (LKR)</label>
+                <label class="form-label font-medium">Payment Amount (LKR) <span class="text-danger">*</span></label>
                 <div class="amount-input-wrapper" style="position: relative;">
                     <span style="position: absolute; left: 1rem; top: 18px; font-weight: 600; z-index: 10;" class="text-muted">LKR</span>
                     <input type="number" step="0.01" name="amount" x-model="amount" required 
@@ -65,13 +65,13 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
                 <div>
-                    <label class="form-label">Payment Date</label>
+                    <label class="form-label">Payment Date <span class="text-danger">*</span></label>
                     <input type="date" name="payment_date" value="{{ date('Y-m-d') }}" required 
                            class="form-input">
                 </div>
 
                 <div>
-                    <label class="form-label">Payment Method</label>
+                    <label class="form-label">Payment Method <span class="text-danger">*</span></label>
                     <div style="position: relative;">
                         <select name="payment_method" required class="form-input" style="appearance: none; cursor: pointer;">
                             <option value="cash">Cash</option>

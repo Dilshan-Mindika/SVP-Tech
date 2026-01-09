@@ -673,6 +673,35 @@ table td {
     font-size: 0.85rem;
 }
 
+/* Timeline Date Colors */
+.timeline-created {
+    color: #60a5fa;
+}
+
+/* Blue 400 */
+.timeline-completed {
+    color: #4ade80;
+}
+
+/* Green 400 */
+.timeline-delivered {
+    color: #c084fc;
+}
+
+/* Purple 400 */
+
+[data-theme="light"] .timeline-created {
+    color: #2563eb;
+}
+
+[data-theme="light"] .timeline-completed {
+    color: #16a34a;
+}
+
+[data-theme="light"] .timeline-delivered {
+    color: #9333ea;
+}
+
 .table-date-muted {
     color: var(--text-muted);
 }

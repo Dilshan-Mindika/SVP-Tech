@@ -29,7 +29,7 @@
 
         <!-- Existing Customer Select -->
         <div class="form-group" x-show="customerType === 'existing'">
-            <label>Select Customer</label>
+            <label>Select Customer <span class="text-danger">*</span></label>
             <select name="customer_id" class="form-control">
                 <option value="">-- Choose Customer --</option>
                 @foreach(\App\Models\Customer::orderBy('name')->get() as $customer)
@@ -71,7 +71,7 @@
         <h3 class="section-title" style="margin-top: 2rem;">Device Details</h3>
         <div class="grid-2">
             <div class="form-group">
-                <label>Brand</label>
+                <label>Brand <span class="text-danger">*</span></label>
                 <input type="text" name="laptop_brand" list="brand_list" required placeholder="Select or type brand..." autocomplete="off" class="form-control">
                 <datalist id="brand_list">
                     <option value="Apple">
@@ -97,7 +97,7 @@
                 </datalist>
             </div>
             <div class="form-group">
-                <label>Model</label>
+                <label>Model <span class="text-danger">*</span></label>
                 <input type="text" name="laptop_model" required placeholder="e.g. XPS 15, MacBook Pro M1..." class="form-control">
             </div>
         </div>
@@ -109,7 +109,7 @@
 
         <h3 class="section-title" style="margin-top: 2rem;">Fault Diagnosis</h3>
         <div class="form-group">
-            <label>Fault Description</label>
+            <label>Fault Description <span class="text-danger">*</span></label>
             <textarea name="fault_description" class="form-control" rows="4" required placeholder="Describe the issue..."></textarea>
         </div>
 

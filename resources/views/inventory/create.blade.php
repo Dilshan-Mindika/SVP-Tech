@@ -13,12 +13,12 @@
         
         <div class="grid-2">
             <div class="form-group">
-                <label>Part Name</label>
+                <label>Part Name <span class="text-danger">*</span></label>
                 <input type="text" name="name" required placeholder="e.g. 512GB NVMe SSD" class="form-control">
             </div>
             
             <div class="form-group">
-                <label>Stock Quantity</label>
+                <label>Stock Quantity <span class="text-danger">*</span></label>
                 <input type="number" name="stock_quantity" required placeholder="0" class="form-control">
             </div>
         </div>
@@ -37,12 +37,12 @@
 
         <div class="grid-3" style="margin-top: 1rem;">
             <div class="form-group">
-                <label>Cost Price (LKR)</label>
+                <label>Cost Price (LKR) <span class="text-danger">*</span></label>
                 <input type="number" step="0.01" name="cost_price" required placeholder="0.00" class="form-control">
             </div>
             
             <div class="form-group">
-                <label>Selling Price (LKR)</label>
+                <label>Selling Price (LKR) <span class="text-danger">*</span></label>
                 <input type="number" step="0.01" name="selling_price" required placeholder="0.00" class="form-control">
             </div>
 

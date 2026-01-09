@@ -31,6 +31,7 @@ class RepairJob extends Model
         'service_invoice_generated_at',
         'completed_at',
         'delivered_at',
+        'device_specs',
     ];
 
     protected $casts = [
@@ -38,6 +39,7 @@ class RepairJob extends Model
         'service_invoice_generated_at' => 'datetime',
         'completed_at' => 'datetime',
         'delivered_at' => 'datetime',
+        'device_specs' => 'array',
     ];
 
     public function customer()

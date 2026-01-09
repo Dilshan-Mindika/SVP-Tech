@@ -74,6 +74,50 @@
             <textarea name="repair_notes" class="form-control" rows="3" placeholder="e.g. Replaced LCD Screen, Added 8GB RAM...">{{ $repairJob->repair_notes }}</textarea>
         </div>
 
+        <!-- Hardware Specs Section -->
+        <div style="margin-top: 2rem;" x-data="{ 
+            showSpecs: {{ $repairJob->device_specs ? 'true' : 'false' }},
+            specs: {{ json_encode($repairJob->device_specs ?? []) }} 
+        }">
+            <button type="button" @click="showSpecs = !showSpecs" class="btn-secondary" style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <span class="font-bold"><i class="fas fa-microchip" style="margin-right: 0.5rem;"></i> Hardware Specifications (Optional)</span>
+                <i class="fas" :class="showSpecs ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </button>
+            
+            <div x-show="showSpecs" x-transition class="card glass" style="padding: 1.5rem; background: rgba(0,0,0,0.1);">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>RAM (Memory)</label>
+                        <input type="text" name="device_specs[ram]" x-model="specs.ram" class="form-control" placeholder="e.g. 8GB DDR4">
+                    </div>
+                    <div class="form-group">
+                        <label>Storage (HDD/SSD)</label>
+                        <input type="text" name="device_specs[storage]" x-model="specs.storage" class="form-control" placeholder="e.g. 512GB NVMe SSD">
+                    </div>
+                    <div class="form-group">
+                        <label>Processor (CPU)</label>
+                        <input type="text" name="device_specs[cpu]" x-model="specs.cpu" class="form-control" placeholder="e.g. Intel Core i5">
+                    </div>
+                    <div class="form-group">
+                        <label>Display</label>
+                        <input type="text" name="device_specs[display]" x-model="specs.display" class="form-control" placeholder="e.g. 15.6 inch FHD, No scratches">
+                    </div>
+                    <div class="form-group">
+                        <label>Battery Condition</label>
+                        <input type="text" name="device_specs[battery]" x-model="specs.battery" class="form-control" placeholder="e.g. Good, Holding charge">
+                    </div>
+                    <div class="form-group">
+                        <label>Keyboard / Touchpad</label>
+                        <input type="text" name="device_specs[keyboard]" x-model="specs.keyboard" class="form-control" placeholder="e.g. All keys working">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Other Components / Notes</label>
+                    <textarea name="device_specs[other]" x-model="specs.other" class="form-control" rows="2" placeholder="Any serial numbers or other component details..."></textarea>
+                </div>
+            </div>
+        </div>
+
         <h3 class="section-title" style="margin-top: 2rem;" x-show="status === 'completed'" x-transition x-cloak>Financials & Completion</h3>
 
         <div x-data="{

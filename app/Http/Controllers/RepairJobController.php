@@ -138,10 +138,10 @@ class RepairJobController extends Controller
             'expenses' => 'nullable|array',
             'expenses.*.description' => 'required|string',
             'expenses.*.amount' => 'required|numeric|min:0',
-            'invoice_items' => 'nullable|array',
             'invoice_items.*.description' => 'required|string',
             'invoice_items.*.quantity' => 'required|integer|min:1',
             'invoice_items.*.amount' => 'required|numeric|min:0',
+            'device_specs' => 'nullable|array',
         ]);
 
         \Illuminate\Support\Facades\DB::transaction(function () use ($repairJob, $validated, $request) {
@@ -172,6 +172,7 @@ class RepairJobController extends Controller
                 'technician_id' => $validated['technician_id'],
                 'fault_description' => $validated['fault_description'],
                 'repair_notes' => $validated['repair_notes'],
+                'device_specs' => $request->device_specs,
                 
                 // Calculated Financials
                 'parts_used_cost' => $totalExpenses, // Internal Expenses Total

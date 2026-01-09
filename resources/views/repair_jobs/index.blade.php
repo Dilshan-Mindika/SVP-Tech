@@ -89,7 +89,7 @@
                     </form>
                 </td>
                 <td>
-                     <div class="flex flex-col gap-3">
+                     <div style="display: flex; flex-direction: column; gap: 1rem;">
                         <form action="{{ route('repair-jobs.update-status', $job->id) }}" method="POST" onclick="event.stopPropagation()">
                             @csrf
                             @method('PATCH')
@@ -118,13 +118,19 @@
                     </div>
                 </td>
                 <td>
-                    <div class="flex flex-col text-xs text-muted gap-1">
-                        <div title="Created"><i class="fas fa-plus-circle w-4 text-center text-blue-400"></i> {{ $job->created_at->format('M d') }}</div>
+                     <div class="flex flex-col text-xs gap-1" style="font-weight: 500;">
+                        <div class="timeline-created" title="Created">
+                            <i class="fas fa-plus-circle w-4 text-center"></i> {{ $job->created_at->format('M d') }}
+                        </div>
                         @if($job->completed_at)
-                            <div title="Completed"><i class="fas fa-check-circle w-4 text-center text-green-400"></i> {{ $job->completed_at->format('M d') }}</div>
+                            <div class="timeline-completed" title="Completed">
+                                <i class="fas fa-check-circle w-4 text-center"></i> {{ $job->completed_at->format('M d') }}
+                            </div>
                         @endif
                         @if($job->delivered_at)
-                            <div title="Delivered"><i class="fas fa-truck w-4 text-center text-purple-400"></i> {{ $job->delivered_at->format('M d') }}</div>
+                            <div class="timeline-delivered" title="Delivered">
+                                <i class="fas fa-truck w-4 text-center"></i> {{ $job->delivered_at->format('M d') }}
+                            </div>
                         @endif
                     </div>
                 </td>

@@ -12,7 +12,7 @@
         @csrf
         
         <div class="form-group">
-            <label>Full Name</label>
+            <label>Full Name <span class="text-danger">*</span></label>
             <input type="text" name="name" required placeholder="Jane Doe" class="form-control">
         </div>
 
@@ -30,7 +30,7 @@
         </div>
         
         <div class="form-group">
-            <label>Phone Number</label>
+            <label>Phone Number <span class="text-danger">*</span></label>
             <input type="text" name="phone" placeholder="+1 234 567 890" class="form-control">
         </div>
 

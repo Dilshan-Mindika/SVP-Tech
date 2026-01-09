@@ -15,17 +15,17 @@
         <h3 class="section-title">Account Details</h3>
         
         <div class="form-group">
-            <label>Full Name</label>
+            <label>Full Name <span class="text-danger">*</span></label>
             <input type="text" name="name" class="form-control" required placeholder="John Doe">
         </div>
         
         <div class="form-group">
-            <label>Email Address</label>
+            <label>Email Address <span class="text-danger">*</span></label>
             <input type="email" name="email" class="form-control" required placeholder="tech@svp.tech">
         </div>
         
         <div class="form-group">
-            <label>Password</label>
+            <label>Password <span class="text-danger">*</span></label>
             <input type="password" name="password" class="form-control" required placeholder="Default Password">
         </div>
 

@@ -50,12 +50,12 @@
                     <!-- New Customer Fields -->
                     <div x-show="customerType === 'new'" style="display: grid; gap: 1rem; animation: fadeIn 0.3s ease;">
                         <div>
-                            <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Name</label>
+                            <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Name <span class="text-danger">*</span></label>
                             <input type="text" name="new_customer_name" class="form-control" placeholder="Customer Name"
                                 style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
                         </div>
                         <div>
-                            <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Phone</label>
+                            <label class="form-label" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Phone <span class="text-danger">*</span></label>
                             <input type="text" name="new_customer_phone" class="form-control" placeholder="Phone Number"
                                 style="width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius);">
                         </div>
@@ -72,10 +72,10 @@
                 
                 <!-- Items Grid Header -->
                 <div style="display: grid; grid-template-columns: 3fr 1fr 1.5fr 1.5fr auto; gap: 1rem; margin-bottom: 0.5rem; padding: 0 1rem;">
-                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Item Description</label>
-                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: center;">Qty</label>
+                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Item Description <span class="text-danger">*</span></label>
+                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: center;">Qty <span class="text-danger">*</span></label>
                     <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: right;">Cost (LKR)</label>
-                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: right;">Selling (LKR)</label>
+                    <label class="form-label" style="font-size: 0.8rem; color: var(--text-muted); margin: 0; text-align: right;">Selling (LKR) <span class="text-danger">*</span></label>
                     <div style="width: 32px;"></div>
                 </div>
                 
