@@ -227,6 +227,17 @@ class RepairJobController extends Controller
         return back()->with('success', 'Job Status updated to ' . str_replace('_', ' ', $validated['repair_status']));
     }
 
+    public function updatePaymentStatus(Request $request, RepairJob $job)
+    {
+        $validated = $request->validate([
+            'payment_status' => 'required|in:pending,paid,partial,unpaid',
+        ]);
+
+        $job->update(['payment_status' => $validated['payment_status']]);
+
+        return back()->with('success', 'Payment Status updated successfully.');
+    }
+
     public function destroy(RepairJob $repairJob)
     {
         $repairJob->delete();

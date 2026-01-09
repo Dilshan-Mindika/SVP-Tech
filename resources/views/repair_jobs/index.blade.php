@@ -89,11 +89,11 @@
                     </form>
                 </td>
                 <td>
-                     <div class="flex flex-col gap-2">
+                     <div class="flex flex-col gap-3">
                         <form action="{{ route('repair-jobs.update-status', $job->id) }}" method="POST" onclick="event.stopPropagation()">
                             @csrf
                             @method('PATCH')
-                            <select name="repair_status" onchange="this.form.submit()" class="status-select status-{{ $job->repair_status }} w-full text-xs py-1">
+                            <select name="repair_status" onchange="this.form.submit()" class="status-pill status-{{ $job->repair_status }}">
                                 <option value="pending" {{ $job->repair_status == 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="in_progress" {{ $job->repair_status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
                                 <option value="waiting_for_parts" {{ $job->repair_status == 'waiting_for_parts' ? 'selected' : '' }}>Waiting</option>
@@ -102,13 +102,19 @@
                                 <option value="cancelled" {{ $job->repair_status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                             </select>
                         </form>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-center border
-                            {{ $job->payment_status === 'paid' ? 'bg-green-100 text-green-700 border-green-200' : '' }}
-                            {{ $job->payment_status === 'partial' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : '' }}
-                            {{ ($job->payment_status === 'pending' || $job->payment_status === 'unpaid') ? 'bg-red-100 text-red-700 border-red-200' : '' }}
-                        ">
-                            {{ ucfirst($job->payment_status === 'pending' ? 'Unpaid' : $job->payment_status) }}
-                        </span>
+                        <form action="{{ route('repair-jobs.update-payment-status', $job->id) }}" method="POST" onclick="event.stopPropagation()">
+                            @csrf
+                            @method('PATCH')
+                            <select name="payment_status" onchange="this.form.submit()" class="status-pill 
+                                {{ $job->payment_status === 'paid' ? 'bg-green-500/10 text-green-500 border-green-500/20' : '' }}
+                                {{ $job->payment_status === 'partial' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' : '' }}
+                                {{ ($job->payment_status === 'pending' || $job->payment_status === 'unpaid') ? 'bg-red-500/10 text-red-500 border-red-500/20' : '' }}
+                            ">
+                                <option value="pending" {{ $job->payment_status == 'pending' ? 'selected' : '' }}>Unpaid</option>
+                                <option value="partial" {{ $job->payment_status == 'partial' ? 'selected' : '' }}>Partial</option>
+                                <option value="paid" {{ $job->payment_status == 'paid' ? 'selected' : '' }}>Paid</option>
+                            </select>
+                        </form>
                     </div>
                 </td>
                 <td>

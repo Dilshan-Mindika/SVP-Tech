@@ -308,7 +308,7 @@ table th {
     background-color: rgba(0, 0, 0, 0.2);
     font-weight: 600;
     text-align: left;
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem;
     font-size: 0.8rem;
     color: var(--text-muted);
     border-bottom: 1px solid var(--border-color);
@@ -316,7 +316,7 @@ table th {
 
 .data-table td,
 table td {
-    padding: 0.5rem 0.75rem;
+    padding: 0.5rem;
     border-bottom: 1px solid var(--border-color);
     font-size: 0.85rem;
     vertical-align: middle;
@@ -404,6 +404,56 @@ table td {
     background-color: #1e293b;
     color: #f8fafc;
     padding: 0.5rem;
+}
+
+/* Compact Status Pill for Tables */
+.status-pill {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    padding: 0.25rem 1.75rem 0.25rem 0.75rem !important;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    background-color: transparent;
+    transition: all 0.2s;
+
+    /* Small Arrow */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgba(255,255,255,0.7)'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 0.8rem;
+}
+
+.status-pill:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.status-pill option {
+    background-color: #1e293b;
+    color: #fff;
+    padding: 0.5rem;
+}
+
+[data-theme="light"] .status-pill {
+    border-color: rgba(0, 0, 0, 0.1);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 0.8rem;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+}
+
+[data-theme="light"] .status-pill option {
+    background-color: #ffffff;
+    color: #0f172a;
 }
 
 /* Page Header */
@@ -649,7 +699,10 @@ table td {
     gap: 0.5rem;
     overflow-x: auto;
     white-space: nowrap;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
     padding-bottom: 0.2rem;
     flex: 1;
     /* Take remaining space */
@@ -1149,7 +1202,16 @@ table td {
     /* Smooth scroll on iOS */
     margin-bottom: 1rem;
     border-radius: 8px;
-    /* Optional rounded scroll area */
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+.table-responsive::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
 }
 
 /* Ensure table doesn't shrink weirdly */

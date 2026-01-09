@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('repair-jobs', RepairJobController::class);
     Route::patch('/repair-jobs/{job}/status', [RepairJobController::class, 'updateStatus'])->name('repair-jobs.update-status');
     Route::patch('/repair-jobs/{job}/assign', [RepairJobController::class, 'assignTechnician'])->name('repair-jobs.assign-technician');
+    Route::patch('/repair-jobs/{job}/payment-status', [RepairJobController::class, 'updatePaymentStatus'])->name('repair-jobs.update-payment-status');
     Route::resource('inventory', InventoryController::class);
 
     // Invoices & Sales
