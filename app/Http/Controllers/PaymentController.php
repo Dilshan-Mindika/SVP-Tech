@@ -24,18 +24,39 @@ class PaymentController extends Controller
             'notes' => 'nullable|string|max:1000',
         ]);
 
-        DB::transaction(function () use ($request, $invoice) {
+        $excessAmount = 0;
+        $message = 'Payment recorded successfully.';
+
+        DB::transaction(function () use ($request, $invoice, &$excessAmount) {
+            // Check for overpayment
+            if ($request->amount > $invoice->balance_due) {
+                $excessAmount = $request->amount - $invoice->balance_due;
+                
+                // Limit the recorded payment amount to the balance due (to close the invoice cleanly)
+                // Or record full amount? -> User wants "save on system" (credit).
+                // Strategy: 
+                // 1. Record the FULL payment on the invoice (so the transaction history is accurate: "Customer paid 5000").
+                // 2. The Invoice logic will set balance to 0 (or negative).
+                // 3. We explicitly add the excess to the customer credit.
+                
+                $invoice->repairJob->customer->increment('credit_balance', $excessAmount);
+            }
+
             $invoice->payments()->create([
                 'amount' => $request->amount,
                 'payment_date' => $request->payment_date,
                 'payment_method' => $request->payment_method,
                 'reference_number' => $request->reference_number,
-                'notes' => $request->notes,
+                'notes' => $request->notes . ($excessAmount > 0 ? " (Includes Credit: LKR {$excessAmount})" : ''),
             ]);
 
             $invoice->recalculateStatus();
         });
 
-        return redirect()->route('invoices.show', $invoice->id)->with('success', 'Payment recorded successfully.');
+        if ($excessAmount > 0) {
+            $message .= ' LKR ' . number_format($excessAmount, 2) . ' has been credited to the customer account.';
+        }
+
+        return redirect()->route('invoices.show', $invoice->id)->with('success', $message);
     }
 }

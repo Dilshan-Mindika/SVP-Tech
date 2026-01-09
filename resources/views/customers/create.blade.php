@@ -15,6 +15,14 @@
             <label>Full Name</label>
             <input type="text" name="name" required placeholder="Jane Doe" class="form-control">
         </div>
+
+        <div class="form-group">
+            <label>Customer Type</label>
+            <select name="type" class="form-control">
+                <option value="normal">Individual (Normal)</option>
+                <option value="shop">Shop / Business</option>
+            </select>
+        </div>
         
         <div class="form-group">
             <label>Email Address</label>

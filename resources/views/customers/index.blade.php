@@ -40,7 +40,12 @@
             @forelse($customers as $customer)
             <tr class="clickable-row" onclick="window.location='{{ route('customers.ledger', $customer->id) }}'">
                 <td style="text-align: left;">
-                    <div class="table-text-main">{{ $customer->name }}</div>
+                    <div class="table-text-main">
+                        {{ $customer->name }}
+                        @if($customer->type === 'shop')
+                            <span style="font-size: 0.7rem; background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 2px 6px; border-radius: 4px; margin-left: 5px; text-transform: uppercase; font-weight: bold;">SHOP</span>
+                        @endif
+                    </div>
                     <div class="table-text-sub">ID: #{{ $customer->id }}</div>
                 </td>
                 <td>
@@ -70,7 +75,7 @@
                     @endif
                 </td>
                 <td onclick="event.stopPropagation()" style="white-space: nowrap; text-align: center;">
-                    <a href="{{ route('customers.ledger', $customer->id) }}" class="action-icon" title="View Ledger" style="color: var(--primary); margin-right: 8px;">
+                    <a href="{{ route('customers.ledger', $customer->id) }}" class="action-icon view-icon" title="View Ledger" style="margin-right: 8px;">
                         <i class="fas fa-file-invoice-dollar"></i>
                     </a>
                     <a href="{{ route('customers.edit', $customer->id) }}" class="action-icon edit-icon" title="Edit" style="margin-right: 8px;">

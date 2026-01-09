@@ -43,6 +43,7 @@ class CustomerController extends Controller
             'email' => 'nullable|email',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
+            'type' => 'required|in:normal,shop',
         ]);
 
         Customer::create($validated);

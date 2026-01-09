@@ -73,9 +73,14 @@
                         Rs. {{ number_format($invoice->total_amount, 2) }}
                     </td>
                     <td onclick="event.stopPropagation()">
-                        <a href="{{ route('invoices.show', $invoice->id) }}" class="action-icon edit-icon" title="View">
+                        <a href="{{ route('invoices.show', $invoice->id) }}" class="action-icon edit-icon" title="View" style="margin-right: 5px;">
                             <i class="fas fa-eye"></i>
                         </a>
+                        @if($invoice->status !== 'paid')
+                            <a href="{{ route('payments.create', $invoice->id) }}" class="action-icon" title="Record Payment" style="color: #4ade80;">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </a>
+                        @endif
                     </td>
                 </tr>
                 @empty

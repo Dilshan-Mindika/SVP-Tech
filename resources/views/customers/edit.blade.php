@@ -16,6 +16,14 @@
             <label>Full Name</label>
             <input type="text" name="name" value="{{ old('name', $customer->name) }}" required placeholder="Jane Doe" class="form-control">
         </div>
+
+        <div class="form-group">
+            <label>Customer Type</label>
+            <select name="type" class="form-control">
+                <option value="normal" {{ old('type', $customer->type) == 'normal' ? 'selected' : '' }}>Individual (Normal)</option>
+                <option value="shop" {{ old('type', $customer->type) == 'shop' ? 'selected' : '' }}>Shop / Business</option>
+            </select>
+        </div>
         
         <div class="form-group">
             <label>Email Address</label>

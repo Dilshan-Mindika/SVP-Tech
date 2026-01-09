@@ -17,6 +17,7 @@ class Customer extends Model
         'phone',
         'address',
         'type',
+        'credit_balance',
     ];
 
     public function repairJobs()
