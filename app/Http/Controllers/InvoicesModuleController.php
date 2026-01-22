@@ -82,7 +82,7 @@ class InvoicesModuleController extends Controller
                     'name' => $request->new_customer_name,
                     'phone' => $request->new_customer_phone,
                     'address' => $request->new_customer_address,
-                    'type' => 'individual', // Default type
+                    'type' => 'normal', // Default type (mapped to 'Individual' in UI)
                 ]);
                 $customerId = $customer->id;
             }
