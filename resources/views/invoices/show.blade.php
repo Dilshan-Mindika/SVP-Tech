@@ -17,20 +17,15 @@
     <!-- Invoice Header -->
     <header class="invoice-header">
         <div class="brand-section">
-            <img src="{{ asset('images/logo.png') }}" alt="SVP Technologies" class="invoice-logo">
-            <!-- <h1 class="company-name">SVP Technologies</h1> -->
+            <img src="{{ asset('images/logo.png') }}" alt="Cloud Tech" class="invoice-logo">
+            <!-- <h1 class="company-name">Cloud Tech</h1> -->
         </div>
         <div class="company-details">
-            <h2 class="company-name">SVP Technologies</h2>
+            <h2 class="company-name">Cloud Tech</h2>
             <div class="detail-block">
-                <p class="address-line">311/C, Thalgaswatta Road, Horahena, Hokandara</p>
-                <p class="contact-line"><strong>Phone:</strong> 071-1551800 / 011-2562462</p>
-                <p class="web-line"><strong>Web:</strong> svptech.lk / motherboard.lk</p>
-            </div>
-            <div class="detail-block mt-2">
-                <p class="label"><strong>Office:</strong></p>
-                <p class="address-line">194A Wanaguru Mawatha, Hokandara</p>
-                <p class="contact-line"><strong>Phone:</strong> 011-2562484</p>
+                <p class="address-line">90/1, Diddeniya, Hanwella</p>
+                <p class="contact-line"><strong>Phone:</strong> 0785315902</p>
+                <p class="web-line"><strong>Web:</strong> cloudtech.lk</p>
             </div>
         </div>
     </header>
@@ -195,7 +190,7 @@
             <h4>Terms & Conditions</h4>
             <ul>
                 <li>The prices quoted in our estimates are not binding. Final cost based on actual services/materials.</li>
-                <li>SVP Technologies is not responsible for data loss or damages due to unforeseen contingencies.</li>
+                <li>Cloud Tech is not responsible for data loss or damages due to unforeseen contingencies.</li>
                 <li>Inspection fee: Rs. 1,000 (Laptop) / Rs. 500 (Desktop) if repair is declined after estimate.</li>
                 <li>Items not collected within 30 days of notice may be disposed of.</li>
                 <li>Warranty claims require presentation of this original invoice.</li>
@@ -216,7 +211,7 @@
     </div>
     
     <div class="print-footer">
-        <p>Thank you for choosing SVP Technologies!</p>
+        <p>Thank you for choosing Cloud Tech!</p>
     </div>
 </div>
 
@@ -260,7 +255,7 @@
     }
 
     .invoice-logo {
-        height: 60px; /* Reduced from 100px */
+        height: 120px;
         width: auto;
         display: block;
     }
@@ -422,8 +417,9 @@
         display: flex;
         flex-direction: row; /* Side by side signatures */
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: flex-start;
         gap: 1rem;
+        padding-top: 50px;
     }
 
     .signature-box {

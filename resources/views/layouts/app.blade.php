@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'SVP Tech')</title>
+    <title>@yield('title', 'Cloud Tech')</title>
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -13,6 +13,8 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
     
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
@@ -24,7 +26,7 @@
             <button @click="sidebarOpen = !sidebarOpen" class="mobile-toggle-btn">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="mobile-brand">SVP Tech</div>
+            <div class="mobile-brand">Cloud Tech</div>
         </div>
 
         <!-- Sidebar Overlay -->
@@ -37,8 +39,8 @@
                 <i class="fas fa-times"></i>
             </button>
             <div class="brand" style="flex-direction: column; height: auto; padding: 2rem 1rem; gap: 1rem;">
-                <img src="{{ asset('images/logo.png') }}" alt="SVP Tech" style="height: 100px; width: auto; border-radius: 50%;">
-                <h1 style="font-size: 1.2rem; font-weight: 700; text-align: center;">SVP Technologies</h1>
+                <img src="{{ asset('images/logo.png') }}" alt="Cloud Tech" style="height: 100px; width: auto;">
+                <h1 style="font-size: 1.2rem; font-weight: 700; text-align: center;">Cloud Tech</h1>
             </div>
             <nav class="nav-links">
                 <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">

@@ -54,7 +54,7 @@
     }
 
     .brand-logo {
-        height: 80px;
+        height: 150px;
         width: auto;
         margin-bottom: 1rem;
         filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.3));
@@ -147,8 +147,8 @@
 <div class="login-wrapper">
     <div class="login-card">
         <div class="brand-header">
-            <img src="{{ asset('images/logo.png') }}" alt="SVP Tech" class="brand-logo">
-            <h1 class="brand-title">SVP Technologies</h1>
+            <img src="{{ asset('images/logo.png') }}" alt="Cloud Tech" class="brand-logo">
+            <h1 class="brand-title">Cloud Tech</h1>
             <p class="brand-subtitle">Sign in to your dashboard</p>
         </div>
 
@@ -185,7 +185,7 @@
     </div>
     
     <div style="text-align: center; margin-top: 2rem; color: #64748b; font-size: 0.85rem;">
-        &copy; {{ date('Y') }} SVP Technologies. All rights reserved.
+        &copy; {{ date('Y') }} Cloud Tech. All rights reserved.
     </div>
 </div>
 @endsection

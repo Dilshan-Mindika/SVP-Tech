@@ -73,10 +73,10 @@
     {{-- Print Header --}}
     <div class="print-header hidden print:block">
         <div>
-            <h1>SVP Technologies</h1>
+            <h1>Cloud Tech</h1>
             <div class="company-meta">
-                311/C, Thalgaswatta Road, Horahena, Hokandara<br>
-                071-1551800 / 011-2562462 • svptech.lk
+                90/1, Diddeniya, Hanwella<br>
+                0785315902 • cloudtech.lk
             </div>
         </div>
         <div class="report-meta">
