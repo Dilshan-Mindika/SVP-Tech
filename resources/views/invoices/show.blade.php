@@ -17,7 +17,7 @@
     <!-- Invoice Header -->
     <header class="invoice-header">
         <div class="brand-section">
-            <img src="{{ asset('images/logo.png') }}" alt="Cloud Tech" class="invoice-logo">
+            <img src="https://i.ibb.co/JRyxmV6R/Cloud-Logo.png" alt="Cloud Tech" class="invoice-logo">
             <!-- <h1 class="company-name">Cloud Tech</h1> -->
         </div>
         <div class="company-details">

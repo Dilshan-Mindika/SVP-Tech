@@ -39,7 +39,7 @@
                 <i class="fas fa-times"></i>
             </button>
             <div class="brand" style="flex-direction: column; height: auto; padding: 2rem 1rem; gap: 1rem;">
-                <img src="{{ asset('images/logo.png') }}" alt="Cloud Tech" style="height: 100px; width: auto;">
+                <img src="https://i.ibb.co/JRyxmV6R/Cloud-Logo.png" alt="Cloud Tech" style="height: 100px; width: auto;">
                 <h1 style="font-size: 1.2rem; font-weight: 700; text-align: center;">Cloud Tech</h1>
             </div>
             <nav class="nav-links">

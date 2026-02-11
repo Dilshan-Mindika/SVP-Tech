@@ -91,7 +91,7 @@ class InvoicesModuleController extends Controller
             $repairJob = RepairJob::create([
                 'job_number' => 'SALE-' . strtoupper(uniqid()), // Temporary unique ID, or use sequence
                 'customer_id' => $customerId,
-                'technician_id' => auth()->id(), // Assigned to current user (admin/tech)
+                'technician_id' => auth()->user()->technician?->id, // Get relevant technician ID or null
                 'job_type' => 'sale',
                 'repair_status' => 'completed',
                 'payment_status' => 'pending', // Assuming this field exists or handled by invoice
