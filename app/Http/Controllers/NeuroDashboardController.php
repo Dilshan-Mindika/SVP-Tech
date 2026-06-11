@@ -230,7 +230,7 @@ class NeuroDashboardController extends Controller
             ]
         ];
 
-        return view('dashboard', compact(
+        return view('neuro_dashboard', compact(
             'dailyRevenue',
             'monthlyRevenue',
             'totalMonthlyExpenses',

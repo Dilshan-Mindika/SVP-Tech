@@ -33,12 +33,12 @@ class NeuroReportsController extends Controller
         }
 
         if ($request->has('print')) {
-            return view('reports.print', compact('reportType', 'data', 'fromDate', 'toDate'));
+            return view('neuro_reports.print', compact('reportType', 'data', 'fromDate', 'toDate'));
         }
 
         $stats = $this->calculateReportStats($reportType, $data);
 
-        return view('reports.index', compact('reportType', 'data', 'fromDate', 'toDate', 'chartData', 'stats'));
+        return view('neuro_reports.index', compact('reportType', 'data', 'fromDate', 'toDate', 'chartData', 'stats'));
     }
 
     private function calculateReportStats($reportType, $data)

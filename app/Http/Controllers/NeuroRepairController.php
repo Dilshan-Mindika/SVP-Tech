@@ -46,7 +46,7 @@ class NeuroRepairController extends Controller
         ];
 
         $repairs = $query->latest()->paginate(10);
-        return view('repairs.index', compact('repairs', 'stats'));
+        return view('neuro_repairs.index', compact('repairs', 'stats'));
     }
 
     public function create()
@@ -54,7 +54,7 @@ class NeuroRepairController extends Controller
         $technicians = Employee::where('designation', 'Technician')
             ->where('status', 'active')
             ->get();
-        return view('repairs.create', compact('technicians'));
+        return view('neuro_repairs.create', compact('technicians'));
     }
 
     public function store(Request $request)
@@ -126,7 +126,7 @@ class NeuroRepairController extends Controller
 
         $repair = Repair::create($data);
 
-        return redirect()->route('repairs.show', $repair->id)->with('success', "Repair job {$jobNo} logged successfully.");
+        return redirect()->route('neuro_repairs.show', $repair->id)->with('success', "Repair job {$jobNo} logged successfully.");
     }
 
     public function show(Repair $repair)
@@ -134,7 +134,7 @@ class NeuroRepairController extends Controller
         $repair->load(['technician', 'items.product']);
         // Load in-stock products that can be used as spare parts
         $spareParts = Product::where('stock', '>', 0)->get();
-        return view('repairs.show', compact('repair', 'spareParts'));
+        return view('neuro_repairs.show', compact('repair', 'spareParts'));
     }
 
     public function edit(Repair $repair)
@@ -142,7 +142,7 @@ class NeuroRepairController extends Controller
         $technicians = Employee::where('designation', 'Technician')
             ->where('status', 'active')
             ->get();
-        return view('repairs.edit', compact('repair', 'technicians'));
+        return view('neuro_repairs.edit', compact('repair', 'technicians'));
     }
 
     public function update(Request $request, Repair $repair)
@@ -212,13 +212,13 @@ class NeuroRepairController extends Controller
             $this->createInvoiceFromRepair($repair);
         }
 
-        return redirect()->route('repairs.show', $repair->id)->with('success', "Repair job #{$repair->repair_job_no} details updated.");
+        return redirect()->route('neuro_repairs.show', $repair->id)->with('success', "Repair job #{$repair->repair_job_no} details updated.");
     }
 
     public function receipt(Repair $repair)
     {
         $repair->load(['technician', 'items.product']);
-        return view('repairs.receipt', compact('repair'));
+        return view('neuro_repairs.receipt', compact('repair'));
     }
 
     private function createInvoiceFromRepair(Repair $repair)
@@ -348,12 +348,12 @@ class NeuroRepairController extends Controller
             $repair->save();
         });
 
-        return redirect()->route('repairs.show', $repair->id)->with('success', "Spare part added to repair job.");
+        return redirect()->route('neuro_repairs.show', $repair->id)->with('success', "Spare part added to repair job.");
     }
 
     public function destroy(Repair $repair)
     {
         $repair->delete();
-        return redirect()->route('repairs.index')->with('success', "Repair job #{$repair->repair_job_no} deleted successfully.");
+        return redirect()->route('neuro_repairs.index')->with('success', "Repair job #{$repair->repair_job_no} deleted successfully.");
     }
 }

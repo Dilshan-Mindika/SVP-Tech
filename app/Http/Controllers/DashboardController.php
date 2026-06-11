@@ -12,11 +12,11 @@ class DashboardController extends Controller
         $startOfMonth = now()->startOfMonth();
 
         // --- Daily Stats ---
-        $dailyRepairsReceived = \App\Models\RepairJob::whereDate('created_at', today())
+        $dailyRepairsReceived = \App\Models\RepairJob::whereDate('createdAt', today())
             ->where('job_type', '!=', 'sale')
             ->count();
             
-        $dailySalesCount = \App\Models\RepairJob::whereDate('created_at', today())
+        $dailySalesCount = \App\Models\RepairJob::whereDate('createdAt', today())
             ->where('job_type', 'sale')
             ->count();
         
@@ -33,15 +33,16 @@ class DashboardController extends Controller
         $dailyProfit = $dailyBaseQuery->sum(\Illuminate\Support\Facades\DB::raw('final_price - (COALESCE(parts_used_cost, 0) + COALESCE(labor_cost, 0))'));
 
         // --- Monthly Stats ---
-        $monthlyRepairsReceived = \App\Models\RepairJob::whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
+        $monthlyRepairsReceived = \App\Models\RepairJob::whereMonth('createdAt', now()->month)
+            ->whereYear('createdAt', now()->year)
             ->where('job_type', '!=', 'sale')
             ->count();
             
-        $monthlySalesCount = \App\Models\RepairJob::whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
+        $monthlySalesCount = \App\Models\RepairJob::whereMonth('createdAt', now()->month)
+            ->whereYear('createdAt', now()->year)
             ->where('job_type', 'sale')
             ->count();
+
             
         $monthlyBaseQuery = \App\Models\RepairJob::whereMonth('completed_at', now()->month)
             ->whereYear('completed_at', now()->year)

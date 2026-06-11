@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Cloud Tech')</title>
     
+    <!-- Tailwind Compiled CSS -->
+    @vite(['resources/css/app.css'])
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -68,7 +72,122 @@
                 <a href="{{ route('reports.outstanding') }}" class="{{ request()->routeIs('reports.outstanding') ? 'active' : '' }}">
                     <i class="fas fa-hand-holding-usd" style="margin-right: 10px; width: 20px;"></i> Payments
                 </a>
+
+                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Advanced ERP & POS</span>
+                
+                <a href="{{ route('neuro_dashboard') }}" class="{{ request()->routeIs('neuro_dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-terminal" style="margin-right: 10px; width: 20px;"></i> Neuro Console
+                </a>
+                
+                @if(auth()->user()->hasPermission('read-products'))
+                    <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
+                        <i class="fas fa-cubes" style="margin-right: 10px; width: 20px;"></i> Products List
+                    </a>
+                @endif
+                
+                @if(auth()->user()->hasPermission('read-categories'))
+                    <a href="{{ route('categories.index') }}" class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
+                        <i class="fas fa-tags" style="margin-right: 10px; width: 20px;"></i> Categories
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('create-invoices') || auth()->user()->hasPermission('read-invoices'))
+                    <a href="{{ route('neuro_invoices.index') }}" class="{{ request()->routeIs('neuro_invoices.*') ? 'active' : '' }}">
+                        <i class="fas fa-file-invoice" style="margin-right: 10px; width: 20px;"></i> Neuro Invoices
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-quotations'))
+                    <a href="{{ route('quotations.index') }}" class="{{ request()->routeIs('quotations.*') ? 'active' : '' }}">
+                        <i class="fas fa-file-contract" style="margin-right: 10px; width: 20px;"></i> Quotations
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-customers'))
+                    <a href="{{ route('neuro_customers.index') }}" class="{{ request()->routeIs('neuro_customers.*') ? 'active' : '' }}">
+                        <i class="fas fa-address-book" style="margin-right: 10px; width: 20px;"></i> Neuro Customers
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-grn'))
+                    <a href="{{ route('grn.index') }}" class="{{ request()->routeIs('grn.*') ? 'active' : '' }}">
+                        <i class="fas fa-truck-loading" style="margin-right: 10px; width: 20px;"></i> Goods Received (GRN)
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-suppliers'))
+                    <a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
+                        <i class="fas fa-handshake" style="margin-right: 10px; width: 20px;"></i> Suppliers
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-repairs'))
+                    <a href="{{ route('neuro_repairs.index') }}" class="{{ request()->routeIs('neuro_repairs.*') ? 'active' : '' }}">
+                        <i class="fas fa-wrench" style="margin-right: 10px; width: 20px;"></i> Neuro Repairs
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-warranty'))
+                    <a href="{{ route('warranty.index') }}" class="{{ request()->routeIs('warranty.*') ? 'active' : '' }}">
+                        <i class="fas fa-shield-alt" style="margin-right: 10px; width: 20px;"></i> Warranty Claims
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-appointments'))
+                    <a href="{{ route('appointments.index') }}" class="{{ request()->routeIs('appointments.*') ? 'active' : '' }}">
+                        <i class="fas fa-calendar-alt" style="margin-right: 10px; width: 20px;"></i> Appointments
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-returns'))
+                    <a href="{{ route('returns.index') }}" class="{{ request()->routeIs('returns.*') ? 'active' : '' }}">
+                        <i class="fas fa-undo-alt" style="margin-right: 10px; width: 20px;"></i> Returns
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-employees'))
+                    <a href="{{ route('employees.index') }}" class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-tie" style="margin-right: 10px; width: 20px;"></i> Employees
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-salaries'))
+                    <a href="{{ route('salaries.index') }}" class="{{ request()->routeIs('salaries.*') ? 'active' : '' }}">
+                        <i class="fas fa-money-bill-wave" style="margin-right: 10px; width: 20px;"></i> Salaries
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-expenses'))
+                    <a href="{{ route('expenses.index') }}" class="{{ request()->routeIs('expenses.*') ? 'active' : '' }}">
+                        <i class="fas fa-receipt" style="margin-right: 10px; width: 20px;"></i> Expenses
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-expenses'))
+                    <a href="{{ route('neuro_reports.index') }}" class="{{ request()->routeIs('neuro_reports.*') ? 'active' : '' }}">
+                        <i class="fas fa-chart-pie" style="margin-right: 10px; width: 20px;"></i> Neuro Reports
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-users'))
+                    <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-cog" style="margin-right: 10px; width: 20px;"></i> User Accounts
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-roles'))
+                    <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') || request()->routeIs('permissions.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-shield" style="margin-right: 10px; width: 20px;"></i> Roles & Permissions
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-bank-accounts'))
+                    <a href="{{ route('bank_accounts.index') }}" class="{{ request()->routeIs('bank_accounts.*') ? 'active' : '' }}">
+                        <i class="fas fa-university" style="margin-right: 10px; width: 20px;"></i> Bank Accounts
+                    </a>
+                @endif
             </nav>
+
             <div class="user-panel">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 0.8rem;" class="user-info-row">
                     <span class="user-name" style="margin: 0; border: none; padding: 0;">

@@ -64,6 +64,9 @@ class User extends Authenticatable
 
     public function hasPermission(string $permissionName): bool
     {
+        if ($this->isAdmin()) {
+            return true;
+        }
         if (!$this->role_id) {
             return false;
         }
@@ -76,6 +79,7 @@ class User extends Authenticatable
         }
         return $role->permissions()->where('name', $permissionName)->exists();
     }
+
 
     /**
      * The attributes that should be hidden for serialization.
