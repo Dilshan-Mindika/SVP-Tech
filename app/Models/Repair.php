@@ -85,6 +85,46 @@ class Repair extends Model
         return $this->belongsTo(Employee::class, 'assigned_technician_id');
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    public function getRepairJobNoAttribute($value)
+    {
+        return $value ?: $this->job_number;
+    }
+
+    public function getCustomerNameAttribute($value)
+    {
+        if ($value) return $value;
+        return $this->customer ? $this->customer->name : 'Walk-in';
+    }
+
+    public function getCustomerPhoneAttribute($value)
+    {
+        if ($value) return $value;
+        return $this->customer ? $this->customer->phone : null;
+    }
+
+    public function getDeviceModelAttribute($value)
+    {
+        if ($value) return $value;
+        return $this->laptop_model ?: ($this->laptop_brand ?: 'Unknown Device');
+    }
+
+    public function getStatusAttribute($value)
+    {
+        $status = $value ?: ($this->repair_status ?: 'received');
+        return strtolower($status);
+    }
+    
+    public function getEstimateCostAttribute($value)
+    {
+        if ($value > 0) return $value;
+        return $this->final_price ?: ($this->labor_cost + $this->parts_used_cost ?: 0.0);
+    }
+
     public function items()
     {
         return $this->hasMany(RepairItem::class);

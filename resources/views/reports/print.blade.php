@@ -782,7 +782,7 @@
         @endif
 
         <div class="footer">
-            <p>CLOUDTECH ERP - Internal Operations & Financial Reporting Engine</p>
+            <p>CLOUDTECH - Internal Operations & Financial Reporting Engine</p>
             <p>&copy; {{ date('Y') }} CloudTech. All rights reserved. Confidential document for internal use only.</p>
         </div>
     </div>

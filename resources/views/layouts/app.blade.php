@@ -42,9 +42,9 @@
             <button class="mobile-close-btn" @click="sidebarOpen = false">
                 <i class="fas fa-times"></i>
             </button>
-            <div class="brand" style="flex-direction: column; height: auto; padding: 2rem 1rem; gap: 1rem;">
-                <img src="{{ asset('images/logo.png') }}" alt="Cloud Tech" style="height: 100px; width: auto; max-width: 100%; object-fit: contain;">
-                <h1 style="font-size: 1.2rem; font-weight: 700; text-align: center;">Cloud Tech</h1>
+            <div class="brand" style="gap: 0.75rem;">
+                <img src="{{ asset('images/logo.png') }}" alt="Cloud Tech" style="height: 32px; width: auto; object-fit: contain;">
+                <h1 style="font-size: 1.15rem; font-weight: 700; margin: 0; letter-spacing: 0.5px;">Cloud Tech</h1>
             </div>
             <nav class="nav-links">
                 <!-- Core Dashboard -->
@@ -56,7 +56,7 @@
                     <i class="fas fa-search" style="margin-right: 10px; width: 20px;"></i> Global Search
                 </a>
 
-                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Services & Repairs</span>
+                <span class="nav-header">Services & Repairs</span>
                 
                 @if(auth()->user()->hasPermission('read-repairs'))
                     <a href="{{ route('repairs.index') }}" class="{{ request()->routeIs('repairs.*') ? 'active' : '' }}">
@@ -76,7 +76,7 @@
                     </a>
                 @endif
 
-                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Sales & Inventory</span>
+                <span class="nav-header">Sales & Inventory</span>
 
                 @if(auth()->user()->hasPermission('read-invoices') || auth()->user()->hasPermission('create-invoices'))
                     <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}">
@@ -120,7 +120,7 @@
                     </a>
                 @endif
 
-                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Customers & Relations</span>
+                <span class="nav-header">Customers & Relations</span>
 
                 @if(auth()->user()->hasPermission('read-customers'))
                     <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">
@@ -128,7 +128,7 @@
                     </a>
                 @endif
 
-                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Finance & Personnel</span>
+                <span class="nav-header">Finance & Personnel</span>
 
                 @if(auth()->user()->hasPermission('read-employees'))
                     <a href="{{ route('employees.index') }}" class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
@@ -160,7 +160,7 @@
                     </a>
                 @endif
 
-                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Administration</span>
+                <span class="nav-header">Administration</span>
 
                 @if(auth()->user()->isAdmin())
                     <a href="{{ route('technicians.index') }}" class="{{ request()->routeIs('technicians.*') ? 'active' : '' }}">

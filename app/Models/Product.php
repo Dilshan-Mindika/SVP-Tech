@@ -50,7 +50,16 @@ class Product extends Model
 
     public function getCategoryAttribute()
     {
-        return $this->getRelationValue('category');
+        $relation = $this->getRelationValue('category');
+        if ($relation) {
+            return $relation;
+        }
+
+        // Graceful fallback to raw category string column if the relation is missing/null
+        $fallback = new \stdClass();
+        $fallback->name = $this->attributes['category'] ?? 'Uncategorized';
+        $fallback->slug = \Illuminate\Support\Str::slug($fallback->name);
+        return $fallback;
     }
 
     public function serials()

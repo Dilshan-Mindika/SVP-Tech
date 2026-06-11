@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-6">
+<div class="dashboard-container">
     <!-- Top Cockpit Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -17,9 +17,9 @@
     </div>
 
     <!-- Financial & Operational KPIs -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="dashboard-grid">
         <!-- Daily Revenue Card -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 relative overflow-hidden transition-all hover:border-slate-700/80 group">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 relative overflow-hidden transition-all hover:border-slate-700/80 group">
             <div class="absolute -right-6 -bottom-6 text-7xl transition-transform group-hover:scale-110" style="color: #22d3ee; opacity: 0.15;">
                 <i class="fa-solid fa-cash-register"></i>
             </div>
@@ -32,7 +32,7 @@
         </div>
 
         <!-- Monthly Revenue Card -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 relative overflow-hidden transition-all hover:border-slate-700/80 group">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 relative overflow-hidden transition-all hover:border-slate-700/80 group">
             <div class="absolute -right-6 -bottom-6 text-7xl transition-transform group-hover:scale-110" style="color: #94a3b8; opacity: 0.15;">
                 <i class="fa-solid fa-money-bill-trend-up"></i>
             </div>
@@ -44,7 +44,7 @@
         </div>
 
         <!-- Monthly Expenses Card -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 relative overflow-hidden transition-all hover:border-slate-700/80 group">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 relative overflow-hidden transition-all hover:border-slate-700/80 group">
             <div class="absolute -right-6 -bottom-6 text-7xl transition-transform group-hover:scale-110" style="color: #f43f5e; opacity: 0.15;">
                 <i class="fa-solid fa-money-bill-transfer"></i>
             </div>
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Net Profit Card (Glow Accent) -->
-        <div class="bg-slate-900 border {{ $netProfit >= 0 ? 'border-emerald-500/30' : 'border-rose-500/30' }} rounded-xl p-5 relative overflow-hidden transition-all hover:border-slate-700 group shadow-[0_0_15px_rgba(16,185,129,0.05)]">
+        <div class="bg-slate-900 border {{ $netProfit >= 0 ? 'border-emerald-500/30' : 'border-rose-500/30' }} rounded-xl p-6 relative overflow-hidden transition-all hover:border-slate-700 group shadow-[0_0_15px_rgba(16,185,129,0.05)]">
             <div class="absolute -right-6 -bottom-6 text-7xl transition-transform group-hover:scale-110" style="color: #34d399; opacity: 0.15;">
                 <i class="fa-solid fa-hand-holding-dollar"></i>
             </div>
@@ -73,9 +73,9 @@
     </div>
 
     <!-- Active Operational State -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="dashboard-grid">
         <!-- Active Repairs -->
-        <a href="{{ route('repairs.index') }}" class="bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 p-4 rounded-xl flex items-center justify-between transition-all group">
+        <a href="{{ route('repairs.index') }}" class="bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 p-5 rounded-xl flex items-center justify-between transition-all group">
             <div class="flex items-center gap-3">
                 <div class="h-10 w-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg transition-transform group-hover:scale-110">
                     <i class="fa-solid fa-screwdriver-wrench"></i>
@@ -89,7 +89,7 @@
         </a>
 
         <!-- Pending Warranties -->
-        <a href="{{ route('warranty.index') }}" class="bg-slate-900/60 border border-slate-800 hover:border-amber-500/40 p-4 rounded-xl flex items-center justify-between transition-all group">
+        <a href="{{ route('warranty.index') }}" class="bg-slate-900/60 border border-slate-800 hover:border-amber-500/40 p-5 rounded-xl flex items-center justify-between transition-all group">
             <div class="flex items-center gap-3">
                 <div class="h-10 w-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg transition-transform group-hover:scale-110">
                     <i class="fa-solid fa-shield-halved"></i>
@@ -103,7 +103,7 @@
         </a>
 
         <!-- Low Stock Alerts -->
-        <a href="{{ route('products.index', ['stock_filter' => 'low']) }}" class="bg-slate-900/60 border border-slate-800 hover:border-rose-500/40 p-4 rounded-xl flex items-center justify-between transition-all group">
+        <a href="{{ route('products.index', ['stock_filter' => 'low']) }}" class="bg-slate-900/60 border border-slate-800 hover:border-rose-500/40 p-5 rounded-xl flex items-center justify-between transition-all group">
             <div class="flex items-center gap-3">
                 <div class="h-10 w-10 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center text-lg transition-transform group-hover:scale-110">
                     <i class="fa-solid fa-box-open"></i>
@@ -117,7 +117,7 @@
         </a>
 
         <!-- Upcoming Appointments -->
-        <a href="{{ route('appointments.index') }}" class="bg-slate-900/60 border border-slate-800 hover:border-emerald-500/40 p-4 rounded-xl flex items-center justify-between transition-all group">
+        <a href="{{ route('appointments.index') }}" class="bg-slate-900/60 border border-slate-800 hover:border-emerald-500/40 p-5 rounded-xl flex items-center justify-between transition-all group">
             <div class="flex items-center gap-3">
                 <div class="h-10 w-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg transition-transform group-hover:scale-110">
                     <i class="fa-solid fa-calendar-days"></i>
@@ -132,30 +132,30 @@
     </div>
 
     <!-- Financial Trends Chart Deck -->
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 shadow-[0_0_20px_rgba(0,0,0,0.2)]">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4 shadow-[0_0_20px_rgba(0,0,0,0.2)]">
+        <div class="chart-header flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-chart-line text-cyan-400"></i>
                 <h3 class="orbitron-title text-sm font-black text-slate-200 uppercase tracking-widest">Financial Node Trends</h3>
             </div>
             <!-- Chart Filters -->
             <div class="flex bg-slate-950 p-1 border border-slate-800 rounded-lg gap-1">
-                <button onclick="updateChartFilter('daily')" id="btn-daily" class="chart-tab-btn px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Daily</button>
-                <button onclick="updateChartFilter('weekly')" id="btn-weekly" class="chart-tab-btn px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all text-slate-400 hover:text-slate-200">Weekly</button>
-                <button onclick="updateChartFilter('monthly')" id="btn-monthly" class="chart-tab-btn px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all text-slate-400 hover:text-slate-200">Monthly</button>
-                <button onclick="updateChartFilter('annually')" id="btn-annually" class="chart-tab-btn px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all text-slate-400 hover:text-slate-200">Annually</button>
+                <button onclick="updateChartFilter('daily')" id="btn-daily" class="chart-tab-btn active">Daily</button>
+                <button onclick="updateChartFilter('weekly')" id="btn-weekly" class="chart-tab-btn">Weekly</button>
+                <button onclick="updateChartFilter('monthly')" id="btn-monthly" class="chart-tab-btn">Monthly</button>
+                <button onclick="updateChartFilter('annually')" id="btn-annually" class="chart-tab-btn">Annually</button>
             </div>
         </div>
 
-        <div class="relative h-[280px] w-full">
+        <div class="chart-wrapper">
             <canvas id="financialChart"></canvas>
         </div>
     </div>
 
     <!-- Alerts, Logs and Recent Activity Lists -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="dashboard-widgets-row">
         <!-- Live System Alerts Deck (2/3 width on wide screens) -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 lg:col-span-2 space-y-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 lg:col-span-2 space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-800">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-bell-on text-cyan-400 animate-pulse"></i>
@@ -164,9 +164,9 @@
                 <span class="text-[10px] bg-cyan-500/15 text-cyan-400 font-bold px-2 py-0.5 rounded-full border border-cyan-500/20 uppercase tracking-wider">Real-time Check</span>
             </div>
 
-            <div class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
+            <div class="dashboard-alerts-list">
                 @forelse($alerts as $alert)
-                    <div class="p-3.5 rounded-lg border flex items-start justify-between gap-4 transition-all hover:bg-slate-800/20
+                    <div class="dashboard-alert-item hover:bg-slate-800/20
                         @if($alert['type'] == 'danger') border-rose-500/25 bg-rose-500/5 text-rose-400
                         @elseif($alert['type'] == 'warning') border-amber-500/25 bg-amber-500/5 text-amber-400
                         @elseif($alert['type'] == 'success') border-emerald-500/25 bg-emerald-500/5 text-emerald-400
@@ -195,7 +195,7 @@
         </div>
 
         <!-- System Activity Log (1/3 width) -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
             <div class="pb-3 border-b border-slate-800">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-list-check text-slate-400"></i>
@@ -203,9 +203,9 @@
                 </div>
             </div>
 
-            <div class="space-y-3">
+            <div class="dashboard-sales-list">
                 @forelse($recentInvoices as $inv)
-                    <div class="p-3 bg-slate-950 border border-slate-850 rounded-lg hover:border-slate-700 transition-colors flex items-center justify-between">
+                    <div class="p-4 bg-slate-950 border border-slate-850 rounded-lg hover:border-slate-700 transition-colors flex items-center justify-between">
                         <div>
                             <span class="text-xs font-bold text-slate-200 block">{{ $inv->invoice_number }}</span>
                             <span class="text-[10px] text-slate-400 block mt-0.5">
@@ -229,7 +229,7 @@
     </div>
 
     <!-- Active Hardware Services & Repair Stations -->
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-800">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-microchip text-cyan-400"></i>
@@ -390,10 +390,10 @@
             
             // Update active tab styling
             document.querySelectorAll('.chart-tab-btn').forEach(btn => {
-                btn.className = 'chart-tab-btn px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all text-slate-400 hover:text-slate-200';
+                btn.classList.remove('active');
             });
             const activeBtn = document.getElementById(`btn-${filter}`);
-            activeBtn.className = 'chart-tab-btn px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/20';
+            activeBtn.classList.add('active');
 
             // Update chart data
             myChart.data.labels = chartData[filter].labels;
