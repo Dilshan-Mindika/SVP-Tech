@@ -5,12 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\RepairJobController;
-use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\ReportingController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\InvoicesModuleController;
 
 // ERP Ported Controllers
 use App\Http\Controllers\QuotationController;
@@ -28,11 +25,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CustomerDirectoryController;
-use App\Http\Controllers\BusinessDashboardController;
-use App\Http\Controllers\SalesInvoiceController;
-use App\Http\Controllers\ServiceRepairController;
-use App\Http\Controllers\BusinessReportsController;
+use App\Http\Controllers\RepairController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -53,58 +46,33 @@ Route::middleware('auth')->group(function () {
     // Technician Management (Admin Only)
     Route::resource('technicians', TechnicianController::class);
 
-    // Core Modules
-    Route::resource('customers', CustomerController::class);
-    Route::get('/customers/{customer}/ledger', [CustomerController::class, 'ledger'])->name('customers.ledger');
-    Route::resource('repair-jobs', RepairJobController::class);
-    Route::patch('/repair-jobs/{job}/status', [RepairJobController::class, 'updateStatus'])->name('repair-jobs.update-status');
-    Route::patch('/repair-jobs/{job}/assign', [RepairJobController::class, 'assignTechnician'])->name('repair-jobs.assign-technician');
-    Route::patch('/repair-jobs/{job}/payment-status', [RepairJobController::class, 'updatePaymentStatus'])->name('repair-jobs.update-payment-status');
-    Route::resource('inventory', InventoryController::class);
-
-    // Invoices & Sales
-    Route::get('/invoices', [InvoicesModuleController::class, 'index'])->name('invoices.index');
-    Route::get('/sales/create', [InvoicesModuleController::class, 'createSale'])->name('sales.create');
-    Route::post('/sales', [InvoicesModuleController::class, 'storeSale'])->name('sales.store');
-    
-    // Legacy/Specific Invoice Actions
-    Route::post('/repair-jobs/{job}/invoice', [InvoiceController::class, 'generate'])->name('invoices.generate');
-    Route::get('/repair-jobs/{job}/invoice-preview', [InvoiceController::class, 'preview'])->name('invoice-preview');
-    Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
-
-    // Reports
-    Route::get('/reports', [ReportingController::class, 'index'])->name('reports.index');
-    Route::get('/reports/outstanding', [ReportingController::class, 'outstandingInvoices'])->name('reports.outstanding');
-
     // Payments
     Route::get('/invoices/{invoice}/payment', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('/invoices/{invoice}/payments', [PaymentController::class, 'store'])->name('payments.store');
 
     // =========================================================================
-    // --- CloudTech ERP Feature Porting ---
+    // --- CloudTech Feature Console ---
     // =========================================================================
 
-    // Dashboard (Business Console)
-    Route::get('/business/dashboard', [BusinessDashboardController::class, 'index'])->name('business_dashboard');
     Route::get('/search', [SearchController::class, 'index'])->name('search');
 
     // Invoices (ERP)
     Route::middleware('permission:create-invoices')->group(function () {
-        Route::get('/business/invoices/create', [SalesInvoiceController::class, 'create'])->name('sales_invoices.create');
-        Route::post('/business/invoices/store', [SalesInvoiceController::class, 'store'])->name('sales_invoices.store');
+        Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
+        Route::post('/invoices/store', [InvoiceController::class, 'store'])->name('invoices.store');
     });
     Route::middleware('permission:read-invoices')->group(function () {
-        Route::get('/business/invoices', [SalesInvoiceController::class, 'index'])->name('sales_invoices.index');
-        Route::get('/business/invoices/{invoice}', [SalesInvoiceController::class, 'show'])->name('sales_invoices.show');
-        Route::get('/business/invoices/{invoice}/print', [SalesInvoiceController::class, 'print'])->name('sales_invoices.print');
-        Route::get('/business/invoices/{invoice}/items-json', [SalesInvoiceController::class, 'itemsJson'])->name('sales_invoices.items_json');
+        Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoices.index');
+        Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
+        Route::get('/invoices/{invoice}/print', [InvoiceController::class, 'print'])->name('invoices.print');
+        Route::get('/invoices/{invoice}/items-json', [InvoiceController::class, 'itemsJson'])->name('invoices.items_json');
     });
     Route::middleware('permission:update-invoices')->group(function () {
-        Route::get('/business/invoices/{invoice}/edit', [SalesInvoiceController::class, 'edit'])->name('sales_invoices.edit');
-        Route::post('/business/invoices/{invoice}/update', [SalesInvoiceController::class, 'update'])->name('sales_invoices.update');
+        Route::get('/invoices/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoices.edit');
+        Route::post('/invoices/{invoice}/update', [InvoiceController::class, 'update'])->name('invoices.update');
     });
     Route::middleware('permission:delete-invoices')->group(function () {
-        Route::delete('/business/invoices/{invoice}/delete', [SalesInvoiceController::class, 'destroy'])->name('sales_invoices.destroy');
+        Route::delete('/invoices/{invoice}/delete', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
     });
 
     // Quotations
@@ -128,19 +96,20 @@ Route::middleware('auth')->group(function () {
 
     // Customers (ERP)
     Route::middleware('permission:create-customers')->group(function () {
-        Route::get('/business/customers/create', [CustomerDirectoryController::class, 'create'])->name('customer_directory.create');
-        Route::post('/business/customers/store', [CustomerDirectoryController::class, 'store'])->name('customer_directory.store');
+        Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
+        Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
     });
     Route::middleware('permission:read-customers')->group(function () {
-        Route::get('/business/customers', [CustomerDirectoryController::class, 'index'])->name('customer_directory.index');
-        Route::get('/business/customers/{customer}', [CustomerDirectoryController::class, 'show'])->name('customer_directory.show');
+        Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+        Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');
+        Route::get('/customers/{customer}/ledger', [CustomerController::class, 'ledger'])->name('customers.ledger');
     });
     Route::middleware('permission:update-customers')->group(function () {
-        Route::get('/business/customers/{customer}/edit', [CustomerDirectoryController::class, 'edit'])->name('customer_directory.edit');
-        Route::post('/business/customers/{customer}/update', [CustomerDirectoryController::class, 'update'])->name('customer_directory.update');
+        Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+        Route::post('/customers/{customer}/update', [CustomerController::class, 'update'])->name('customers.update');
     });
     Route::middleware('permission:delete-customers')->group(function () {
-        Route::delete('/business/customers/{customer}/delete', [CustomerDirectoryController::class, 'destroy'])->name('customer_directory.destroy');
+        Route::delete('/customers/{customer}/delete', [CustomerController::class, 'destroy'])->name('customers.destroy');
     });
 
     // GRN (Goods Received Notes)
@@ -215,21 +184,21 @@ Route::middleware('auth')->group(function () {
 
     // Repairs (ERP)
     Route::middleware('permission:create-repairs')->group(function () {
-        Route::get('/business/repairs/create', [ServiceRepairController::class, 'create'])->name('service_repairs.create');
-        Route::post('/business/repairs/store', [ServiceRepairController::class, 'store'])->name('service_repairs.store');
+        Route::get('/repairs/create', [RepairController::class, 'create'])->name('repairs.create');
+        Route::post('/repairs/store', [RepairController::class, 'store'])->name('repairs.store');
     });
     Route::middleware('permission:read-repairs')->group(function () {
-        Route::get('/business/repairs', [ServiceRepairController::class, 'index'])->name('service_repairs.index');
-        Route::get('/business/repairs/{repair}', [ServiceRepairController::class, 'show'])->name('service_repairs.show');
-        Route::get('/business/repairs/{repair}/receipt', [ServiceRepairController::class, 'receipt'])->name('service_repairs.receipt');
+        Route::get('/repairs', [RepairController::class, 'index'])->name('repairs.index');
+        Route::get('/repairs/{repair}', [RepairController::class, 'show'])->name('repairs.show');
+        Route::get('/repairs/{repair}/receipt', [RepairController::class, 'receipt'])->name('repairs.receipt');
     });
     Route::middleware('permission:update-repairs')->group(function () {
-        Route::get('/business/repairs/{repair}/edit', [ServiceRepairController::class, 'edit'])->name('service_repairs.edit');
-        Route::post('/business/repairs/{repair}/update', [ServiceRepairController::class, 'update'])->name('service_repairs.update');
-        Route::post('/business/repairs/{repair}/parts', [ServiceRepairController::class, 'addParts'])->name('service_repairs.parts');
+        Route::get('/repairs/{repair}/edit', [RepairController::class, 'edit'])->name('repairs.edit');
+        Route::post('/repairs/{repair}/update', [RepairController::class, 'update'])->name('repairs.update');
+        Route::post('/repairs/{repair}/parts', [RepairController::class, 'addParts'])->name('repairs.parts');
     });
     Route::middleware('permission:delete-repairs')->group(function () {
-        Route::delete('/business/repairs/{repair}/delete', [ServiceRepairController::class, 'destroy'])->name('service_repairs.destroy');
+        Route::delete('/repairs/{repair}/delete', [RepairController::class, 'destroy'])->name('repairs.destroy');
     });
 
     // Warranty Claims
@@ -378,7 +347,7 @@ Route::middleware('auth')->group(function () {
 
     // Reports Engine
     Route::middleware('permission:read-expenses')->group(function () {
-        Route::get('/business/reports', [BusinessReportsController::class, 'index'])->name('business_reports.index');
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     });
 
     // Unified Import/Export Engine

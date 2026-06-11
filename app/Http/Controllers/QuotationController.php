@@ -232,7 +232,7 @@ class QuotationController extends Controller
                 ]);
             }
 
-            return redirect()->route('sales_invoices.show', $invoice->id)->with('success', "Quotation successfully converted to Invoice {$invoiceNumber}.");
+            return redirect()->route('invoices.show', $invoice->id)->with('success', "Quotation successfully converted to Invoice {$invoiceNumber}.");
         });
     }
 

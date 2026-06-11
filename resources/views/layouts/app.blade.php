@@ -47,53 +47,40 @@
                 <h1 style="font-size: 1.2rem; font-weight: 700; text-align: center;">Cloud Tech</h1>
             </div>
             <nav class="nav-links">
+                <!-- Core Dashboard -->
                 <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <i class="fas fa-chart-line" style="margin-right: 10px; width: 20px;"></i> Dashboard
                 </a>
                 
-                @if(auth()->user()->isAdmin())
-                    <a href="{{ route('technicians.index') }}" class="{{ request()->routeIs('technicians.*') ? 'active' : '' }}">
-                        <i class="fas fa-users-cog" style="margin-right: 10px; width: 20px;"></i> Technicians
-                    </a>
-                @endif
-                
-                <a href="{{ route('repair-jobs.index') }}" class="{{ request()->routeIs('repair-jobs.*') ? 'active' : '' }}">
-                    <i class="fas fa-tools" style="margin-right: 10px; width: 20px;"></i> Repairs
-                </a>
-                <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">
-                    <i class="fas fa-user-friends" style="margin-right: 10px; width: 20px;"></i> Customers
-                </a>
-                <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'active' : '' }}">
-                    <i class="fas fa-boxes" style="margin-right: 10px; width: 20px;"></i> Inventory
-                </a>
-                <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') || request()->routeIs('sales.*') ? 'active' : '' }}">
-                    <i class="fas fa-file-invoice-dollar" style="margin-right: 10px; width: 20px;"></i> Invoices
-                </a>
-                <a href="{{ route('reports.outstanding') }}" class="{{ request()->routeIs('reports.outstanding') ? 'active' : '' }}">
-                    <i class="fas fa-hand-holding-usd" style="margin-right: 10px; width: 20px;"></i> Payments
+                <a href="{{ route('search') }}" class="{{ request()->routeIs('search') ? 'active' : '' }}">
+                    <i class="fas fa-search" style="margin-right: 10px; width: 20px;"></i> Global Search
                 </a>
 
-                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Sales & Operations</span>
+                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Services & Repairs</span>
                 
-                <a href="{{ route('business_dashboard') }}" class="{{ request()->routeIs('business_dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-terminal" style="margin-right: 10px; width: 20px;"></i> Business Console
-                </a>
-                
-                @if(auth()->user()->hasPermission('read-products'))
-                    <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
-                        <i class="fas fa-cubes" style="margin-right: 10px; width: 20px;"></i> Products List
+                @if(auth()->user()->hasPermission('read-repairs'))
+                    <a href="{{ route('repairs.index') }}" class="{{ request()->routeIs('repairs.*') ? 'active' : '' }}">
+                        <i class="fas fa-tools" style="margin-right: 10px; width: 20px;"></i> Repairs Directory
                     </a>
                 @endif
                 
-                @if(auth()->user()->hasPermission('read-categories'))
-                    <a href="{{ route('categories.index') }}" class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                        <i class="fas fa-tags" style="margin-right: 10px; width: 20px;"></i> Categories
+                @if(auth()->user()->hasPermission('read-warranty'))
+                    <a href="{{ route('warranty.index') }}" class="{{ request()->routeIs('warranty.*') ? 'active' : '' }}">
+                        <i class="fas fa-shield-alt" style="margin-right: 10px; width: 20px;"></i> Warranty Claims
+                    </a>
+                @endif
+                
+                @if(auth()->user()->hasPermission('read-appointments'))
+                    <a href="{{ route('appointments.index') }}" class="{{ request()->routeIs('appointments.*') ? 'active' : '' }}">
+                        <i class="fas fa-calendar-alt" style="margin-right: 10px; width: 20px;"></i> Appointments
                     </a>
                 @endif
 
-                @if(auth()->user()->hasPermission('create-invoices') || auth()->user()->hasPermission('read-invoices'))
-                    <a href="{{ route('sales_invoices.index') }}" class="{{ request()->routeIs('sales_invoices.*') ? 'active' : '' }}">
-                        <i class="fas fa-file-invoice" style="margin-right: 10px; width: 20px;"></i> Sales Invoices
+                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Sales & Inventory</span>
+
+                @if(auth()->user()->hasPermission('read-invoices') || auth()->user()->hasPermission('create-invoices'))
+                    <a href="{{ route('invoices.index') }}" class="{{ request()->routeIs('invoices.*') ? 'active' : '' }}">
+                        <i class="fas fa-file-invoice-dollar" style="margin-right: 10px; width: 20px;"></i> Sales Invoices
                     </a>
                 @endif
 
@@ -103,9 +90,15 @@
                     </a>
                 @endif
 
-                @if(auth()->user()->hasPermission('read-customers'))
-                    <a href="{{ route('customer_directory.index') }}" class="{{ request()->routeIs('customer_directory.*') ? 'active' : '' }}">
-                        <i class="fas fa-address-book" style="margin-right: 10px; width: 20px;"></i> Customer Directory
+                @if(auth()->user()->hasPermission('read-products'))
+                    <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
+                        <i class="fas fa-boxes" style="margin-right: 10px; width: 20px;"></i> Products Catalog
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-categories'))
+                    <a href="{{ route('categories.index') }}" class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
+                        <i class="fas fa-tags" style="margin-right: 10px; width: 20px;"></i> Categories
                     </a>
                 @endif
 
@@ -121,29 +114,21 @@
                     </a>
                 @endif
 
-                @if(auth()->user()->hasPermission('read-repairs'))
-                    <a href="{{ route('service_repairs.index') }}" class="{{ request()->routeIs('service_repairs.*') ? 'active' : '' }}">
-                        <i class="fas fa-wrench" style="margin-right: 10px; width: 20px;"></i> Service Repairs
-                    </a>
-                @endif
-
-                @if(auth()->user()->hasPermission('read-warranty'))
-                    <a href="{{ route('warranty.index') }}" class="{{ request()->routeIs('warranty.*') ? 'active' : '' }}">
-                        <i class="fas fa-shield-alt" style="margin-right: 10px; width: 20px;"></i> Warranty Claims
-                    </a>
-                @endif
-
-                @if(auth()->user()->hasPermission('read-appointments'))
-                    <a href="{{ route('appointments.index') }}" class="{{ request()->routeIs('appointments.*') ? 'active' : '' }}">
-                        <i class="fas fa-calendar-alt" style="margin-right: 10px; width: 20px;"></i> Appointments
-                    </a>
-                @endif
-
                 @if(auth()->user()->hasPermission('read-returns'))
                     <a href="{{ route('returns.index') }}" class="{{ request()->routeIs('returns.*') ? 'active' : '' }}">
                         <i class="fas fa-undo-alt" style="margin-right: 10px; width: 20px;"></i> Returns
                     </a>
                 @endif
+
+                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Customers & Relations</span>
+
+                @if(auth()->user()->hasPermission('read-customers'))
+                    <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-friends" style="margin-right: 10px; width: 20px;"></i> Customers Directory
+                    </a>
+                @endif
+
+                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Finance & Personnel</span>
 
                 @if(auth()->user()->hasPermission('read-employees'))
                     <a href="{{ route('employees.index') }}" class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
@@ -164,8 +149,22 @@
                 @endif
 
                 @if(auth()->user()->hasPermission('read-expenses'))
-                    <a href="{{ route('business_reports.index') }}" class="{{ request()->routeIs('business_reports.*') ? 'active' : '' }}">
+                    <a href="{{ route('reports.index') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">
                         <i class="fas fa-chart-pie" style="margin-right: 10px; width: 20px;"></i> Business Reports
+                    </a>
+                @endif
+
+                @if(auth()->user()->hasPermission('read-bank-accounts'))
+                    <a href="{{ route('bank_accounts.index') }}" class="{{ request()->routeIs('bank_accounts.*') ? 'active' : '' }}">
+                        <i class="fas fa-university" style="margin-right: 10px; width: 20px;"></i> Bank Accounts
+                    </a>
+                @endif
+
+                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Administration</span>
+
+                @if(auth()->user()->isAdmin())
+                    <a href="{{ route('technicians.index') }}" class="{{ request()->routeIs('technicians.*') ? 'active' : '' }}">
+                        <i class="fas fa-users-cog" style="margin-right: 10px; width: 20px;"></i> Technicians Management
                     </a>
                 @endif
 
@@ -178,12 +177,6 @@
                 @if(auth()->user()->hasPermission('read-roles'))
                     <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') || request()->routeIs('permissions.*') ? 'active' : '' }}">
                         <i class="fas fa-user-shield" style="margin-right: 10px; width: 20px;"></i> Roles & Permissions
-                    </a>
-                @endif
-
-                @if(auth()->user()->hasPermission('read-bank-accounts'))
-                    <a href="{{ route('bank_accounts.index') }}" class="{{ request()->routeIs('bank_accounts.*') ? 'active' : '' }}">
-                        <i class="fas fa-university" style="margin-right: 10px; width: 20px;"></i> Bank Accounts
                     </a>
                 @endif
             </nav>

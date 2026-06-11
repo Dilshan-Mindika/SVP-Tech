@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class BusinessReportsController extends Controller
+class ReportController extends Controller
 {
     public function index(Request $request)
     {
@@ -33,12 +33,12 @@ class BusinessReportsController extends Controller
         }
 
         if ($request->has('print')) {
-            return view('business_reports.print', compact('reportType', 'data', 'fromDate', 'toDate'));
+            return view('reports.print', compact('reportType', 'data', 'fromDate', 'toDate'));
         }
 
         $stats = $this->calculateReportStats($reportType, $data);
 
-        return view('business_reports.index', compact('reportType', 'data', 'fromDate', 'toDate', 'chartData', 'stats'));
+        return view('reports.index', compact('reportType', 'data', 'fromDate', 'toDate', 'chartData', 'stats'));
     }
 
     private function calculateReportStats($reportType, $data)

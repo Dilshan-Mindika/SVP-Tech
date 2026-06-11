@@ -4,7 +4,7 @@
 <div class="max-w-4xl mx-auto space-y-6">
     <!-- Header -->
     <div class="flex items-center gap-3 pb-4 border-b border-slate-800">
-        <a href="{{ route('service_repairs.show', $repair->id) }}" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 transition-colors">
+        <a href="{{ route('repairs.show', $repair->id) }}" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 transition-colors">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
         <div>
@@ -15,7 +15,7 @@
 
     <!-- Form Panel -->
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
-        <form action="{{ route('service_repairs.update', $repair->id) }}" method="POST" class="space-y-8">
+        <form action="{{ route('repairs.update', $repair->id) }}" method="POST" class="space-y-8">
             @csrf
 
             <!-- Section 1: Customer Details -->
@@ -302,7 +302,7 @@
 
             <!-- Form Actions -->
             <div class="flex justify-end gap-3 border-t border-slate-800 pt-4">
-                <a href="{{ route('service_repairs.show', $repair->id) }}" class="px-4 py-2 bg-slate-850 hover:bg-slate-800 text-slate-300 font-bold rounded-lg text-xs transition-colors">
+                <a href="{{ route('repairs.show', $repair->id) }}" class="px-4 py-2 bg-slate-850 hover:bg-slate-800 text-slate-300 font-bold rounded-lg text-xs transition-colors">
                     CANCEL
                 </a>
                 <button type="submit" class="px-4 py-2 bg-cyan-500 text-slate-950 font-black rounded-lg text-xs uppercase tracking-widest transition-all hover:bg-cyan-400 shadow-neon-cyan">

@@ -5,7 +5,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div class="flex items-center gap-4">
-            <a href="{{ route('customer_directory.index') }}" class="text-slate-400 hover:text-cyan-400 transition-colors p-2 hover:bg-slate-800/50 rounded-lg">
+            <a href="{{ route('customers.index') }}" class="text-slate-400 hover:text-cyan-400 transition-colors p-2 hover:bg-slate-800/50 rounded-lg">
                 <i class="fa-solid fa-chevron-left"></i>
             </a>
             <div>
@@ -14,11 +14,11 @@
             </div>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ route('customer_directory.edit', $customer->id) }}" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-sm transition-colors flex items-center gap-2 border border-slate-700">
+            <a href="{{ route('customers.edit', $customer->id) }}" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-sm transition-colors flex items-center gap-2 border border-slate-700">
                 <i class="fa-solid fa-pen-to-square"></i>
                 <span>EDIT</span>
             </a>
-            <form action="{{ route('customer_directory.destroy'), $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this customer?')" class="inline">
+            <form action="{{ route('customers.destroy'), $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this customer?')" class="inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="px-4 py-2 bg-rose-900/20 hover:bg-rose-900/40 text-rose-400 font-bold rounded-lg text-sm transition-colors flex items-center gap-2 border border-rose-800/40">
@@ -92,7 +92,7 @@
                             </td>
                             <td class="py-3 px-4 text-center text-slate-400 font-mono">{{ \Carbon\Carbon::parse($inv->created_at)->format('d M Y') }}</td>
                             <td class="py-3 px-4 text-center">
-                                <a href="{{ route('sales_invoices.show', $inv->id) }}" class="text-cyan-400 hover:text-cyan-300 font-bold text-[10px] uppercase tracking-wider transition-colors">View &rarr;</a>
+                                <a href="{{ route('invoices.show', $inv->id) }}" class="text-cyan-400 hover:text-cyan-300 font-bold text-[10px] uppercase tracking-wider transition-colors">View &rarr;</a>
                             </td>
                         </tr>
                     @empty

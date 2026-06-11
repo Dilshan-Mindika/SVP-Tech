@@ -79,7 +79,7 @@
                             </div>
                             <h3 class="font-bold text-slate-100">Invoices ({{ $invoices->count() }})</h3>
                         </div>
-                        <a href="{{ route('sales_invoices.index') }}" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider">View All</a>
+                        <a href="{{ route('invoices.index') }}" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider">View All</a>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
@@ -95,7 +95,7 @@
                                 @foreach($invoices as $invoice)
                                     <tr class="hover:bg-slate-800/30 transition-colors">
                                         <td class="py-3 font-medium text-slate-200">
-                                            <a href="{{ route('sales_invoices.show', $invoice->id) }}" class="hover:text-cyan-400 transition-colors mono-text">{{ $invoice->invoice_number }}</a>
+                                            <a href="{{ route('invoices.show', $invoice->id) }}" class="hover:text-cyan-400 transition-colors mono-text">{{ $invoice->invoice_number }}</a>
                                         </td>
                                         <td class="py-3 text-slate-400">{{ $invoice->customer->name ?? 'Guest Customer' }}</td>
                                         <td class="py-3 text-slate-400">{{ $invoice->created_at->format('Y-m-d') }}</td>
@@ -118,7 +118,7 @@
                             </div>
                             <h3 class="font-bold text-slate-100">Customers ({{ $customers->count() }})</h3>
                         </div>
-                        <a href="{{ route('customer_directory.index') }}" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider">View All</a>
+                        <a href="{{ route('customers.index') }}" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider">View All</a>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
@@ -133,7 +133,7 @@
                                 @foreach($customers as $customer)
                                     <tr class="hover:bg-slate-800/30 transition-colors">
                                         <td class="py-3 font-medium text-slate-200">
-                                            <a href="{{ route('customer_directory.show', $customer->id) }}" class="hover:text-cyan-400 transition-colors">{{ $customer->name }}</a>
+                                            <a href="{{ route('customers.show', $customer->id) }}" class="hover:text-cyan-400 transition-colors">{{ $customer->name }}</a>
                                         </td>
                                         <td class="py-3 text-slate-400 mono-text">{{ $customer->phone ?? 'N/A' }}</td>
                                         <td class="py-3 text-slate-400">{{ $customer->email ?? 'N/A' }}</td>
@@ -194,7 +194,7 @@
                             </div>
                             <h3 class="font-bold text-slate-100">Repairs ({{ $repairs->count() }})</h3>
                         </div>
-                        <a href="{{ route('service_repairs.index') }}" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider">View All</a>
+                        <a href="{{ route('repairs.index') }}" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider">View All</a>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
@@ -210,7 +210,7 @@
                                 @foreach($repairs as $repair)
                                     <tr class="hover:bg-slate-800/30 transition-colors">
                                         <td class="py-3 font-medium text-slate-200">
-                                            <a href="{{ route('service_repairs.show', $repair->id) }}" class="hover:text-cyan-400 transition-colors mono-text">{{ $repair->repair_job_no }}</a>
+                                            <a href="{{ route('repairs.show', $repair->id) }}" class="hover:text-cyan-400 transition-colors mono-text">{{ $repair->repair_job_no }}</a>
                                         </td>
                                         <td class="py-3 text-slate-400">{{ $repair->customer_name }}</td>
                                         <td class="py-3 text-slate-400">{{ $repair->device_model }}</td>

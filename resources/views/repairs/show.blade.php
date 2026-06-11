@@ -5,7 +5,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div class="flex items-center gap-3">
-            <a href="{{ route('service_repairs.index') }}" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 transition-colors">
+            <a href="{{ route('repairs.index') }}" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 transition-colors">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <div>
@@ -38,15 +38,15 @@
             </div>
         </div>
         <div class="flex gap-2 flex-wrap">
-            <a href="{{ route('service_repairs.receipt', $repair->id) }}" target="_blank" class="px-4 py-2 bg-cyan-950 hover:bg-cyan-900 border border-cyan-850/60 text-cyan-400 hover:text-cyan-200 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+            <a href="{{ route('repairs.receipt', $repair->id) }}" target="_blank" class="px-4 py-2 bg-cyan-950 hover:bg-cyan-900 border border-cyan-850/60 text-cyan-400 hover:text-cyan-200 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
                 <i class="fa-solid fa-receipt"></i>
                 <span>PRINT INTAKE FORM</span>
             </a>
-            <a href="{{ route('service_repairs.edit', $repair->id) }}" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2 border border-slate-700">
+            <a href="{{ route('repairs.edit', $repair->id) }}" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2 border border-slate-700">
                 <i class="fa-solid fa-pen-to-square"></i>
                 <span>EDIT REPAIR</span>
             </a>
-            <form action="{{ route('service_repairs.destroy', $repair->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this repair job?')" class="inline">
+            <form action="{{ route('repairs.destroy', $repair->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this repair job?')" class="inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="px-4 py-2 bg-rose-900/20 hover:bg-rose-900/40 text-rose-400 font-bold rounded-lg text-xs transition-colors flex items-center gap-2 border border-rose-800/40">
@@ -67,7 +67,7 @@
                     Invoice #{{ $repair->invoice->invoice_number }} has been generated for this job since it is marked as completed.
                 </div>
             </div>
-            <a href="{{ route('sales_invoices.show', $repair->invoice->id) }}" class="px-3 py-1.5 bg-emerald-550 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition-colors text-[10px] uppercase tracking-wider">
+            <a href="{{ route('invoices.show', $repair->invoice->id) }}" class="px-3 py-1.5 bg-emerald-550 hover:bg-emerald-500 text-slate-950 font-bold rounded-lg transition-colors text-[10px] uppercase tracking-wider">
                 View Invoice
             </a>
         </div>
@@ -410,7 +410,7 @@
             @if($repair->status !== 'delivered')
                 <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
                     <h2 class="orbitron-title text-xs font-bold text-cyan-400 uppercase tracking-widest border-b border-slate-800/80 pb-2">Add Spare Part</h2>
-                    <form action="{{ route('service_repairs.parts', $repair->id) }}" method="POST" class="space-y-4">
+                    <form action="{{ route('repairs.parts', $repair->id) }}" method="POST" class="space-y-4">
                         @csrf
                         <div>
                             <label class="text-[11px] text-slate-400 uppercase tracking-wider font-bold block mb-1">Select Part</label>

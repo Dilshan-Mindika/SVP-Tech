@@ -147,7 +147,7 @@
                             </td>
                             <td class="py-3.5 px-6 font-bold text-slate-200">
                                 @if($r->type === 'customer_return' && $r->invoice)
-                                    <a href="{{ route('sales_invoices.show', $r->invoice->id) }}" class="text-cyan-400 hover:underline">
+                                    <a href="{{ route('invoices.show', $r->invoice->id) }}" class="text-cyan-400 hover:underline">
                                         {{ $r->invoice->invoice_number }}
                                     </a>
                                 @elseif($r->type === 'supplier_return' && $r->supplier)

@@ -48,6 +48,11 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function getCategoryAttribute()
+    {
+        return $this->getRelationValue('category');
+    }
+
     public function serials()
     {
         return $this->hasMany(ProductSerial::class);

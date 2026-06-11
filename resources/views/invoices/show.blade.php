@@ -1,508 +1,272 @@
 @extends('layouts.app')
 
-@section('title', 'Invoice #' . $invoice->id)
-
 @section('content')
-<div class="page-header print:hidden">
-    <div class="header-content">
-        <h2>Invoice #{{ 'INV-' . preg_replace('/[^0-9]/', '', $invoice->repairJob->job_number) }}</h2>
-        <p class="text-muted">{{ ucfirst($invoice->invoice_type) }} Invoice</p>
-    </div>
-    <button onclick="window.print()" class="btn-primary">
-        <i class="fas fa-print" style="margin-right: 0.5rem;"></i> Print Invoice
-    </button>
-</div>
-
-<div class="invoice-container glass print:no-glass">
-    <!-- Invoice Header -->
-    <header class="invoice-header">
-        <div class="brand-section">
-            <img src="https://i.ibb.co/JRyxmV6R/Cloud-Logo.png" alt="Cloud Tech" class="invoice-logo">
-            <!-- <h1 class="company-name">Cloud Tech</h1> -->
-        </div>
-        <div class="company-details">
-            <h2 class="company-name">Cloud Tech</h2>
-            <div class="detail-block">
-                <p class="address-line">90/1, Diddeniya, Hanwella</p>
-                <p class="contact-line"><strong>Phone:</strong> 0785315902</p>
-                <p class="web-line"><strong>Web:</strong> cloudtech.lk</p>
+<div class="max-w-5xl mx-auto space-y-6">
+    <!-- Header Controls -->
+    <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('invoices.index') }}" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 transition-colors">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="orbitron-title text-xl font-black text-slate-100 tracking-wider">INVOICE #{{ $invoice->invoice_number }}</h1>
+                <p class="text-slate-400 text-xs mt-0.5 uppercase tracking-widest font-semibold">Details of the invoice</p>
             </div>
         </div>
-    </header>
-
-    <div class="invoice-meta-bar">
-        <div class="meta-item">
-            <span class="meta-label">Invoice No:</span>
-            <span class="meta-value">INV-{{ preg_replace('/[^0-9]/', '', $invoice->repairJob->job_number) }}</span>
-        </div>
-        <div class="meta-item">
-            <span class="meta-label">Date:</span>
-            <span class="meta-value">{{ $invoice->created_at->format('d/m/Y') }}</span>
-        </div>
-        <div class="meta-item">
-            <span class="meta-label">Job No:</span>
-            <span class="meta-value" style="font-family: monospace;">{{ $invoice->repairJob->job_number }}</span>
-        </div>
-    </div>
-
-    <!-- Client & Job Grid -->
-    <div class="info-grid">
-        <div class="info-box client-info">
-            <h3 class="box-title">Invoice To</h3>
-            <p class="client-name">{{ $invoice->repairJob->customer->name }}</p>
-            @if($invoice->repairJob->customer->address)
-            <p class="client-address">{{ $invoice->repairJob->customer->address }}</p>
-            @endif
-            <p class="client-contact">{{ $invoice->repairJob->customer->phone }}</p>
-        </div>
-
-        <div class="info-box device-info">
-            <h3 class="box-title">Device Details</h3>
-            <table class="details-table">
-                <tr>
-                    <td class="label">Device:</td>
-                    <td>{{ $invoice->repairJob->laptop_brand }} {{ $invoice->repairJob->laptop_model }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Serial No:</td>
-                    <td>{{ $invoice->repairJob->serial_number }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Fault:</td>
-                    <td>{{ $invoice->repairJob->fault_description }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- Line Items -->
-    <table class="invoice-table">
-        <thead>
-            <tr>
-                <th style="width: 5%;">#</th>
-                <th style="width: 65%;">Description</th>
-                <th style="width: 10%; text-align: center;">Qty</th>
-                <th style="width: 20%;" class="text-right">Amount (LKR)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php $rowCount = 0; @endphp
-
-            @if($invoice->repairJob->invoiceItems->count() > 0)
-                {{-- New Logic: Use Billable Invoice Items --}}
-                @foreach($invoice->repairJob->invoiceItems as $item)
-                <tr>
-                    <td>{{ ++$rowCount }}</td>
-                    <td>{{ $item->description }}</td>
-                    <td style="text-align: center;">{{ $item->quantity }}</td>
-                    <td class="text-right">{{ number_format($item->amount * $item->quantity, 2) }}</td>
-                </tr>
-                @endforeach
-            @else
-                {{-- Legacy Logic: Use Parts + Labor --}}
-                @foreach($invoice->repairJob->parts as $part)
-                <tr>
-                    <td>{{ ++$rowCount }}</td>
-                    <td>{{ $part->part_name }}</td>
-                    <td style="text-align: center;">{{ $part->quantity_used }}</td>
-                    <td class="text-right">{{ number_format($part->part_cost * $part->quantity_used, 2) }}</td>
-                </tr>
-                @endforeach
+        
+        <div class="flex flex-wrap gap-2">
+            <a href="{{ route('invoices.print', $invoice->id) }}" target="_blank" class="px-3 py-1.5 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan flex items-center gap-2">
+                <i class="fa-solid fa-print"></i>
+                <span>PRINT</span>
+            </a>
+            <a href="{{ route('invoices.print', $invoice->id) }}?download=1" target="_blank" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span>DOWNLOAD</span>
+            </a>
+            <a href="{{ route('invoices.edit', $invoice->id) }}" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>EDIT</span>
+            </a>
+            
+            @php
+                $emailSubject = rawurlencode("Invoice #" . $invoice->invoice_number . " - CLOUDTECH");
+                $emailBody = rawurlencode("Hi,\n\nPlease find your invoice #" . $invoice->invoice_number . " details here: " . route('invoices.show', $invoice->id) . "\n\nThank you for choosing CLOUDTECH Computer Store!");
                 
-                @if($invoice->labor_cost > 0)
-                <tr>
-                    <td>{{ ++$rowCount }}</td>
-                    <td>Service / Labor Charges</td>
-                    <td style="text-align: center;">1</td>
-                    <td class="text-right">{{ number_format($invoice->labor_cost, 2) }}</td>
-                </tr>
-                @endif
+                $whatsappText = rawurlencode("Hi, please find your invoice #" . $invoice->invoice_number . " details here: " . route('invoices.show', $invoice->id));
+            @endphp
+
+            <a href="mailto:{{ $invoice->customer ? $invoice->customer->email : '' }}?subject={{ $emailSubject }}&body={{ $emailBody }}" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-envelope"></i>
+                <span>EMAIL</span>
+            </a>
+            <a href="https://api.whatsapp.com/send?text={{ $whatsappText }}" target="_blank" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>WHATSAPP</span>
+            </a>
+
+            @if(Auth::user()->hasPermission('create-warranty'))
+            <a href="{{ route('warranty.create', ['invoice_id' => $invoice->id]) }}" class="px-3 py-1.5 bg-purple-650 hover:bg-purple-600 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>WARRANTY CLAIM</span>
+            </a>
             @endif
 
-            {{-- Pad with empty rows to ensure at least 4 items for description space --}}
-            @for($i = $rowCount; $i < 4; $i++)
-            <tr class="empty-row">
-                <td>{{ ++$rowCount }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            @endfor
-        </tbody>
-        <tfoot>
-            <tr class="total-row">
-                <td colspan="3" class="total-label">Sub Total</td>
-                <td class="text-right">{{ number_format($invoice->total_amount, 2) }}</td>
-            </tr>
-            <!-- Add Tax/Discount rows here if needed in future -->
-            <tr class="grand-total-row">
-                <td colspan="3" class="total-label">Grand Total</td>
-                <td class="text-right">LKR {{ number_format($invoice->total_amount, 2) }}</td>
-            </tr>
-        </tfoot>
-    </table>
+            <form action="{{ route('invoices.destroy', $invoice->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this invoice?')" class="inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="px-3 py-1.5 bg-rose-950/20 border border-rose-900/50 hover:bg-rose-900/20 text-rose-400 font-bold rounded-lg text-xs transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-trash"></i>
+                    <span>DELETE</span>
+                </button>
+            </form>
+        </div>
+    </div>
 
-    <!-- Payment History Section (Screen Only) -->
-    <div class="print:hidden mt-8 mb-8">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-white">Payment History</h3>
-            <div class="flex items-center gap-4">
-                <span class="px-3 py-1 rounded-full text-sm font-bold 
-                    {{ $invoice->status === 'paid' ? 'bg-green-500/20 text-green-400' : 
-                       ($invoice->status === 'partial' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400') }}">
-                    {{ ucfirst($invoice->status) }}
-                </span>
-                <span class="text-gray-300">Balance Due: <span class="font-bold text-white">LKR {{ number_format($invoice->balance_due, 2) }}</span></span>
+    <!-- Details Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Billing Details -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <h3 class="orbitron-title text-xs font-black text-cyan-400 uppercase tracking-widest border-b border-slate-800 pb-2">Details</h3>
+            <div class="space-y-2 text-xs">
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Invoice Ref:</span>
+                    <span class="font-bold text-slate-200">{{ $invoice->invoice_number }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Date Issued:</span>
+                    <span class="text-slate-200">{{ $invoice->created_at->format('Y-m-d h:i A') }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Cashier:</span>
+                    <span class="text-slate-200 font-semibold">{{ $invoice->user->name }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Salesperson:</span>
+                    <span class="text-slate-200 font-semibold">{{ $invoice->employee->name ?? 'N/A' }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Sale Type:</span>
+                    <span class="text-slate-200 font-semibold">{{ $invoice->sale_type }}</span>
+                </div>
+                @if($invoice->due_date)
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Due Date:</span>
+                        <span class="text-rose-400 font-bold">{{ $invoice->due_date->format('Y-m-d') }}</span>
+                    </div>
+                @endif
             </div>
         </div>
 
-        @if($invoice->payments->count() > 0)
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-gray-300">
-                <thead class="bg-white/5 border-b border-white/10 text-xs uppercase">
-                    <tr>
-                        <th class="px-4 py-3">Date</th>
-                        <th class="px-4 py-3">Method</th>
-                        <th class="px-4 py-3">Reference/Notes</th>
-                        <th class="px-4 py-3 text-right">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($invoice->payments as $payment)
-                    <tr class="border-b border-white/5">
-                        <td class="px-4 py-3">{{ $payment->payment_date->format('Y-m-d') }}</td>
-                        <td class="px-4 py-3">{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}</td>
-                        <td class="px-4 py-3 text-sm">
-                            @if($payment->reference_number)<span class="block text-xs text-blue-400">Ref: {{ $payment->reference_number }}</span>@endif
-                            {{ $payment->notes }}
+        <!-- Customer Profile -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <h3 class="orbitron-title text-xs font-black text-cyan-400 uppercase tracking-widest border-b border-slate-800 pb-2">Customer Info</h3>
+            <div class="space-y-2 text-xs">
+                @if($invoice->customer)
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Name:</span>
+                        <span class="font-bold text-slate-200">{{ $invoice->customer->name }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Contact:</span>
+                        <span class="text-slate-200 font-semibold">{{ $invoice->customer->phone }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">Address:</span>
+                        <span class="text-slate-300">{{ $invoice->customer->address ?? 'N/A' }}</span>
+                    </div>
+                @else
+                    <div class="text-center py-4 text-slate-500 italic">
+                        <span>Walk-in / Anonymous Customer</span>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- System Profile -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+            <h3 class="orbitron-title text-xs font-black text-cyan-400 uppercase tracking-widest border-b border-slate-800 pb-2">Payment Info</h3>
+            <div class="space-y-2 text-xs">
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400">Tax Mode:</span>
+                    <span class="px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold
+                        {{ $invoice->is_tax_invoice ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : 'bg-slate-800 text-slate-400 border border-slate-700' }}">
+                        {{ $invoice->is_tax_invoice ? 'Tax Invoice (15% VAT)' : 'Standard Invoice' }}
+                    </span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Payment:</span>
+                    <span class="text-slate-200 font-bold uppercase">{{ $invoice->payment_method }}</span>
+                </div>
+                @if($invoice->bankAccount)
+                    <div class="flex flex-col text-slate-400 pt-1 border-t border-slate-800/50 mt-1 space-y-1">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Bank:</span>
+                            <span class="text-slate-200 font-semibold">{{ $invoice->bankAccount->bank_name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Account No:</span>
+                            <span class="text-slate-300 font-mono text-[11px] font-bold">{{ $invoice->bankAccount->account_number }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Name:</span>
+                            <span class="text-slate-400 text-[10px] italic">{{ $invoice->bankAccount->account_name }}</span>
+                        </div>
+                    </div>
+                @endif
+                @if($invoice->customer)
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Loyalty Earned:</span>
+                        <span class="text-emerald-400 font-bold">+{{ floor($invoice->total / 100) }} points</span>
+                    </div>
+                @endif
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400">Status:</span>
+                    @if($invoice->status === 'paid')
+                        <span class="px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Fully Paid</span>
+                    @elseif($invoice->status === 'partial')
+                        <span class="px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">Partially Paid</span>
+                    @elseif($invoice->status === 'installment')
+                        <span class="px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">Installment</span>
+                    @else
+                        <span class="px-2 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">Unpaid</span>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Special Note -->
+    @if($invoice->special_note)
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs text-slate-300">
+            <span class="font-bold text-slate-400 block mb-1">Special Note:</span>
+            <p>{{ $invoice->special_note }}</p>
+        </div>
+    @endif
+
+    <!-- Items Listing -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+        <div class="p-5 border-b border-slate-800">
+            <h3 class="orbitron-title text-sm font-black text-slate-200 uppercase tracking-widest">Products</h3>
+        </div>
+        <table class="w-full text-left text-xs border-collapse">
+            <thead>
+                <tr class="border-b border-slate-800 text-slate-400 uppercase tracking-widest font-semibold text-[10px]">
+                    <th class="py-3 px-6">Product Details</th>
+                    <th class="py-3 px-6">SKU Code</th>
+                    <th class="py-3 px-6">Assigned Serial</th>
+                    <th class="py-3 px-6 text-center font-bold">Qty</th>
+                    <th class="py-3 px-6 text-center font-bold">Free Qty</th>
+                    <th class="py-3 px-6 text-right">Unit Price</th>
+                    <th class="py-3 px-6 text-right">Discount</th>
+                    <th class="py-3 px-6">Warranty</th>
+                    <th class="py-3 px-6 text-right">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-850">
+                @foreach($invoice->items as $item)
+                    <tr class="hover:bg-slate-800/10 transition-colors">
+                        <td class="py-3.5 px-6">
+                            <span class="font-bold text-slate-200 block">{{ $item->product->name }}</span>
+                            <span class="text-[10px] text-slate-400 block mt-0.5">{{ $item->product->brand }}</span>
                         </td>
-                        <td class="px-4 py-3 text-right font-mono">LKR {{ number_format($payment->amount, 2) }}</td>
+                        <td class="py-3.5 px-6 font-semibold text-slate-300">{{ $item->product->sku }}</td>
+                        <td class="py-3.5 px-6 text-cyan-400 font-bold mono-text">{{ $item->serial_number ?? 'N/A' }}</td>
+                        <td class="py-3.5 px-6 text-center text-slate-200 font-bold">{{ $item->quantity }}</td>
+                        <td class="py-3.5 px-6 text-center text-slate-400 font-bold">{{ $item->free_quantity }}</td>
+                        <td class="py-3.5 px-6 text-right text-slate-300 mono-text">Rs. {{ number_format($item->unit_price, 2) }}</td>
+                        <td class="py-3.5 px-6 text-right text-rose-400 mono-text">
+                            @if($item->discount_amount > 0)
+                                -Rs. {{ number_format($item->discount_amount, 2) }} ({{ $item->discount_percentage }}%)
+                            @else
+                                0.00
+                            @endif
+                        </td>
+                        <td class="py-3.5 px-6 text-slate-300">{{ $item->warranty ?? 'N/A' }}</td>
+                        <td class="py-3.5 px-6 text-right text-slate-100 font-bold mono-text">Rs. {{ number_format($item->total, 2) }}</td>
                     </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        @else
-        <p class="text-gray-500 italic">No payments recorded yet.</p>
-        @endif
-    </div>
-        <div class="terms">
-            <h4>Terms & Conditions</h4>
-            <ul>
-                <li>The prices quoted in our estimates are not binding. Final cost based on actual services/materials.</li>
-                <li>Cloud Tech is not responsible for data loss or damages due to unforeseen contingencies.</li>
-                <li>Inspection fee: Rs. 1,000 (Laptop) / Rs. 500 (Desktop) if repair is declined after estimate.</li>
-                <li>Items not collected within 30 days of notice may be disposed of.</li>
-                <li>Warranty claims require presentation of this original invoice.</li>
-            </ul>
-        </div>
-        
-        <div class="signatures">
-            <div class="signature-box">
-                <div class="line"></div>
-                <p>Customer Signature</p>
-                <p class="date-placeholder">Date: .......................</p>
+                @endforeach
+            </tbody>
+        </table>
+
+        <!-- Summary section -->
+        <div class="p-6 border-t border-slate-800 bg-slate-950/40 flex justify-end">
+            <div class="w-80 space-y-2 text-xs text-slate-400">
+                <div class="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span class="font-bold text-slate-200 mono-text">Rs. {{ number_format($invoice->subtotal, 2) }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Global Discount:</span>
+                    <span class="font-bold text-rose-400 mono-text">
+                        @if($invoice->global_discount_amount > 0)
+                            -Rs. {{ number_format($invoice->global_discount_amount, 2) }} ({{ $invoice->global_discount_percentage }}%)
+                        @else
+                            0.00
+                        @endif
+                    </span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Service Charges:</span>
+                    <span class="font-bold text-slate-200 mono-text">Rs. {{ number_format($invoice->service_charges, 2) }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Tax (VAT {{ $invoice->is_tax_invoice ? '15%' : '0%' }}):</span>
+                    <span class="font-bold text-slate-200 mono-text">Rs. {{ number_format($invoice->tax, 2) }}</span>
+                </div>
+                <div class="flex justify-between text-sm font-bold text-cyan-400 border-t border-slate-800 pt-2">
+                    <span>Grand Total:</span>
+                    <span class="text-base font-black mono-text">Rs. {{ number_format($invoice->total, 2) }}</span>
+                </div>
+                <div class="flex justify-between border-t border-slate-850 pt-2">
+                    <span>Customer Paid:</span>
+                    <span class="font-bold text-slate-200 mono-text">Rs. {{ number_format($invoice->customer_paid, 2) }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Balance Returned:</span>
+                    <span class="font-bold text-emerald-400 mono-text">Rs. {{ number_format($invoice->balance, 2) }}</span>
+                </div>
             </div>
-            <div class="signature-box">
-                <div class="line"></div>
-                <p>Authorized Signature</p>
-            </div>
         </div>
-    </div>
-    
-    <div class="print-footer">
-        <p>Thank you for choosing Cloud Tech!</p>
     </div>
 </div>
-
-<style>
-    /* CSS Variables for Print Consistency */
-    :root {
-        --print-accent: #1e293b; /* Dark Slate */
-        --print-text: #334155;
-        --print-border: #e2e8f0;
-    }
-
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-    }
-    
-    /* Layout Container */
-    .invoice-container {
-        width: 210mm;
-        min-height: 297mm; /* Keep A4 size on screen representation */
-        padding: 10mm 15mm; /* Reduced padding */
-        margin: 0 auto;
-        background: #fff;
-        color: var(--print-text);
-        box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        position: relative;
-        font-family: 'Inter', sans-serif;
-        box-sizing: border-box;
-    }
-    
-    /* Header */
-    .invoice-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        border-bottom: 2px solid var(--print-accent);
-        padding-bottom: 0.5rem; /* Reduced */
-        margin-bottom: 1rem; /* Reduced */
-    }
-
-    .invoice-logo {
-        height: 120px;
-        width: auto;
-        display: block;
-    }
-
-    .company-details {
-        text-align: right;
-        font-size: 0.8rem; /* Reduced */
-    }
-
-    .company-name {
-        font-size: 1.2rem; /* Reduced */
-        font-weight: 800;
-        color: var(--print-accent);
-        margin: 0 0 0.2rem 0;
-        text-transform: uppercase;
-        letter-spacing: -0.5px;
-    }
-
-    .company-details p {
-        margin: 0.1rem 0;
-    }
-
-    .detail-block { margin-bottom: 0.25rem; }
-    .mt-2 { margin-top: 0.2rem; }
-
-    /* Meta Bar */
-    .invoice-meta-bar {
-        display: flex;
-        justify-content: space-between;
-        background: #f8fafc;
-        border: 1px solid var(--print-border);
-        padding: 0.4rem 0.8rem; /* Reduced */
-        border-radius: 6px;
-        margin-bottom: 1rem; /* Reduced */
-    }
-
-    .meta-item {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .meta-label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        color: #64748b;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-    }
-
-    .meta-value {
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: var(--print-accent);
-    }
-
-    /* Grid Layout */
-    .info-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem; /* Reduced */
-        margin-bottom: 1.5rem; /* Reduced */
-    }
-
-    .box-title {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        color: #94a3b8;
-        border-bottom: 1px solid var(--print-border);
-        padding-bottom: 0.2rem;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-    }
-
-    .client-name {
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--print-accent);
-        margin-bottom: 0.2rem;
-    }
-
-    .client-info p, .device-info p { margin: 0.1rem 0; font-size: 0.85rem; }
-
-    .details-table { width: 100%; border-collapse: collapse; }
-    .details-table td { padding: 0.1rem 0; vertical-align: top; font-size: 0.85rem; }
-    .details-table .label { width: 80px; font-weight: 600; color: #64748b; }
-
-    /* Main Table */
-    .invoice-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 1rem; /* Reduced */
-    }
-
-    .invoice-table th {
-        background: var(--print-accent);
-        color: #fff;
-        padding: 0.4rem; /* Reduced */
-        text-align: left;
-        font-weight: 600;
-        font-size: 0.8rem;
-    }
-
-    .invoice-table td {
-        padding: 0.4rem; /* Reduced */
-        border-bottom: 1px solid var(--print-border);
-        border-left: 1px solid var(--print-border);
-        border-right: 1px solid var(--print-border);
-        vertical-align: middle;
-        font-size: 0.85rem;
-    }
-
-    .empty-row td {
-        height: 1.5rem; /* Reduced */
-    }
-
-    .text-right { text-align: right; }
-
-    .total-row td {
-        border: none;
-        padding-top: 0.5rem;
-    }
-    
-    .grand-total-row td {
-        border-top: 2px solid var(--print-accent);
-        padding: 0.5rem;
-        color: var(--print-accent);
-        font-size: 1rem;
-        font-weight: 800;
-        background: #f8fafc;
-    }
-
-    .total-label { text-align: right; padding-right: 1rem; font-size: 0.85rem; }
-
-    /* Footer */
-    .footer-section {
-        display: flex;
-        justify-content: space-between;
-        margin-top: auto;
-        gap: 1rem;
-        padding-top: 1rem;
-    }
-
-    .terms {
-        flex: 3;
-        font-size: 0.65rem; /* Reduced */
-        color: #64748b;
-    }
-    
-    .terms h4 {
-        margin-bottom: 0.3rem;
-        color: var(--print-accent);
-        font-size: 0.7rem;
-    }
-
-    .terms ul { padding-left: 1rem; line-height: 1.3; margin: 0; }
-
-    .signatures {
-        flex: 2;
-        display: flex;
-        flex-direction: row; /* Side by side signatures */
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-        padding-top: 50px;
-    }
-
-    .signature-box {
-        text-align: center;
-        width: 45%;
-    }
-
-    .signature-box .line {
-        border-top: 1px dashed #94a3b8;
-        margin-bottom: 0.3rem;
-    }
-
-    .signature-box p { font-size: 0.7rem; font-weight: 600; }
-    .date-placeholder { font-weight: 400; font-size: 0.6rem; margin-top: 0.1rem; }
-    
-    .print-footer {
-        text-align: center;
-        font-size: 0.7rem;
-        color: #94a3b8;
-        margin-top: 0.5rem;
-        border-top: 1px solid #f1f5f9;
-        padding-top: 0.3rem;
-    }
-
-    /* Print Specifics */
-    @media print {
-        @page { size: A4; margin: 0; }
-        
-        body { margin: 0; background: #fff; -webkit-print-color-adjust: exact; }
-        
-        .sidebar, 
-        .page-header, 
-        .toast-container,
-        .btn-primary,
-        nav,
-        aside,
-        .print\:hidden { 
-            display: none !important; 
-        }
-
-        .app-container {
-            display: block !important;
-        }
-
-        .invoice-container {
-            visibility: visible !important;
-            position: absolute; 
-            left: 0; 
-            top: 0; 
-            width: 210mm; 
-            height: 297mm; /* Forced Height */
-            margin: 0; 
-            padding: 10mm 15mm; 
-            box-shadow: none;
-            z-index: 9999;
-            background: white;
-            box-sizing: border-box;
-        }
-
-        .invoice-container * {
-            visibility: visible !important;
-        }
-
-        .glass { background: #fff !important; color: #000 !important; border: none; }
-        
-        .invoice-table th { background-color: var(--print-accent) !important; color: #fff !important; }
-        .grand-total-row td { background-color: #f8fafc !important; }
-        .invoice-meta-bar { background-color: #f8fafc !important; }
-        
-        /* Ensure footer sticks to bottom of page */
-        .footer-section {
-             position: absolute;
-             bottom: 15mm;
-             left: 15mm;
-             right: 15mm;
-        }
-        
-        .print-footer {
-            position: absolute;
-            bottom: 5mm;
-            left: 0;
-            right: 0;
-        }
-    }
-</style>
 @endsection

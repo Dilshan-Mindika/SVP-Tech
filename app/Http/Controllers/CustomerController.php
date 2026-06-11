@@ -3,45 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Invoice;
+use App\Models\LoyaltyTransaction;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Customer::withCount([
-            'repairJobs as repairs_count' => function ($query) {
-                $query->where('job_type', '!=', 'sale');
-            },
-            'repairJobs as sales_count' => function ($query) {
-                $query->where('job_type', 'sale');
-            }
-        ])->latest();
+        $query = Customer::query();
 
-        if ($request->has('search') && $request->search != '') {
+        if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%");
-            });
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
         }
 
-        // Filter by Customer Type
-        if ($request->has('type') && $request->type != '') {
-            $query->where('type', $request->type);
-        }
+        $stats = [
+            'total_count' => (clone $query)->count(),
+            'new_this_month' => (clone $query)->whereMonth('createdAt', \Carbon\Carbon::now()->month)->whereYear('createdAt', \Carbon\Carbon::now()->year)->count(),
+            'active_customers' => (clone $query)->has('invoices')->count(),
+            'total_receivables' => Invoice::whereIn('status', ['unpaid', 'partial'])->get()->sum(fn($i) => max(0, $i->total - $i->customer_paid)),
+        ];
 
-        // Filter by Date Range (Created At)
-        if ($request->has('date_from') && $request->date_from != '') {
-            $query->whereDate('created_at', '>=', $request->date_from);
-        }
-        if ($request->has('date_to') && $request->date_to != '') {
-            $query->whereDate('created_at', '<=', $request->date_to);
-        }
-
-        $customers = $query->get();
-        return view('customers.index', compact('customers'));
+        $customers = $query->latest()->paginate(10);
+        return view('customers.index', compact('customers', 'stats'));
     }
 
     public function create()
@@ -51,22 +38,28 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
-            'type' => 'required|in:normal,shop',
+            'phone' => 'required|string|max:20|unique:customers,phone',
+            'email' => 'nullable|email|max:255',
+            'address' => 'nullable|string',
         ]);
 
-        Customer::create($validated);
-        
-        return redirect()->route('customers.index')->with('success', 'Customer added successfully.');
+        $customer = Customer::create($request->validated());
+
+        return redirect()->route('customers.show', $customer->id)->with('success', "Customer {$customer->name} registered successfully.");
     }
 
     public function show(Customer $customer)
     {
-        return view('customers.show', compact('customer'));
+        $customer->load(['loyaltyTransactions' => function($q) {
+            $q->latest()->take(50);
+        }]);
+
+        // Load invoices for this customer
+        $invoices = Invoice::where('customer_id', $customer->id)->latest()->get();
+
+        return view('customers.show', compact('customer', 'invoices'));
     }
 
     public function edit(Customer $customer)
@@ -76,26 +69,22 @@ class CustomerController extends Controller
 
     public function update(Request $request, Customer $customer)
     {
-        $customer->update($request->all());
-        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
-    }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20|unique:customers,phone,' . $customer->id,
+            'email' => 'nullable|email|max:255',
+            'address' => 'nullable|string',
+        ]);
 
-    public function ledger(Customer $customer)
-    {
-        $customer->load(['invoices.payments', 'invoices.repairJob']);
-        
-        $invoices = $customer->invoices()->latest()->get();
-        // Calculate running balance or prepare stats if needed
-        $totalDue = $customer->total_due;
-        $totalPaid = $customer->invoices->sum('paid_amount');
-        $totalBilled = $customer->invoices->sum('total_amount');
+        $customer->update($request->validated());
 
-        return view('customers.ledger', compact('customer', 'invoices', 'totalDue', 'totalPaid', 'totalBilled'));
+        return redirect()->route('customers.show', $customer->id)->with('success', "Customer {$customer->name} updated successfully.");
     }
 
     public function destroy(Customer $customer)
     {
+        // Nullify references first - invoices will set customer_id to null
         $customer->delete();
-        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
+        return redirect()->route('customers.index')->with('success', "Customer {$customer->name} removed from the directory.");
     }
 }
