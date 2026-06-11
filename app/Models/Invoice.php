@@ -20,7 +20,93 @@ class Invoice extends Model
         'profit_margin',
         'paid_amount',
         'status',
+
+        // Neuro fields
+        'invoice_number',
+        'customer_id',
+        'user_id',
+        'employee_id',
+        'bank_account_id',
+        'repair_id',
+        'title',
+        'sale_type',
+        'special_note',
+        'due_date',
+        'is_tax_invoice',
+        'subtotal',
+        'tax',
+        'discount',
+        'global_discount_percentage',
+        'global_discount_amount',
+        'service_charges',
+        'total',
+        'payment_method',
+        'is_paid',
+        'customer_paid',
+        'balance'
     ];
+
+    protected $casts = [
+        'is_tax_invoice' => 'boolean',
+        'is_paid' => 'boolean',
+        'due_date' => 'date',
+        'subtotal' => 'float',
+        'tax' => 'float',
+        'discount' => 'float',
+        'global_discount_percentage' => 'float',
+        'global_discount_amount' => 'float',
+        'service_charges' => 'float',
+        'customer_paid' => 'float',
+        'balance' => 'float',
+        'total' => 'float',
+        'bank_account_id' => 'integer',
+        'repair_id' => 'integer'
+    ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function cashier()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function bankAccount()
+    {
+        return $this->belongsTo(BankAccount::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function repair()
+    {
+        return $this->belongsTo(Repair::class);
+    }
+
+    public function returns()
+    {
+        return $this->hasMany(ProductReturn::class);
+    }
+
+    public function warrantyClaims()
+    {
+        return $this->hasMany(WarrantyClaim::class);
+    }
 
     public function repairJob()
     {
