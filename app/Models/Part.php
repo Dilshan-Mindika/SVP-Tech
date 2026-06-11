@@ -11,6 +11,20 @@ class Part extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'product';
+
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
+
+    protected static function booted()
+    {
+        static::saving(function ($part) {
+            if (empty($part->category)) {
+                $part->category = 'General';
+            }
+        });
+    }
+
     protected $fillable = [
         'name',
         'description',

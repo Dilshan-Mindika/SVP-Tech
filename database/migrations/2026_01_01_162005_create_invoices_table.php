@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('repair_job_id')->constrained('repair_jobs')->onDelete('cascade');
+            $table->integer('repair_job_id');
+            $table->foreign('repair_job_id')->references('id')->on('repair')->onDelete('cascade');
             $table->enum('invoice_type', ['job', 'service']); // Job = estimate/initial, Service = final
             $table->decimal('total_amount', 10, 2);
             $table->decimal('parts_cost', 10, 2)->default(0);

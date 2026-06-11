@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('job_expenses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('repair_job_id')->constrained()->cascadeOnDelete();
+            $table->integer('repair_job_id');
+            $table->foreign('repair_job_id')->references('id')->on('repair')->cascadeOnDelete();
             $table->string('description');
             $table->decimal('amount', 10, 2);
             $table->timestamps();
@@ -21,7 +22,8 @@ return new class extends Migration
 
         Schema::create('job_invoice_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('repair_job_id')->constrained()->cascadeOnDelete();
+            $table->integer('repair_job_id');
+            $table->foreign('repair_job_id')->references('id')->on('repair')->cascadeOnDelete();
             $table->string('description');
             $table->integer('quantity')->default(1);
             $table->decimal('amount', 10, 2);

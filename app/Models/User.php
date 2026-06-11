@@ -14,6 +14,21 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
 
+    protected $table = 'user';
+
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
+
+    public function getRoleAttribute($value)
+    {
+        return strtolower($value);
+    }
+
+    public function setRoleAttribute($value)
+    {
+        $this->attributes['role'] = strtoupper($value);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

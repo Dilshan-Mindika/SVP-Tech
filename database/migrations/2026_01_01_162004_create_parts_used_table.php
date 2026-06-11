@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('parts_used', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('repair_job_id')->constrained('repair_jobs')->onDelete('cascade');
+            $table->integer('repair_job_id');
+            $table->foreign('repair_job_id')->references('id')->on('repair')->onDelete('cascade');
             $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->onDelete('set null');
             $table->string('part_name');
             $table->decimal('part_cost', 10, 2);

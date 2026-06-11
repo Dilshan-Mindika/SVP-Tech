@@ -10,8 +10,10 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->foreignId('technician_id')->constrained()->onDelete('cascade');
+            $table->integer('customer_id');
+            $table->foreign('customer_id')->references('id')->on('user')->onDelete('cascade');
+            $table->integer('technician_id');
+            $table->foreign('technician_id')->references('id')->on('technicians')->onDelete('cascade');
             $table->tinyInteger('rating')->unsigned(); // 1-5
             $table->text('comments')->nullable();
             $table->timestamps();

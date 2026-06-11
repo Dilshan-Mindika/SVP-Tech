@@ -11,7 +11,8 @@ return new class extends Migration
         Schema::create('repair_jobs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
-            $table->foreignId('technician_id')->nullable()->constrained()->onDelete('set null'); // Job might not be assigned immediately
+            $table->integer('technician_id')->nullable();
+            $table->foreign('technician_id')->references('id')->on('technicians')->onDelete('set null');
             $table->string('laptop_brand');
             $table->string('laptop_model');
             $table->string('serial_number')->nullable();

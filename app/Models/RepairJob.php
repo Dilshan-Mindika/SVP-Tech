@@ -11,6 +11,29 @@ class RepairJob extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'repair';
+
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
+
+    public function getRepairStatusAttribute($value)
+    {
+        if ($value === null) {
+            $value = $this->status;
+        }
+        $value = strtoupper($value);
+        if ($value === 'RECEIVED') return 'pending';
+        if ($value === 'READY_FOR_PICKUP') return 'completed';
+        return strtolower($value);
+    }
+
+    public function setRepairStatusAttribute($value)
+    {
+        $value = strtoupper($value);
+        $this->attributes['repair_status'] = $value;
+        $this->attributes['status'] = $value;
+    }
+
     protected $fillable = [
         'customer_id',
         'technician_id',
