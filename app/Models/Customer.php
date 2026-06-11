@@ -37,6 +37,7 @@ class Customer extends Model
         'address',
         'type',
         'credit_balance',
+        'loyalty_points',
     ];
 
     public function repairJobs()
@@ -46,7 +47,22 @@ class Customer extends Model
 
     public function invoices()
     {
-        return $this->hasManyThrough(Invoice::class, RepairJob::class);
+        return $this->hasMany(Invoice::class, 'customer_id');
+    }
+
+    public function loyaltyTransactions()
+    {
+        return $this->hasMany(LoyaltyTransaction::class, 'customer_id');
+    }
+
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class, 'customer_id');
+    }
+
+    public function warrantyClaims()
+    {
+        return $this->hasMany(WarrantyClaim::class, 'customer_id');
     }
 
     public function getTotalDueAttribute()

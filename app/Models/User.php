@@ -57,6 +57,26 @@ class User extends Authenticatable
         return $this->role === 'technician';
     }
 
+    public function roleRelation()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function hasPermission(string $permissionName): bool
+    {
+        if (!$this->role_id) {
+            return false;
+        }
+        $role = $this->roleRelation;
+        if (!$role) {
+            return false;
+        }
+        if ($role->name === 'Admin' || $role->name === 'Super Admin') {
+            return true;
+        }
+        return $role->permissions()->where('name', $permissionName)->exists();
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
