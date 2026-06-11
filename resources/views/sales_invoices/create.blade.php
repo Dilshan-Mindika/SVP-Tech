@@ -7,13 +7,13 @@
             <h1 class="orbitron-title text-xl font-black text-slate-100 tracking-wider">ADD NEW INVOICE</h1>
             <p class="text-slate-400 text-xs mt-0.5 uppercase tracking-widest font-semibold">Generate new billing & sales transactions</p>
         </div>
-        <a href="{{ route('neuro_invoices.index') }}" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 text-xs transition-colors">
+        <a href="{{ route('sales_invoices.index') }}" class="px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 text-xs transition-colors">
             <i class="fa-solid fa-arrow-left mr-2"></i>Back to List
         </a>
     </div>
 
 
-    <form action="{{ route('neuro_invoices.store') }}" method="POST" id="invoiceForm">
+    <form action="{{ route('sales_invoices.store') }}" method="POST" id="invoiceForm">
         @csrf
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             

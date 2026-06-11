@@ -85,7 +85,7 @@
                 @if($claim->invoice)
                     <div>
                         <span class="text-slate-500 block uppercase tracking-wider text-[9px] font-bold">Associated Invoice</span>
-                        <a href="{{ route('neuro_invoices.show', $claim->invoice->id) }}" class="text-cyan-400 font-bold hover:underline font-mono">
+                        <a href="{{ route('sales_invoices.show', $claim->invoice->id) }}" class="text-cyan-400 font-bold hover:underline font-mono">
                             {{ $claim->invoice->invoice_number }}
                         </a>
                     </div>

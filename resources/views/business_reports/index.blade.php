@@ -46,7 +46,7 @@
 
     <!-- Filters Section -->
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
-        <form action="{{ route('neuro_reports.index') }}" method="GET" id="reportsForm" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        <form action="{{ route('business_reports.index') }}" method="GET" id="reportsForm" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div>
                 <label class="text-[10px] text-slate-400 uppercase tracking-wider font-bold block mb-1">Select Report Type</label>
                 <select name="report_type" id="reportTypeSelect" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-cyan-500">
@@ -146,7 +146,7 @@
                         @forelse($data as $row)
                             @php $totSales += $row->total; @endphp
                             <tr class="hover:bg-slate-800/10 transition-colors">
-                                <td class="py-3.5 px-6 font-bold text-cyan-400"><a href="{{ route('neuro_invoices.show', $row->id) }}">{{ $row->invoice_number }}</a></td>
+                                <td class="py-3.5 px-6 font-bold text-cyan-400"><a href="{{ route('sales_invoices.show', $row->id) }}">{{ $row->invoice_number }}</a></td>
                                 <td class="py-3.5 px-6 text-slate-400">{{ $row->created_at->format('Y-m-d H:i') }}</td>
                                 <td class="py-3.5 px-6 text-slate-200 font-semibold">{{ $row->customer ? $row->customer->name : 'Walk-in' }}</td>
                                 <td class="py-3.5 px-6 text-slate-300">{{ $row->sale_type }}</td>
@@ -356,7 +356,7 @@
                         @forelse($data as $row)
                             @php $totCredit += abs($row->balance); @endphp
                             <tr class="hover:bg-slate-800/10 transition-colors">
-                                <td class="py-3.5 px-6 font-bold text-cyan-400"><a href="{{ route('neuro_invoices.show', $row->id) }}">{{ $row->invoice_number }}</a></td>
+                                <td class="py-3.5 px-6 font-bold text-cyan-400"><a href="{{ route('sales_invoices.show', $row->id) }}">{{ $row->invoice_number }}</a></td>
                                 <td class="py-3.5 px-6 text-slate-450">{{ $row->created_at->format('Y-m-d') }}</td>
                                 <td class="py-3.5 px-6 text-slate-200 font-bold">{{ $row->customer ? $row->customer->name : 'Walk-in' }}</td>
                                 <td class="py-3.5 px-6 text-slate-400 font-semibold">{{ $row->customer ? $row->customer->phone : 'N/A' }}</td>

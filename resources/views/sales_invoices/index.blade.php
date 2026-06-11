@@ -36,7 +36,7 @@
                 <span>EXPORT PDF</span>
             </button>
 
-            <a href="{{ route('neuro_invoices.create') }}" class="px-3.5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan hover:shadow-neon-cyan-lg flex items-center gap-1.5">
+            <a href="{{ route('sales_invoices.create') }}" class="px-3.5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan hover:shadow-neon-cyan-lg flex items-center gap-1.5">
                 <i class="fa-solid fa-plus"></i>
                 <span>CREATE INVOICE</span>
             </a>
@@ -81,7 +81,7 @@
 
     <!-- Filters and Search -->
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-        <form action="{{ route('neuro_invoices.index') }}" method="GET" class="flex flex-col gap-4">
+        <form action="{{ route('sales_invoices.index') }}" method="GET" class="flex flex-col gap-4">
             <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div class="flex-grow w-full md:max-w-md relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
@@ -200,24 +200,24 @@
                             <td class="py-3.5 px-6 text-right text-slate-100 font-bold mono-text">Rs. {{ number_format($inv->total, 2) }}</td>
                             <td class="py-3.5 px-6 text-center">
                                 <div class="flex items-center justify-center gap-1.5">
-                                    <a href="{{ route('neuro_invoices.show', $inv->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="View details">
+                                    <a href="{{ route('sales_invoices.show', $inv->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="View details">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('neuro_invoices.print', $inv->id) }}" target="_blank" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Print Invoice">
+                                    <a href="{{ route('sales_invoices.print', $inv->id) }}" target="_blank" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Print Invoice">
                                         <i class="fa-solid fa-print"></i>
                                     </a>
-                                    <a href="{{ route('neuro_invoices.print', $inv->id) }}?download=1" target="_blank" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Download PDF">
+                                    <a href="{{ route('sales_invoices.print', $inv->id) }}?download=1" target="_blank" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Download PDF">
                                         <i class="fa-solid fa-file-pdf"></i>
                                     </a>
-                                    <a href="{{ route('neuro_invoices.edit', $inv->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Edit">
+                                    <a href="{{ route('sales_invoices.edit', $inv->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Edit">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
 
                                     @php
-                                        $emailSubject = rawurlencode("Invoice #" . $inv->invoice_number . " - NEURONET");
-                                        $emailBody = rawurlencode("Hi,\n\nPlease find your invoice #" . $inv->invoice_number . " details here: " . route('neuro_invoices.show', $inv->id) . "\n\nThank you for choosing NEURONET Computer Store!");
+                                        $emailSubject = rawurlencode("Invoice #" . $inv->invoice_number . " - CLOUDTECH");
+                                        $emailBody = rawurlencode("Hi,\n\nPlease find your invoice #" . $inv->invoice_number . " details here: " . route('sales_invoices.show', $inv->id) . "\n\nThank you for choosing CLOUDTECH Computer Store!");
                                         
-                                        $whatsappText = rawurlencode("Hi, please find your invoice #" . $inv->invoice_number . " details here: " . route('neuro_invoices.show', $inv->id));
+                                        $whatsappText = rawurlencode("Hi, please find your invoice #" . $inv->invoice_number . " details here: " . route('sales_invoices.show', $inv->id));
                                     @endphp
 
                                     <a href="mailto:{{ $inv->customer ? $inv->customer->email : '' }}?subject={{ $emailSubject }}&body={{ $emailBody }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Share via Email">
@@ -227,7 +227,7 @@
                                         <i class="fa-brands fa-whatsapp"></i>
                                     </a>
 
-                                    <form action="{{ route('neuro_invoices.destroy', $inv->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this invoice?')" class="inline">
+                                    <form action="{{ route('sales_invoices.destroy', $inv->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this invoice?')" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-rose-500 transition-all" title="Delete">

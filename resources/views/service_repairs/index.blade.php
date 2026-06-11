@@ -43,7 +43,7 @@
                 <i class="fa-solid fa-calendar-check"></i>
                 <span>APPOINTMENTS</span>
             </a>
-            <a href="{{ route('neuro_repairs.create') }}" class="px-3.5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan hover:shadow-neon-cyan-lg flex items-center gap-1.5">
+            <a href="{{ route('service_repairs.create') }}" class="px-3.5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan hover:shadow-neon-cyan-lg flex items-center gap-1.5">
                 <i class="fa-solid fa-plus"></i>
                 <span>ADD NEW REPAIR</span>
             </a>
@@ -88,7 +88,7 @@
 
     <!-- Filters and Search -->
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-        <form action="{{ route('neuro_repairs.index') }}" method="GET" class="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <form action="{{ route('service_repairs.index') }}" method="GET" class="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div class="flex-grow w-full md:max-w-md relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
                     <i class="fa-solid fa-magnifying-glass text-xs"></i>
@@ -199,13 +199,13 @@
                             </td>
                             <td class="py-3.5 px-6 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <a href="{{ route('neuro_repairs.show', $r->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 rounded transition-all" title="View details">
+                                    <a href="{{ route('service_repairs.show', $r->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 rounded transition-all" title="View details">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('neuro_repairs.edit', $r->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 rounded transition-all" title="Edit">
+                                    <a href="{{ route('service_repairs.edit', $r->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 rounded transition-all" title="Edit">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
-                                    <form action="{{ route('neuro_repairs.destroy', $r->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this repair job?')" class="inline">
+                                    <form action="{{ route('service_repairs.destroy', $r->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this repair job?')" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-rose-500 transition-all" title="Delete">

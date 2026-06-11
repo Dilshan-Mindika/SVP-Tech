@@ -21,7 +21,7 @@ class Invoice extends Model
         'paid_amount',
         'status',
 
-        // Neuro fields
+        // Additional fields
         'invoice_number',
         'customer_id',
         'user_id',

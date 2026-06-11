@@ -165,7 +165,7 @@
                 <td>
                      <div class="flex flex-col text-xs gap-1" style="font-weight: 500;">
                         <div class="timeline-created" title="Created">
-                            <i class="fas fa-plus-circle w-4 text-center"></i> {{ $job->created_at->format('M d') }}
+                            <i class="fas fa-plus-circle w-4 text-center"></i> {{ $job->created_at ? $job->created_at->format('M d') : 'N/A' }}
                         </div>
                         @if($job->completed_at)
                             <div class="timeline-completed" title="Completed">

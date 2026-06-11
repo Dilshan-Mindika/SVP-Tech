@@ -323,12 +323,12 @@
         <!-- Header -->
         <div class="header-section">
             <div style="display: flex; gap: 20px; align-items: center;">
-                <img src="{{ asset('images/neuro_invoice.png') }}" alt="Logo" style="height: 80px; width: auto; max-width: 220px; object-fit: contain;">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 80px; width: auto; max-width: 220px; object-fit: contain;">
                 <div>
                     <div class="company-details" style="margin-top: 0; border-left: 2px solid #e2e8f0; padding-left: 15px;">
-                        <p style="margin: 0; font-size: 13px; color: #0f172a;"><strong>NEURONET Computer Store & Service Center</strong></p>
+                        <p style="margin: 0; font-size: 13px; color: #0f172a;"><strong>CLOUDTECH Computer Store & Service Center</strong></p>
                         <p style="margin: 2px 0;">321 Galle Road, Colombo 03, Sri Lanka</p>
-                        <p style="margin: 2px 0;">Tel: +94 11 2345678 | Email: sales@neuronet.online</p>
+                        <p style="margin: 2px 0;">Tel: +94 11 2345678 | Email: sales@cloudtech.online</p>
                         @if($invoice->is_tax_invoice)
                             <p style="margin: 5px 0 0 0; font-weight: 700; color: #0f172a; font-size: 12px;">VAT Reg No: 409123456-7000</p>
                         @endif
@@ -368,7 +368,7 @@
             <!-- Issuer -->
             <div class="meta-card">
                 <h3>Issuer Info</h3>
-                <p><strong>Issued By:</strong> {{ config('app.name', 'Neuronet') }} Shop</p>
+                <p><strong>Issued By:</strong> {{ config('app.name', 'CloudTech') }} Shop</p>
                 <p><strong>Cashier:</strong> {{ $invoice->user->name }}</p>
                 @if($invoice->employee)
                     <p><strong>Sales Representative:</strong> {{ $invoice->employee->name }}</p>
@@ -495,7 +495,7 @@
 
         <!-- Footer -->
         <div class="footer-section">
-            <p>Thank you for choosing NEURONET Computer Store!</p>
+            <p>Thank you for choosing CLOUDTECH Computer Store!</p>
             <p>System Ref: CL-{{ str_pad($invoice->id, 4, '0', STR_PAD_LEFT) }} | Generated at {{ date('Y-m-d H:i:s') }}</p>
         </div>
     </div>

@@ -63,7 +63,7 @@
                 <!-- Email -->
                 <div>
                     <label class="text-[11px] text-slate-400 uppercase tracking-wider font-bold block mb-1">Work Email Address</label>
-                    <input type="email" name="email" placeholder="e.g. employee@neuronet.com" value="{{ old('email', $employee->email) }}" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-cyan-500 transition-colors font-semibold">
+                    <input type="email" name="email" placeholder="e.g. employee@cloudtech.com" value="{{ old('email', $employee->email) }}" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-cyan-500 transition-colors font-semibold">
                 </div>
 
                 <!-- Status -->

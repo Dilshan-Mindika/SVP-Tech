@@ -12,7 +12,7 @@ use App\Models\Appointment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class NeuroDashboardController extends Controller
+class BusinessDashboardController extends Controller
 {
     public function index()
     {
@@ -82,7 +82,7 @@ class NeuroDashboardController extends Controller
                 'type' => 'warning',
                 'module' => 'Repairs',
                 'message' => "Unassigned Repair Job: #{$rep->repair_job_no} for {$rep->device_model} ({$rep->customer_name})",
-                'time' => $rep->created_at->diffForHumans()
+                'time' => $rep->created_at ? $rep->created_at->diffForHumans() : 'N/A'
             ];
         }
 
@@ -93,7 +93,7 @@ class NeuroDashboardController extends Controller
                 'type' => 'info',
                 'module' => 'Warranty',
                 'message' => "Pending claim #{$claim->claim_number} from customer {$claim->customer->name}",
-                'time' => $claim->created_at->diffForHumans()
+                'time' => $claim->created_at ? $claim->created_at->diffForHumans() : 'N/A'
             ];
         }
 
@@ -230,7 +230,7 @@ class NeuroDashboardController extends Controller
             ]
         ];
 
-        return view('neuro_dashboard', compact(
+        return view('business_dashboard', compact(
             'dailyRevenue',
             'monthlyRevenue',
             'totalMonthlyExpenses',

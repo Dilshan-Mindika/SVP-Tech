@@ -7,7 +7,7 @@ use App\Models\Invoice;
 use App\Models\LoyaltyTransaction;
 use Illuminate\Http\Request;
 
-class NeuroCustomerController extends Controller
+class CustomerDirectoryController extends Controller
 {
     public function index(Request $request)
     {
@@ -28,12 +28,12 @@ class NeuroCustomerController extends Controller
         ];
 
         $customers = $query->latest()->paginate(10);
-        return view('neuro_customers.index', compact('customers', 'stats'));
+        return view('customer_directory.index', compact('customers', 'stats'));
     }
 
     public function create()
     {
-        return view('neuro_customers.create');
+        return view('customer_directory.create');
     }
 
     public function store(Request $request)
@@ -47,7 +47,7 @@ class NeuroCustomerController extends Controller
 
         $customer = Customer::create($request->validated());
 
-        return redirect()->route('neuro_customers.show', $customer->id)->with('success', "Customer {$customer->name} registered successfully.");
+        return redirect()->route('customer_directory.show', $customer->id)->with('success', "Customer {$customer->name} registered successfully.");
     }
 
     public function show(Customer $customer)
@@ -59,12 +59,12 @@ class NeuroCustomerController extends Controller
         // Load invoices for this customer
         $invoices = Invoice::where('customer_id', $customer->id)->latest()->get();
 
-        return view('neuro_customers.show', compact('customer', 'invoices'));
+        return view('customer_directory.show', compact('customer', 'invoices'));
     }
 
     public function edit(Customer $customer)
     {
-        return view('neuro_customers.edit', compact('customer'));
+        return view('customer_directory.edit', compact('customer'));
     }
 
     public function update(Request $request, Customer $customer)
@@ -78,13 +78,13 @@ class NeuroCustomerController extends Controller
 
         $customer->update($request->validated());
 
-        return redirect()->route('neuro_customers.show', $customer->id)->with('success', "Customer {$customer->name} updated successfully.");
+        return redirect()->route('customer_directory.show', $customer->id)->with('success', "Customer {$customer->name} updated successfully.");
     }
 
     public function destroy(Customer $customer)
     {
         // Nullify references first - invoices will set customer_id to null
         $customer->delete();
-        return redirect()->route('neuro_customers.index')->with('success', "Customer {$customer->name} removed from the directory.");
+        return redirect()->route('customer_directory.index')->with('success', "Customer {$customer->name} removed from the directory.");
     }
 }

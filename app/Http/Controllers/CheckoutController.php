@@ -69,7 +69,7 @@ class CheckoutController extends Controller
             // Create Order
             $order = Order::create([
                 'user_id' => auth()->id(),
-                'order_number' => 'NEURO-' . strtoupper(Str::random(10)),
+                'order_number' => 'CT-' . strtoupper(Str::random(10)),
                 'total' => $total,
                 'status' => 'pending',
                 'customer_name' => $request->customer_name,

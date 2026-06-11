@@ -154,7 +154,7 @@
 
     <div class="ticket">
         <div class="header">
-            <h1>NEURONET</h1>
+            <h1>CLOUDTECH</h1>
             <p>Computer Store & Service Center</p>
             <p>Tel: 011-2345678 | Colombo, Sri Lanka</p>
             <p style="margin-top: 5px; font-weight: bold; font-size: 11px; border: 1px solid #000; padding: 2px; display: inline-block;">QUOTATION PROPOSAL</p>

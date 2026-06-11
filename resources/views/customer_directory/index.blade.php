@@ -33,7 +33,7 @@
                 <span>EXPORT PDF</span>
             </button>
 
-            <a href="{{ route('neuro_customers.create') }}" class="px-3.5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan hover:shadow-neon-cyan-lg flex items-center gap-1.5">
+            <a href="{{ route('customer_directory.create') }}" class="px-3.5 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan hover:shadow-neon-cyan-lg flex items-center gap-1.5">
                 <i class="fa-solid fa-user-plus"></i>
                 <span>ADD NEW CUSTOMER</span>
             </a>
@@ -78,7 +78,7 @@
 
     <!-- Filters & Search -->
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-        <form action="{{ route('neuro_customers.index') }}" method="GET" class="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <form action="{{ route('customer_directory.index') }}" method="GET" class="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div class="flex-grow w-full md:max-w-md relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
                     <i class="fa-solid fa-magnifying-glass text-xs"></i>
@@ -130,13 +130,13 @@
                             <!-- Actions -->
                             <td class="py-3.5 px-6 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <a href="{{ route('neuro_customers.show', $customer->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="View details">
+                                    <a href="{{ route('customer_directory.show', $customer->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="View details">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('neuro_customers.edit', $customer->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Edit">
+                                    <a href="{{ route('customer_directory.edit', $customer->id) }}" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-cyan-400 transition-all" title="Edit">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
-                                    <form action="{{ route('neuro_customers.destroy'), $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this customer?')" class="inline">
+                                    <form action="{{ route('customer_directory.destroy'), $customer->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this customer?')" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="p-1.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded hover:text-rose-500 transition-all" title="Delete">

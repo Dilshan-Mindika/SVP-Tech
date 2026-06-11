@@ -5,7 +5,7 @@
     <!-- Header Controls -->
     <div class="flex items-center justify-between pb-4 border-b border-slate-800">
         <div class="flex items-center gap-3">
-            <a href="{{ route('neuro_invoices.index') }}" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 transition-colors">
+            <a href="{{ route('sales_invoices.index') }}" class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-400 hover:text-slate-200 transition-colors">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
             <div>
@@ -15,24 +15,24 @@
         </div>
         
         <div class="flex flex-wrap gap-2">
-            <a href="{{ route('neuro_invoices.print', $invoice->id) }}" target="_blank" class="px-3 py-1.5 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan flex items-center gap-2">
+            <a href="{{ route('sales_invoices.print', $invoice->id) }}" target="_blank" class="px-3 py-1.5 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400 shadow-neon-cyan flex items-center gap-2">
                 <i class="fa-solid fa-print"></i>
                 <span>PRINT</span>
             </a>
-            <a href="{{ route('neuro_invoices.print', $invoice->id) }}?download=1" target="_blank" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
+            <a href="{{ route('sales_invoices.print', $invoice->id) }}?download=1" target="_blank" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
                 <i class="fa-solid fa-file-pdf"></i>
                 <span>DOWNLOAD</span>
             </a>
-            <a href="{{ route('neuro_invoices.edit', $invoice->id) }}" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
+            <a href="{{ route('sales_invoices.edit', $invoice->id) }}" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
                 <i class="fa-solid fa-pen-to-square"></i>
                 <span>EDIT</span>
             </a>
             
             @php
-                $emailSubject = rawurlencode("Invoice #" . $invoice->invoice_number . " - NEURONET");
-                $emailBody = rawurlencode("Hi,\n\nPlease find your invoice #" . $invoice->invoice_number . " details here: " . route('neuro_invoices.show', $invoice->id) . "\n\nThank you for choosing NEURONET Computer Store!");
+                $emailSubject = rawurlencode("Invoice #" . $invoice->invoice_number . " - CLOUDTECH");
+                $emailBody = rawurlencode("Hi,\n\nPlease find your invoice #" . $invoice->invoice_number . " details here: " . route('sales_invoices.show', $invoice->id) . "\n\nThank you for choosing CLOUDTECH Computer Store!");
                 
-                $whatsappText = rawurlencode("Hi, please find your invoice #" . $invoice->invoice_number . " details here: " . route('neuro_invoices.show', $invoice->id));
+                $whatsappText = rawurlencode("Hi, please find your invoice #" . $invoice->invoice_number . " details here: " . route('sales_invoices.show', $invoice->id));
             @endphp
 
             <a href="mailto:{{ $invoice->customer ? $invoice->customer->email : '' }}?subject={{ $emailSubject }}&body={{ $emailBody }}" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-xs transition-colors flex items-center gap-2">
@@ -51,7 +51,7 @@
             </a>
             @endif
 
-            <form action="{{ route('neuro_invoices.destroy', $invoice->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this invoice?')" class="inline">
+            <form action="{{ route('sales_invoices.destroy', $invoice->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this invoice?')" class="inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="px-3 py-1.5 bg-rose-950/20 border border-rose-900/50 hover:bg-rose-900/20 text-rose-400 font-bold rounded-lg text-xs transition-all flex items-center gap-2">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEURONET - Repair Receipt {{ $repair->repair_job_no }}</title>
+    <title>CLOUDTECH - Repair Receipt {{ $repair->repair_job_no }}</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -206,7 +206,7 @@
     <!-- Header Block -->
     <div class="header">
         <div class="header-title">
-            <h1>NEURONET COMPUTERS</h1>
+            <h1>CLOUDTECH COMPUTERS</h1>
             <p>Professional Laptop Repair Intake & Service Form</p>
         </div>
         <div class="job-badge">

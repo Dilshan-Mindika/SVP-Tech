@@ -78,7 +78,7 @@ class ImportExportController extends Controller
                     'designation' => ['label' => 'Designation', 'type' => 'string', 'rules' => 'required|string|max:255', 'desc' => 'Work role title', 'sample' => 'Cashier'],
                     'salary_amount' => ['label' => 'Basic Salary', 'type' => 'numeric', 'rules' => 'required|numeric|min:0', 'desc' => 'Base monthly salary in Rs.', 'sample' => 65000.00],
                     'phone' => ['label' => 'Phone', 'type' => 'string', 'rules' => 'required|string|max:20', 'desc' => 'Personal contact phone', 'sample' => '0711122334'],
-                    'email' => ['label' => 'Email', 'type' => 'string', 'rules' => 'required|email|max:255|unique:employees,email', 'desc' => 'Work email address (must be unique)', 'sample' => 'nisansala@neuronet.com'],
+                    'email' => ['label' => 'Email', 'type' => 'string', 'rules' => 'required|email|max:255|unique:employees,email', 'desc' => 'Work email address (must be unique)', 'sample' => 'nisansala@cloudtech.com'],
                     'joining_date' => ['label' => 'Joining Date', 'type' => 'date', 'rules' => 'required|date_format:Y-m-d', 'desc' => 'Date hired in YYYY-MM-DD format', 'sample' => '2025-01-15'],
                     'status' => ['label' => 'Status', 'type' => 'string', 'rules' => 'nullable|in:active,inactive', 'desc' => 'Employment status (active or inactive)', 'sample' => 'active']
                 ]
@@ -130,7 +130,7 @@ class ImportExportController extends Controller
                 'title' => 'Bank Accounts Mainframe',
                 'fields' => [
                     'bank_name' => ['label' => 'Bank Name', 'type' => 'string', 'rules' => 'required|string|max:255', 'desc' => 'Name of the banking institute', 'sample' => 'Commercial Bank'],
-                    'account_name' => ['label' => 'Account Name', 'type' => 'string', 'rules' => 'required|string|max:255', 'desc' => 'Holder name', 'sample' => 'Neuronet Shop Main'],
+                    'account_name' => ['label' => 'Account Name', 'type' => 'string', 'rules' => 'required|string|max:255', 'desc' => 'Holder name', 'sample' => 'CloudTech Shop Main'],
                     'account_number' => ['label' => 'Account Number', 'type' => 'string', 'rules' => 'required|string|max:255|unique:bank_accounts,account_number', 'desc' => 'Unique account number', 'sample' => '8009112233'],
                     'branch' => ['label' => 'Branch', 'type' => 'string', 'rules' => 'required|string|max:255', 'desc' => 'Bank branch name', 'sample' => 'Kollupitiya'],
                     'is_active' => ['label' => 'Is Active', 'type' => 'boolean', 'rules' => 'nullable|boolean', 'desc' => 'Account active status (1 for Active, 0 for Inactive)', 'sample' => 1]
@@ -141,7 +141,7 @@ class ImportExportController extends Controller
                 'title' => 'Salary Disbursements',
                 'fields' => [
                     'payslip_no' => ['label' => 'Payslip No', 'type' => 'string', 'rules' => 'nullable|string|max:50', 'desc' => 'Salary Slip ID (optional)', 'sample' => 'PAY-2026-05A'],
-                    'employee_email' => ['label' => 'Employee Email', 'type' => 'string', 'rules' => 'required|email|exists:employees,email', 'desc' => 'Work email of the registered Employee to pay', 'sample' => 'nisansala@neuronet.com'],
+                    'employee_email' => ['label' => 'Employee Email', 'type' => 'string', 'rules' => 'required|email|exists:employees,email', 'desc' => 'Work email of the registered Employee to pay', 'sample' => 'nisansala@cloudtech.com'],
                     'amount_paid' => ['label' => 'Amount Paid', 'type' => 'numeric', 'rules' => 'required|numeric|min:0', 'desc' => 'Amount paid in Rs.', 'sample' => 65000.00],
                     'paid_for_month' => ['label' => 'Paid For Month', 'type' => 'string', 'rules' => 'required|string|max:50', 'desc' => 'Disbursed month details', 'sample' => 'May 2026'],
                     'payment_date' => ['label' => 'Payment Date', 'type' => 'date', 'rules' => 'required|date_format:Y-m-d', 'desc' => 'Payment Date (YYYY-MM-DD)', 'sample' => '2026-05-25'],

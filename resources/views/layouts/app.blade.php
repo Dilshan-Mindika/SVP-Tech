@@ -73,10 +73,10 @@
                     <i class="fas fa-hand-holding-usd" style="margin-right: 10px; width: 20px;"></i> Payments
                 </a>
 
-                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Advanced ERP & POS</span>
+                <span style="padding: 0.5rem 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.6; font-weight: 700; margin-top: 1rem; display: block;">Sales & Operations</span>
                 
-                <a href="{{ route('neuro_dashboard') }}" class="{{ request()->routeIs('neuro_dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-terminal" style="margin-right: 10px; width: 20px;"></i> Neuro Console
+                <a href="{{ route('business_dashboard') }}" class="{{ request()->routeIs('business_dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-terminal" style="margin-right: 10px; width: 20px;"></i> Business Console
                 </a>
                 
                 @if(auth()->user()->hasPermission('read-products'))
@@ -92,8 +92,8 @@
                 @endif
 
                 @if(auth()->user()->hasPermission('create-invoices') || auth()->user()->hasPermission('read-invoices'))
-                    <a href="{{ route('neuro_invoices.index') }}" class="{{ request()->routeIs('neuro_invoices.*') ? 'active' : '' }}">
-                        <i class="fas fa-file-invoice" style="margin-right: 10px; width: 20px;"></i> Neuro Invoices
+                    <a href="{{ route('sales_invoices.index') }}" class="{{ request()->routeIs('sales_invoices.*') ? 'active' : '' }}">
+                        <i class="fas fa-file-invoice" style="margin-right: 10px; width: 20px;"></i> Sales Invoices
                     </a>
                 @endif
 
@@ -104,8 +104,8 @@
                 @endif
 
                 @if(auth()->user()->hasPermission('read-customers'))
-                    <a href="{{ route('neuro_customers.index') }}" class="{{ request()->routeIs('neuro_customers.*') ? 'active' : '' }}">
-                        <i class="fas fa-address-book" style="margin-right: 10px; width: 20px;"></i> Neuro Customers
+                    <a href="{{ route('customer_directory.index') }}" class="{{ request()->routeIs('customer_directory.*') ? 'active' : '' }}">
+                        <i class="fas fa-address-book" style="margin-right: 10px; width: 20px;"></i> Customer Directory
                     </a>
                 @endif
 
@@ -122,8 +122,8 @@
                 @endif
 
                 @if(auth()->user()->hasPermission('read-repairs'))
-                    <a href="{{ route('neuro_repairs.index') }}" class="{{ request()->routeIs('neuro_repairs.*') ? 'active' : '' }}">
-                        <i class="fas fa-wrench" style="margin-right: 10px; width: 20px;"></i> Neuro Repairs
+                    <a href="{{ route('service_repairs.index') }}" class="{{ request()->routeIs('service_repairs.*') ? 'active' : '' }}">
+                        <i class="fas fa-wrench" style="margin-right: 10px; width: 20px;"></i> Service Repairs
                     </a>
                 @endif
 
@@ -164,8 +164,8 @@
                 @endif
 
                 @if(auth()->user()->hasPermission('read-expenses'))
-                    <a href="{{ route('neuro_reports.index') }}" class="{{ request()->routeIs('neuro_reports.*') ? 'active' : '' }}">
-                        <i class="fas fa-chart-pie" style="margin-right: 10px; width: 20px;"></i> Neuro Reports
+                    <a href="{{ route('business_reports.index') }}" class="{{ request()->routeIs('business_reports.*') ? 'active' : '' }}">
+                        <i class="fas fa-chart-pie" style="margin-right: 10px; width: 20px;"></i> Business Reports
                     </a>
                 @endif
 

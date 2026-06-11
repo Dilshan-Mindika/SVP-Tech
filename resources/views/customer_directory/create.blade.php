@@ -4,7 +4,7 @@
 <div class="space-y-6">
     <!-- Header -->
     <div class="flex items-center gap-4">
-        <a href="{{ route('neuro_customers.index') }}" class="text-slate-400 hover:text-cyan-400 transition-colors p-2 hover:bg-slate-800/50 rounded-lg">
+        <a href="{{ route('customer_directory.index') }}" class="text-slate-400 hover:text-cyan-400 transition-colors p-2 hover:bg-slate-800/50 rounded-lg">
             <i class="fa-solid fa-chevron-left"></i>
         </a>
         <div>
@@ -15,7 +15,7 @@
 
     <!-- Form -->
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
-        <form method="POST" action="{{ route('neuro_customers.store') }}" class="space-y-5">
+        <form method="POST" action="{{ route('customer_directory.store') }}" class="space-y-5">
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -65,7 +65,7 @@
             </div>
 
             <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
-                <a href="{{ route('neuro_customers.index') }}" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-lg text-sm transition-colors">Cancel</a>
+                <a href="{{ route('customer_directory.index') }}" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-lg text-sm transition-colors">Cancel</a>
                 <button type="submit" class="px-6 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg text-sm transition-colors shadow-neon-cyan hover:shadow-neon-cyan-lg">
                     <i class="fa-solid fa-user-plus mr-2"></i>Register Customer
                 </button>

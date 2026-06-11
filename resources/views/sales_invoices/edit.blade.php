@@ -7,13 +7,13 @@
             <h1 class="orbitron-title text-xl font-black text-slate-100 tracking-wider">EDIT INVOICE</h1>
             <p class="text-slate-400 text-xs mt-1 uppercase tracking-widest font-semibold">Change invoice details</p>
         </div>
-        <a href="{{ route('neuro_invoices.show', $invoice->id) }}" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg transition-colors">
+        <a href="{{ route('sales_invoices.show', $invoice->id) }}" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-lg transition-colors">
             BACK TO DETAILS
         </a>
     </div>
 
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-6">
-        <form action="{{ route('neuro_invoices.update', $invoice->id) }}" method="POST" class="space-y-4">
+        <form action="{{ route('sales_invoices.update', $invoice->id) }}" method="POST" class="space-y-4">
             @csrf
 
             <div>
@@ -122,7 +122,7 @@
                 <button type="submit" class="flex-1 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs transition-all hover:bg-cyan-400">
                     SAVE CHANGES
                 </button>
-                <a href="{{ route('neuro_invoices.show', $invoice->id) }}" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-center font-bold rounded-lg text-xs transition-colors">
+                <a href="{{ route('sales_invoices.show', $invoice->id) }}" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-center font-bold rounded-lg text-xs transition-colors">
                     CANCEL
                 </a>
             </div>

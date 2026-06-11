@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class NeuroReportsController extends Controller
+class BusinessReportsController extends Controller
 {
     public function index(Request $request)
     {
@@ -33,12 +33,12 @@ class NeuroReportsController extends Controller
         }
 
         if ($request->has('print')) {
-            return view('neuro_reports.print', compact('reportType', 'data', 'fromDate', 'toDate'));
+            return view('business_reports.print', compact('reportType', 'data', 'fromDate', 'toDate'));
         }
 
         $stats = $this->calculateReportStats($reportType, $data);
 
-        return view('neuro_reports.index', compact('reportType', 'data', 'fromDate', 'toDate', 'chartData', 'stats'));
+        return view('business_reports.index', compact('reportType', 'data', 'fromDate', 'toDate', 'chartData', 'stats'));
     }
 
     private function calculateReportStats($reportType, $data)

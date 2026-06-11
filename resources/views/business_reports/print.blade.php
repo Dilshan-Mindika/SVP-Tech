@@ -237,8 +237,8 @@
     <div class="container">
         <div class="header">
             <div class="header-left">
-                <h1>NEURONET</h1>
-                <p>Computer Store & Service Center | ERP Console</p>
+                <h1>CLOUDTECH</h1>
+                <p>Computer Store & Service Center | Business Console</p>
             </div>
             <div class="header-right">
                 <h2>
@@ -782,8 +782,8 @@
         @endif
 
         <div class="footer">
-            <p>NEURONET ERP - Internal Operations & Financial Reporting Engine</p>
-            <p>&copy; {{ date('Y') }} Neuronet. All rights reserved. Confidential document for internal use only.</p>
+            <p>CLOUDTECH ERP - Internal Operations & Financial Reporting Engine</p>
+            <p>&copy; {{ date('Y') }} CloudTech. All rights reserved. Confidential document for internal use only.</p>
         </div>
     </div>
 

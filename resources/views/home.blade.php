@@ -1,6 +1,6 @@
 @extends('layouts.shop')
 
-@section('title', 'Neuronet Computer Store | Cyberpunk Hardware Store')
+@section('title', 'CloudTech Computer Store | Cyberpunk Hardware Store')
 
 @section('content')
 <!-- Hero Section -->
@@ -201,7 +201,7 @@
         <!-- Feature 3 -->
         <div class="bg-cyber-card/30 border border-cyber-border rounded-2xl p-8 space-y-3">
             <i class="fa-solid fa-screwdriver-wrench text-3xl text-cyber-cyan"></i>
-            <h4 class="font-orbitron font-bold text-lg text-white">NEURONET CUSTOM BUILD CONFIGS</h4>
+            <h4 class="font-orbitron font-bold text-lg text-white">CLOUDTECH CUSTOM BUILD CONFIGS</h4>
             <p class="text-sm text-gray-400">Talk to our technicians on Discord. We can build, leak test, and tune custom loops exactly to your budget.</p>
         </div>
     </div>

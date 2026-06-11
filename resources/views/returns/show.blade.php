@@ -123,7 +123,7 @@
                             <div>
                                 <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Original Invoice</span>
                                 @if($return->invoice)
-                                    <a href="{{ route('neuro_invoices.show', $return->invoice->id) }}" class="text-cyan-400 hover:text-cyan-300 font-bold font-mono text-sm block mt-1 hover:underline">
+                                    <a href="{{ route('sales_invoices.show', $return->invoice->id) }}" class="text-cyan-400 hover:text-cyan-300 font-bold font-mono text-sm block mt-1 hover:underline">
                                         <i class="fa-solid fa-receipt mr-1"></i>{{ $return->invoice->invoice_number }}
                                     </a>
                                 @else

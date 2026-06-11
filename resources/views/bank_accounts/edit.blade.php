@@ -26,7 +26,7 @@
 
                 <div>
                     <label class="text-[10px] text-slate-400 uppercase tracking-wider font-bold block mb-1">Account Holder Name <span class="text-rose-500">*</span></label>
-                    <input type="text" name="account_name" value="{{ old('account_name', $bankAccount->account_name) }}" placeholder="e.g. Neuronet Pvt Ltd" required class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-cyan-500 transition-colors">
+                    <input type="text" name="account_name" value="{{ old('account_name', $bankAccount->account_name) }}" placeholder="e.g. CloudTech Pvt Ltd" required class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-cyan-500 transition-colors">
                 </div>
             </div>
 

@@ -1660,3 +1660,112 @@ table td {
 [data-theme="light"] .search-icon {
     color: #94a3b8;
 }
+
+/* =========================================================================
+   --- ERP & POS Theme Compatibility Overrides ---
+   ========================================================================= */
+
+.bg-slate-900, .bg-slate-900\/60, .bg-slate-900\/80 {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+}
+
+.bg-slate-950, .bg-slate-950\/60, .bg-slate-950\/80 {
+    background-color: var(--bg-body) !important;
+    border-color: var(--border-color) !important;
+}
+
+.bg-slate-800, .bg-slate-800\/50, .bg-slate-850, .bg-slate-850\/50 {
+    background-color: var(--bg-input) !important;
+    border-color: var(--border-color) !important;
+}
+
+.border-slate-800, .border-slate-850, .border-slate-700 {
+    border-color: var(--border-color) !important;
+}
+
+.divide-slate-800 > :not([hidden]) ~ :not([hidden]),
+.divide-slate-850 > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--border-color) !important;
+}
+
+.text-slate-100, .text-slate-200, .text-slate-300, .text-slate-50 {
+    color: var(--text-main) !important;
+}
+
+.text-slate-400, .text-slate-500 {
+    color: var(--text-muted) !important;
+}
+
+.text-cyan-400, .text-cyan-500 {
+    color: var(--primary) !important;
+}
+
+.text-emerald-400 {
+    color: var(--success) !important;
+}
+
+.text-rose-400 {
+    color: var(--danger) !important;
+}
+
+.text-amber-400 {
+    color: var(--warning) !important;
+}
+
+/* Fix input & form styling in ERP views under both themes */
+.bg-slate-950 input, .bg-slate-950 select, .bg-slate-950 textarea,
+input.bg-slate-950, select.bg-slate-950, textarea.bg-slate-950 {
+    background-color: var(--bg-input) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+}
+
+input.bg-slate-950:focus, select.bg-slate-950:focus, textarea.bg-slate-950:focus {
+    border-color: var(--primary) !important;
+}
+
+/* Option tags styling in light mode */
+[data-theme="light"] select option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+
+/* Light mode specific background and hover overrides to ensure readability */
+[data-theme="light"] .hover\:bg-slate-800\/10:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .hover\:bg-slate-800\/50:hover {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .text-slate-400 {
+    color: #475569 !important; /* Tailwind slate-600 */
+}
+
+/* Fix Orbitron and mono fonts styling */
+.orbitron-title {
+    font-family: 'Inter', sans-serif !important; /* Keep typography consistent with CloudTech */
+    font-weight: 700 !important;
+}
+
+/* Buttons in ERP POS */
+.bg-cyan-500 {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+.bg-cyan-500:hover {
+    background-color: var(--primary) !important;
+    filter: brightness(1.1);
+}
+
+.shadow-neon-cyan {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Clean up standard form layout backgrounds */
+.bg-slate-900 {
+    background-color: var(--bg-card) !important;
+}

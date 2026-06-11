@@ -12,7 +12,7 @@ use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InvoicesModuleController;
 
-// Neuro Ported Controllers
+// ERP Ported Controllers
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GrnController;
@@ -28,11 +28,11 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\NeuroCustomerController;
-use App\Http\Controllers\NeuroDashboardController;
-use App\Http\Controllers\NeuroInvoiceController;
-use App\Http\Controllers\NeuroRepairController;
-use App\Http\Controllers\NeuroReportsController;
+use App\Http\Controllers\CustomerDirectoryController;
+use App\Http\Controllers\BusinessDashboardController;
+use App\Http\Controllers\SalesInvoiceController;
+use App\Http\Controllers\ServiceRepairController;
+use App\Http\Controllers\BusinessReportsController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -81,30 +81,30 @@ Route::middleware('auth')->group(function () {
     Route::post('/invoices/{invoice}/payments', [PaymentController::class, 'store'])->name('payments.store');
 
     // =========================================================================
-    // --- Neuro System Feature Porting ---
+    // --- CloudTech ERP Feature Porting ---
     // =========================================================================
 
-    // Dashboard (Neuro Console)
-    Route::get('/neuro/dashboard', [NeuroDashboardController::class, 'index'])->name('neuro_dashboard');
+    // Dashboard (Business Console)
+    Route::get('/business/dashboard', [BusinessDashboardController::class, 'index'])->name('business_dashboard');
     Route::get('/search', [SearchController::class, 'index'])->name('search');
 
-    // Invoices (Neuro)
+    // Invoices (ERP)
     Route::middleware('permission:create-invoices')->group(function () {
-        Route::get('/neuro/invoices/create', [NeuroInvoiceController::class, 'create'])->name('neuro_invoices.create');
-        Route::post('/neuro/invoices/store', [NeuroInvoiceController::class, 'store'])->name('neuro_invoices.store');
+        Route::get('/business/invoices/create', [SalesInvoiceController::class, 'create'])->name('sales_invoices.create');
+        Route::post('/business/invoices/store', [SalesInvoiceController::class, 'store'])->name('sales_invoices.store');
     });
     Route::middleware('permission:read-invoices')->group(function () {
-        Route::get('/neuro/invoices', [NeuroInvoiceController::class, 'index'])->name('neuro_invoices.index');
-        Route::get('/neuro/invoices/{invoice}', [NeuroInvoiceController::class, 'show'])->name('neuro_invoices.show');
-        Route::get('/neuro/invoices/{invoice}/print', [NeuroInvoiceController::class, 'print'])->name('neuro_invoices.print');
-        Route::get('/neuro/invoices/{invoice}/items-json', [NeuroInvoiceController::class, 'itemsJson'])->name('neuro_invoices.items_json');
+        Route::get('/business/invoices', [SalesInvoiceController::class, 'index'])->name('sales_invoices.index');
+        Route::get('/business/invoices/{invoice}', [SalesInvoiceController::class, 'show'])->name('sales_invoices.show');
+        Route::get('/business/invoices/{invoice}/print', [SalesInvoiceController::class, 'print'])->name('sales_invoices.print');
+        Route::get('/business/invoices/{invoice}/items-json', [SalesInvoiceController::class, 'itemsJson'])->name('sales_invoices.items_json');
     });
     Route::middleware('permission:update-invoices')->group(function () {
-        Route::get('/neuro/invoices/{invoice}/edit', [NeuroInvoiceController::class, 'edit'])->name('neuro_invoices.edit');
-        Route::post('/neuro/invoices/{invoice}/update', [NeuroInvoiceController::class, 'update'])->name('neuro_invoices.update');
+        Route::get('/business/invoices/{invoice}/edit', [SalesInvoiceController::class, 'edit'])->name('sales_invoices.edit');
+        Route::post('/business/invoices/{invoice}/update', [SalesInvoiceController::class, 'update'])->name('sales_invoices.update');
     });
     Route::middleware('permission:delete-invoices')->group(function () {
-        Route::delete('/neuro/invoices/{invoice}/delete', [NeuroInvoiceController::class, 'destroy'])->name('neuro_invoices.destroy');
+        Route::delete('/business/invoices/{invoice}/delete', [SalesInvoiceController::class, 'destroy'])->name('sales_invoices.destroy');
     });
 
     // Quotations
@@ -126,21 +126,21 @@ Route::middleware('auth')->group(function () {
         Route::delete('/quotations/{quotation}/delete', [QuotationController::class, 'destroy'])->name('quotations.destroy');
     });
 
-    // Customers (Neuro)
+    // Customers (ERP)
     Route::middleware('permission:create-customers')->group(function () {
-        Route::get('/neuro/customers/create', [NeuroCustomerController::class, 'create'])->name('neuro_customers.create');
-        Route::post('/neuro/customers/store', [NeuroCustomerController::class, 'store'])->name('neuro_customers.store');
+        Route::get('/business/customers/create', [CustomerDirectoryController::class, 'create'])->name('customer_directory.create');
+        Route::post('/business/customers/store', [CustomerDirectoryController::class, 'store'])->name('customer_directory.store');
     });
     Route::middleware('permission:read-customers')->group(function () {
-        Route::get('/neuro/customers', [NeuroCustomerController::class, 'index'])->name('neuro_customers.index');
-        Route::get('/neuro/customers/{customer}', [NeuroCustomerController::class, 'show'])->name('neuro_customers.show');
+        Route::get('/business/customers', [CustomerDirectoryController::class, 'index'])->name('customer_directory.index');
+        Route::get('/business/customers/{customer}', [CustomerDirectoryController::class, 'show'])->name('customer_directory.show');
     });
     Route::middleware('permission:update-customers')->group(function () {
-        Route::get('/neuro/customers/{customer}/edit', [NeuroCustomerController::class, 'edit'])->name('neuro_customers.edit');
-        Route::post('/neuro/customers/{customer}/update', [NeuroCustomerController::class, 'update'])->name('neuro_customers.update');
+        Route::get('/business/customers/{customer}/edit', [CustomerDirectoryController::class, 'edit'])->name('customer_directory.edit');
+        Route::post('/business/customers/{customer}/update', [CustomerDirectoryController::class, 'update'])->name('customer_directory.update');
     });
     Route::middleware('permission:delete-customers')->group(function () {
-        Route::delete('/neuro/customers/{customer}/delete', [NeuroCustomerController::class, 'destroy'])->name('neuro_customers.destroy');
+        Route::delete('/business/customers/{customer}/delete', [CustomerDirectoryController::class, 'destroy'])->name('customer_directory.destroy');
     });
 
     // GRN (Goods Received Notes)
@@ -213,23 +213,23 @@ Route::middleware('auth')->group(function () {
         Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
     });
 
-    // Repairs (Neuro)
+    // Repairs (ERP)
     Route::middleware('permission:create-repairs')->group(function () {
-        Route::get('/neuro/repairs/create', [NeuroRepairController::class, 'create'])->name('neuro_repairs.create');
-        Route::post('/neuro/repairs/store', [NeuroRepairController::class, 'store'])->name('neuro_repairs.store');
+        Route::get('/business/repairs/create', [ServiceRepairController::class, 'create'])->name('service_repairs.create');
+        Route::post('/business/repairs/store', [ServiceRepairController::class, 'store'])->name('service_repairs.store');
     });
     Route::middleware('permission:read-repairs')->group(function () {
-        Route::get('/neuro/repairs', [NeuroRepairController::class, 'index'])->name('neuro_repairs.index');
-        Route::get('/neuro/repairs/{repair}', [NeuroRepairController::class, 'show'])->name('neuro_repairs.show');
-        Route::get('/neuro/repairs/{repair}/receipt', [NeuroRepairController::class, 'receipt'])->name('neuro_repairs.receipt');
+        Route::get('/business/repairs', [ServiceRepairController::class, 'index'])->name('service_repairs.index');
+        Route::get('/business/repairs/{repair}', [ServiceRepairController::class, 'show'])->name('service_repairs.show');
+        Route::get('/business/repairs/{repair}/receipt', [ServiceRepairController::class, 'receipt'])->name('service_repairs.receipt');
     });
     Route::middleware('permission:update-repairs')->group(function () {
-        Route::get('/neuro/repairs/{repair}/edit', [NeuroRepairController::class, 'edit'])->name('neuro_repairs.edit');
-        Route::post('/neuro/repairs/{repair}/update', [NeuroRepairController::class, 'update'])->name('neuro_repairs.update');
-        Route::post('/neuro/repairs/{repair}/parts', [NeuroRepairController::class, 'addParts'])->name('neuro_repairs.parts');
+        Route::get('/business/repairs/{repair}/edit', [ServiceRepairController::class, 'edit'])->name('service_repairs.edit');
+        Route::post('/business/repairs/{repair}/update', [ServiceRepairController::class, 'update'])->name('service_repairs.update');
+        Route::post('/business/repairs/{repair}/parts', [ServiceRepairController::class, 'addParts'])->name('service_repairs.parts');
     });
     Route::middleware('permission:delete-repairs')->group(function () {
-        Route::delete('/neuro/repairs/{repair}/delete', [NeuroRepairController::class, 'destroy'])->name('neuro_repairs.destroy');
+        Route::delete('/business/repairs/{repair}/delete', [ServiceRepairController::class, 'destroy'])->name('service_repairs.destroy');
     });
 
     // Warranty Claims
@@ -378,7 +378,7 @@ Route::middleware('auth')->group(function () {
 
     // Reports Engine
     Route::middleware('permission:read-expenses')->group(function () {
-        Route::get('/neuro/reports', [NeuroReportsController::class, 'index'])->name('neuro_reports.index');
+        Route::get('/business/reports', [BusinessReportsController::class, 'index'])->name('business_reports.index');
     });
 
     // Unified Import/Export Engine

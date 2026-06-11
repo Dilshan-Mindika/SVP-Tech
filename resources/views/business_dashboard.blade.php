@@ -9,7 +9,7 @@
             <p class="text-slate-400 text-xs mt-1 uppercase tracking-widest font-semibold">Real-time system status and financial overview</p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ route('neuro_invoices.create') }}" class="px-4 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-sm transition-all hover:bg-cyan-400 shadow-neon-cyan hover:shadow-neon-cyan-lg flex items-center gap-2">
+            <a href="{{ route('sales_invoices.create') }}" class="px-4 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-sm transition-all hover:bg-cyan-400 shadow-neon-cyan hover:shadow-neon-cyan-lg flex items-center gap-2">
                 <i class="fa-solid fa-plus"></i>
                 <span>NEW SALE</span>
             </a>
@@ -75,7 +75,7 @@
     <!-- Active Operational State -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Active Repairs -->
-        <a href="{{ route('neuro_repairs.index') }}" class="bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 p-4 rounded-xl flex items-center justify-between transition-all group">
+        <a href="{{ route('service_repairs.index') }}" class="bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 p-4 rounded-xl flex items-center justify-between transition-all group">
             <div class="flex items-center gap-3">
                 <div class="h-10 w-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg transition-transform group-hover:scale-110">
                     <i class="fa-solid fa-screwdriver-wrench"></i>
@@ -235,7 +235,7 @@
                 <i class="fa-solid fa-microchip text-cyan-400"></i>
                 <h3 class="orbitron-title text-sm font-black text-slate-200 uppercase tracking-widest">Recent Repairs</h3>
             </div>
-            <a href="{{ route('neuro_repairs.index') }}" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold tracking-wider uppercase transition-colors">View All Repairs &rarr;</a>
+            <a href="{{ route('service_repairs.index') }}" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold tracking-wider uppercase transition-colors">View All Repairs &rarr;</a>
         </div>
 
         <div class="overflow-x-auto">

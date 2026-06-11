@@ -16,7 +16,7 @@ class Supplier extends Model
         'contact_info',
         'part_supply_rate',
 
-        // Neuro fields
+        // Additional fields
         'company_name',
         'phone',
         'email',

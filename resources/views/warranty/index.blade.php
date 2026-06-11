@@ -141,7 +141,7 @@
                             </td>
                             <td class="py-3.5 px-6 text-center">
                                 @if($c->invoice)
-                                    <a href="{{ route('neuro_invoices.show', $c->invoice->id) }}" class="text-cyan-400 font-bold hover:underline font-mono text-[11px]">
+                                    <a href="{{ route('sales_invoices.show', $c->invoice->id) }}" class="text-cyan-400 font-bold hover:underline font-mono text-[11px]">
                                         {{ $c->invoice->invoice_number }}
                                     </a>
                                 @else

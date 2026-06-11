@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\DateFilterable;
 
-class NeuroInvoiceController extends Controller
+class SalesInvoiceController extends Controller
 {
     use DateFilterable;
     public function index(Request $request)
@@ -63,7 +63,7 @@ class NeuroInvoiceController extends Controller
         ];
 
         $invoices = $query->latest()->paginate(10);
-        return view('neuro_invoices.index', compact('invoices', 'stats'));
+        return view('sales_invoices.index', compact('invoices', 'stats'));
     }
 
     public function create()
@@ -77,7 +77,7 @@ class NeuroInvoiceController extends Controller
         $employees = Employee::orderBy('name', 'asc')->get();
         $bankAccounts = BankAccount::where('is_active', true)->orderBy('bank_name', 'asc')->get();
 
-        return view('neuro_invoices.create', compact('products', 'customers', 'employees', 'bankAccounts'));
+        return view('sales_invoices.create', compact('products', 'customers', 'employees', 'bankAccounts'));
     }
 
     public function store(Request $request)
@@ -274,20 +274,20 @@ class NeuroInvoiceController extends Controller
                 }
             }
 
-            return redirect()->route('neuro_invoices.show', $invoice->id)->with('success', "Invoice {$invoiceNumber} created successfully.");
+            return redirect()->route('sales_invoices.show', $invoice->id)->with('success', "Invoice {$invoiceNumber} created successfully.");
         });
     }
 
     public function show(Invoice $invoice)
     {
         $invoice->load(['customer', 'user', 'employee', 'items.product']);
-        return view('neuro_invoices.show', compact('invoice'));
+        return view('sales_invoices.show', compact('invoice'));
     }
 
     public function print(Invoice $invoice)
     {
         $invoice->load(['customer', 'user', 'employee', 'items.product']);
-        return view('neuro_invoices.print', compact('invoice'));
+        return view('sales_invoices.print', compact('invoice'));
     }
 
     public function itemsJson(Invoice $invoice)
@@ -315,7 +315,7 @@ class NeuroInvoiceController extends Controller
         $customers = Customer::orderBy('name', 'asc')->get();
         $employees = Employee::orderBy('name', 'asc')->get();
         $bankAccounts = BankAccount::where('is_active', true)->orderBy('bank_name', 'asc')->get();
-        return view('neuro_invoices.edit', compact('invoice', 'products', 'customers', 'employees', 'bankAccounts'));
+        return view('sales_invoices.edit', compact('invoice', 'products', 'customers', 'employees', 'bankAccounts'));
     }
 
     public function update(Request $request, Invoice $invoice)
@@ -353,12 +353,12 @@ class NeuroInvoiceController extends Controller
 
         $invoice->update($data);
 
-        return redirect()->route('neuro_invoices.show', $invoice->id)->with('success', "Invoice {$invoice->invoice_number} updated successfully.");
+        return redirect()->route('sales_invoices.show', $invoice->id)->with('success', "Invoice {$invoice->invoice_number} updated successfully.");
     }
 
     public function destroy(Invoice $invoice)
     {
         $invoice->delete();
-        return redirect()->route('neuro_invoices.index')->with('success', "Invoice {$invoice->invoice_number} deleted successfully.");
+        return redirect()->route('sales_invoices.index')->with('success', "Invoice {$invoice->invoice_number} deleted successfully.");
     }
 }

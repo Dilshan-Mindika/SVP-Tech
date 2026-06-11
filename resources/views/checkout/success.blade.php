@@ -1,6 +1,6 @@
 @extends('layouts.shop')
 
-@section('title', 'Neuronet | Order Success')
+@section('title', 'CloudTech | Order Success')
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -21,7 +21,7 @@
                 TRANSMISSION SUCCESSFUL
             </h1>
             <p class="text-gray-400 text-sm max-w-md mx-auto">
-                Your order contract has been received and queued into the Neuronet fulfillment mainframe.
+                Your order contract has been received and queued into the CloudTech fulfillment mainframe.
             </p>
         </div>
 
@@ -66,13 +66,13 @@
                 <div class="text-sm text-gray-300 space-y-3">
                     <p>To finalize shipment preparation, please transfer the exact contract amount to our secure bank account:</p>
                     <div class="bg-cyber-dark/80 p-4 rounded-xl space-y-2 border border-cyber-border font-mono text-xs">
-                        <div><span class="text-gray-500">Bank:</span> <strong class="text-white">Neuronet Cyberbank Corp</strong></div>
+                        <div><span class="text-gray-500">Bank:</span> <strong class="text-white">CloudTech Cyberbank Corp</strong></div>
                         <div><span class="text-gray-500">Account No:</span> <strong class="text-cyber-cyan">0090-4829-1092-293</strong></div>
                         <div><span class="text-gray-500">Branch:</span> <strong class="text-white">Neo-Colombo Prime Branch</strong></div>
                         <div><span class="text-gray-500">Ref Code:</span> <strong class="text-cyber-cyan">{{ $order->order_number }}</strong></div>
                     </div>
                     <p class="text-xs text-gray-400">
-                        *Please include the Ref Code above in your transfer description. Send proof of transfer receipt to <a href="mailto:sales@neuronet.com" class="text-cyber-cyan hover:underline">sales@neuronet.com</a>.
+                        *Please include the Ref Code above in your transfer description. Send proof of transfer receipt to <a href="mailto:sales@cloudtech.com" class="text-cyber-cyan hover:underline">sales@cloudtech.com</a>.
                     </p>
                 </div>
             @else
